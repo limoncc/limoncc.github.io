@@ -3,22 +3,29 @@
 
 
     
+    
   <url>
-    <loc>http://www.limoncc.com/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/2018-03-08-python%E4%B8%8E%E7%AE%80%E5%8D%95%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/</loc>
-    <lastmod>2018-03-26T15:06:13.035Z</lastmod>
+    <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2017-04-05-%E6%84%9F%E7%9F%A5%E5%99%A8-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A013/</loc>
+    <lastmod>2018-06-25T15:02:09.831Z</lastmod>
     <data>
         <display>
-        <title>python与简单线性回归</title>
-        <pubTime>2018-03-08T14:48:18.000Z</pubTime>
+        <title>感知机</title>
+        <pubTime>2017-04-05T14:49:06.000Z</pubTime>
         
-        <tag>python</tag>
+        <tag>神经网络</tag>
          
-        <tag>线性回归</tag>
+        <tag>机器学习</tag>
+         
+        <tag>人工智能</tag>
+         
+        <tag>感知机</tag>
+         
+        <tag>人工神经网络</tag>
          
          
            
              
-              <breadCrumb title="工程实践" url="http://www.limoncc.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+              <breadCrumb title="机器学习" url="http://www.limoncc.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
           
         </display>
     </data>
@@ -27,7 +34,7 @@
     
   <url>
     <loc>http://www.limoncc.com/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/2018-03-07-PyTorch%E5%AE%89%E8%A3%85/</loc>
-    <lastmod>2018-03-11T03:40:46.916Z</lastmod>
+    <lastmod>2018-03-11T03:40:46.000Z</lastmod>
     <data>
         <display>
         <title>PyTorch安装</title>
@@ -49,7 +56,7 @@
     
   <url>
     <loc>http://www.limoncc.com/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/2018-03-07-%E5%AE%89%E8%A3%85MXnet/</loc>
-    <lastmod>2018-03-07T13:30:47.413Z</lastmod>
+    <lastmod>2018-03-07T13:30:47.000Z</lastmod>
     <data>
         <display>
         <title>安装MXnet</title>
@@ -71,7 +78,7 @@
     
   <url>
     <loc>http://www.limoncc.com/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/2018-03-07-Google%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83%E4%B8%8E%E8%AF%84%E4%BC%B0/</loc>
-    <lastmod>2018-03-07T13:01:42.955Z</lastmod>
+    <lastmod>2018-03-07T13:01:42.000Z</lastmod>
     <data>
         <display>
         <title>Google机器学习-模型训练与评估</title>
@@ -93,7 +100,7 @@
     
   <url>
     <loc>http://www.limoncc.com/%E7%BB%9F%E8%AE%A1%E5%AD%A6/2017-01-11-%E7%9F%A9%E9%98%B5%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83/</loc>
-    <lastmod>2018-02-24T14:01:25.352Z</lastmod>
+    <lastmod>2018-02-24T14:01:25.000Z</lastmod>
     <data>
         <display>
         <title>矩阵高斯分布</title>
@@ -117,7 +124,7 @@
     
   <url>
     <loc>http://www.limoncc.com/%E6%A6%82%E7%8E%87%E8%AE%BA/2017-01-09-%E5%A4%9A%E5%85%83%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83/</loc>
-    <lastmod>2018-02-24T13:54:52.430Z</lastmod>
+    <lastmod>2018-02-24T13:54:52.000Z</lastmod>
     <data>
         <display>
         <title>多元高斯分布</title>
@@ -137,7 +144,7 @@
     
   <url>
     <loc>http://www.limoncc.com/%E6%A6%82%E7%8E%87%E8%AE%BA/2017-01-10-%E5%A4%9A%E5%85%83%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83%E7%9A%84%E7%86%B5/</loc>
-    <lastmod>2018-02-24T13:45:15.060Z</lastmod>
+    <lastmod>2018-02-24T13:45:15.000Z</lastmod>
     <data>
         <display>
         <title>多元高斯分布的熵</title>
@@ -159,7 +166,7 @@
     
   <url>
     <loc>http://www.limoncc.com/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90/2016-12-24-%E8%A1%8C%E5%88%97%E5%BC%8F/</loc>
-    <lastmod>2018-02-21T08:11:53.223Z</lastmod>
+    <lastmod>2018-02-21T08:11:53.000Z</lastmod>
     <data>
         <display>
         <title>行列式</title>
@@ -182,7 +189,7 @@
     
   <url>
     <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2018-01-09-%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B%E7%9A%84%E7%BB%B4%E7%89%B9%E6%AF%94%E7%AE%97%E6%B3%95/</loc>
-    <lastmod>2018-01-09T14:17:25.641Z</lastmod>
+    <lastmod>2018-01-09T14:17:25.000Z</lastmod>
     <data>
         <display>
         <title>隐马尔可夫模型的维特比算法</title>
@@ -206,17 +213,17 @@
     
   <url>
     <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2016-12-27-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%A6%E5%8D%95/</loc>
-    <lastmod>2017-12-14T02:38:59.621Z</lastmod>
+    <lastmod>2017-12-14T02:38:59.000Z</lastmod>
     <data>
         <display>
         <title>机器学习书单</title>
         <pubTime>2016-12-27T02:09:41.000Z</pubTime>
         
+        <tag>神经网络</tag>
+         
         <tag>机器学习</tag>
          
         <tag>人工智能</tag>
-         
-        <tag>神经网络</tag>
          
         <tag>大数据分析</tag>
          
@@ -232,15 +239,15 @@
     
   <url>
     <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2017-05-06-%E5%88%86%E7%B1%BB%E5%88%86%E5%B8%83%E5%A4%A7%E6%84%8F/</loc>
-    <lastmod>2017-12-14T02:32:29.351Z</lastmod>
+    <lastmod>2017-12-14T02:32:29.000Z</lastmod>
     <data>
         <display>
         <title>分类分布大意</title>
         <pubTime>2017-05-06T02:22:47.000Z</pubTime>
         
-        <tag>机器学习</tag>
-         
         <tag>神经网络</tag>
+         
+        <tag>机器学习</tag>
          
         <tag>分类分布</tag>
          
@@ -256,7 +263,7 @@
     
   <url>
     <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2017-03-08-%E7%8B%84%E5%88%A9%E5%85%8B%E9%9B%B7-%E5%A4%9A%E9%A1%B9%E5%BC%8F%E6%A8%A1%E5%9E%8B/</loc>
-    <lastmod>2017-10-07T01:53:25.067Z</lastmod>
+    <lastmod>2017-10-07T01:53:25.000Z</lastmod>
     <data>
         <display>
         <title>狄利克雷-多项式模型(Dirichlet-Multionmial Model)</title>
@@ -482,46 +489,18 @@
         
         <tag>深度学习</tag>
          
-        <tag>机器学习</tag>
+        <tag>工程问题</tag>
          
-        <tag>大数据</tag>
+        <tag>机器学习</tag>
          
         <tag>人工智能</tag>
          
-        <tag>工程问题</tag>
+        <tag>大数据</tag>
          
          
            
              
               <breadCrumb title="工程实践" url="http://www.limoncc.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2017-04-05-%E6%84%9F%E7%9F%A5%E5%99%A8-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A013/</loc>
-    <lastmod>2017-06-04T13:43:24.000Z</lastmod>
-    <data>
-        <display>
-        <title>感知机</title>
-        <pubTime>2017-04-05T14:49:06.000Z</pubTime>
-        
-        <tag>机器学习</tag>
-         
-        <tag>人工智能</tag>
-         
-        <tag>神经网络</tag>
-         
-        <tag>感知机</tag>
-         
-        <tag>人工神经网络</tag>
-         
-         
-           
-             
-              <breadCrumb title="机器学习" url="http://www.limoncc.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
           
         </display>
     </data>
@@ -566,13 +545,13 @@
         <title>pyhton-notebook主题颜色配置</title>
         <pubTime>2016-05-01T07:50:12.000Z</pubTime>
         
-        <tag>工程问题</tag>
-         
         <tag>python</tag>
          
         <tag>notebook</tag>
          
         <tag>计算环境</tag>
+         
+        <tag>工程问题</tag>
          
          
            
@@ -592,15 +571,15 @@
         <title>机器学习概论</title>
         <pubTime>2017-01-08T07:34:53.000Z</pubTime>
         
-        <tag>机器学习</tag>
+        <tag>神经网络</tag>
          
-        <tag>大数据</tag>
+        <tag>机器学习</tag>
          
         <tag>人工智能</tag>
          
-        <tag>神经网络</tag>
-         
         <tag>大数据分析</tag>
+         
+        <tag>大数据</tag>
          
          
            
@@ -620,15 +599,15 @@
         <title>贝塔-伯努利模型(Beta-Binomial Model)</title>
         <pubTime>2017-03-07T13:54:02.000Z</pubTime>
         
-        <tag>机器学习</tag>
+        <tag>神经网络</tag>
          
-        <tag>大数据</tag>
+        <tag>机器学习</tag>
          
         <tag>人工智能</tag>
          
-        <tag>神经网络</tag>
-         
         <tag>大数据分析</tag>
+         
+        <tag>大数据</tag>
          
         <tag>贝塔-伯努利模型</tag>
          
@@ -650,15 +629,15 @@
         <title>贝叶斯统计学概论</title>
         <pubTime>2017-03-06T03:16:01.000Z</pubTime>
         
-        <tag>机器学习</tag>
+        <tag>神经网络</tag>
          
-        <tag>大数据</tag>
+        <tag>机器学习</tag>
          
         <tag>人工智能</tag>
          
-        <tag>神经网络</tag>
-         
         <tag>大数据分析</tag>
+         
+        <tag>大数据</tag>
          
          
            
@@ -669,7 +648,6 @@
     </data>
     </url>
 
-    
     
   <url>
     <loc>http://www.limoncc.com/%E4%BC%A4%E6%84%9F/2011-04-27-%E5%88%9D%E5%A4%8F%E9%87%8C/</loc>
