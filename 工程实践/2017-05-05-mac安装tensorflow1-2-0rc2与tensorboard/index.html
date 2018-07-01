@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="深度学习,tensorflow,神经网络," />
+  <meta name="keywords" content="tensorflow,深度学习,神经网络," />
 
 
 
@@ -85,7 +85,7 @@
 
 
 <meta name="description" content="本文主要总结了mac源码安装tensorflow1.2.0rc0的若干基本问题，和我自己的一些体会。">
-<meta name="keywords" content="深度学习,tensorflow,神经网络">
+<meta name="keywords" content="tensorflow,深度学习,神经网络">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mac安装tensorflow1.2.0rc2与tensorboard">
 <meta property="og:url" content="http://www.limoncc.com/工程实践/2017-05-05-mac安装tensorflow1-2-0rc2与tensorboard/index.html">
@@ -95,7 +95,7 @@
 <meta property="og:image" content="http://oiol5pi05.bkt.clouddn.com/tensorboard.png">
 <meta property="og:image" content="http://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="http://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2017-06-10T12:30:39.000Z">
+<meta property="og:updated_time" content="2018-07-01T03:43:37.182Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mac安装tensorflow1.2.0rc2与tensorboard">
 <meta name="twitter:description" content="本文主要总结了mac源码安装tensorflow1.2.0rc0的若干基本问题，和我自己的一些体会。">
@@ -401,6 +401,7 @@
 <h5 id="7、用pip安装whl安装包"><a href="#7、用pip安装whl安装包" class="headerlink" title="7、用pip安装whl安装包"></a>7、用pip安装whl安装包</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜  anaconda sudo pip install /tmp/tensorflow_pkg/tensorflow-1.2.0rc2-cp36-cp36m-macosx_10_7_x86_64.whl</span><br></pre></td></tr></table></figure>
 <hr>
 <h5 id="注意：win的好像要手动设置"><a href="#注意：win的好像要手动设置" class="headerlink" title="注意：win的好像要手动设置"></a>注意：win的好像要手动设置</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bazel build -c opt --copt=-mavx --copt=-msse4.1 --copt=-msse4.2 //tensorflow/tools/pip_package:build_pip_package</span><br></pre></td></tr></table></figure>
+<p>在GitHub上，有人编译好了，地址是 <a href="https://github.com/lakshayg/tensorflow-build" target="_blank" rel="noopener">https://github.com/lakshayg/tensorflow-build</a></p>
 <h4 id="三、运行一个经典的手写识别例子"><a href="#三、运行一个经典的手写识别例子" class="headerlink" title="三、运行一个经典的手写识别例子"></a>三、运行一个经典的手写识别例子</h4><p>打开终端,cd到指定目录。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ <span class="built_in">cd</span> anaconda</span><br><span class="line">➜  anaconda python tensorflow/tensorflow/examples/tutorials/mnist/mnist_with_summaries.py</span><br><span class="line">Successfully downloaded train-images-idx3-ubyte.gz 9912422 bytes.</span><br><span class="line">Extracting /tmp/tensorflow/mnist/input_data/train-images-idx3-ubyte.gz</span><br><span class="line">Successfully downloaded train-labels-idx1-ubyte.gz 28881 bytes.</span><br><span class="line">Extracting /tmp/tensorflow/mnist/input_data/train-labels-idx1-ubyte.gz</span><br><span class="line">Successfully downloaded t10k-images-idx3-ubyte.gz 1648877 bytes.</span><br><span class="line">Extracting /tmp/tensorflow/mnist/input_data/t10k-images-idx3-ubyte.gz</span><br><span class="line">Successfully downloaded t10k-labels-idx1-ubyte.gz 4542 bytes.</span><br><span class="line">Extracting /tmp/tensorflow/mnist/input_data/t10k-labels-idx1-ubyte.gz</span><br><span class="line">Accuracy at step 0: 0.1209</span><br><span class="line">Accuracy at step 10: 0.6857</span><br><span class="line">Accuracy at step 20: 0.839</span><br><span class="line">......</span><br><span class="line">Accuracy at step 970: 0.9693</span><br><span class="line">Accuracy at step 980: 0.97</span><br><span class="line">Accuracy at step 990: 0.9694</span><br><span class="line">Adding run metadata <span class="keyword">for</span> 999</span><br><span class="line">➜  anaconda tensorboard --logdir=/tmp/tensorflow/mnist/logs/mnist_with_summaries</span><br><span class="line">Starting TensorBoard b<span class="string">'54'</span> at http://xiaobai-mac.local:6006</span><br><span class="line">(Press CTRL+C to quit)</span><br></pre></td></tr></table></figure></p>
 <p>在浏览器中打开如下：</p>
 <p><img src="http://oiol5pi05.bkt.clouddn.com/tensorboard.png" alt="tensorboard"></p>
@@ -448,9 +449,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/深度学习/" rel="tag">#深度学习</a>
-          
             <a href="/tags/tensorflow/" rel="tag">#tensorflow</a>
+          
+            <a href="/tags/深度学习/" rel="tag">#深度学习</a>
           
             <a href="/tags/神经网络/" rel="tag">#神经网络</a>
           
