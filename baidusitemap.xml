@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://www.limoncc.com/%E6%A6%82%E7%8E%87%E8%AE%BA/2017-01-09-%E5%A4%9A%E5%85%83%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83/</loc>
+    <lastmod>2018-07-30T07:27:30.045Z</lastmod>
+    <data>
+        <display>
+        <title>多元高斯分布</title>
+        <pubTime>2017-01-09T14:57:55.000Z</pubTime>
+        
+        <tag>概率论</tag>
+         
+         
+           
+             
+              <breadCrumb title="概率论" url="http://www.limoncc.com/categories/%E6%A6%82%E7%8E%87%E8%AE%BA/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.limoncc.com/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/2017-05-04-Mac%E4%B8%8BTensorflow%E7%9A%84%E5%AE%89%E8%A3%85/</loc>
     <lastmod>2018-07-01T03:43:52.848Z</lastmod>
     <data>
@@ -39,9 +59,9 @@
         <title>mac安装tensorflow1.2.0rc2与tensorboard</title>
         <pubTime>2017-05-05T12:36:43.000Z</pubTime>
         
-        <tag>tensorflow</tag>
-         
         <tag>深度学习</tag>
+         
+        <tag>tensorflow</tag>
          
         <tag>神经网络</tag>
          
@@ -92,9 +112,9 @@
         <title>PyTorch安装</title>
         <pubTime>2018-03-07T13:53:57.000Z</pubTime>
         
-        <tag>深度学习</tag>
-         
         <tag>PyTorch</tag>
+         
+        <tag>深度学习</tag>
          
          
            
@@ -136,9 +156,9 @@
         <title>Google机器学习-模型训练与评估</title>
         <pubTime>2018-03-07T12:19:13.000Z</pubTime>
         
-        <tag>tensorflow</tag>
-         
         <tag>深度学习</tag>
+         
+        <tag>tensorflow</tag>
          
          
            
@@ -168,26 +188,6 @@
            
              
               <breadCrumb title="统计学" url="http://www.limoncc.com/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.limoncc.com/%E6%A6%82%E7%8E%87%E8%AE%BA/2017-01-09-%E5%A4%9A%E5%85%83%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83/</loc>
-    <lastmod>2018-02-24T13:54:52.000Z</lastmod>
-    <data>
-        <display>
-        <title>多元高斯分布</title>
-        <pubTime>2017-01-09T14:57:55.000Z</pubTime>
-        
-        <tag>概率论</tag>
-         
-         
-           
-             
-              <breadCrumb title="概率论" url="http://www.limoncc.com/categories/%E6%A6%82%E7%8E%87%E8%AE%BA/"/>
           
         </display>
     </data>
