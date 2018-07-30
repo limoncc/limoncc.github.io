@@ -94,7 +94,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="http://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2018-01-09T14:17:25.000Z">
+<meta property="og:updated_time" content="2018-07-30T07:43:43.025Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="隐马尔可夫模型的维特比算法">
 <meta name="twitter:description" content="维特比算法非常经典，本文通过清晰的数学符号，说明了迭代方程的推导问题，显示了大量细节，使得动态规划显得显然。">
@@ -407,7 +407,7 @@
 <!-- 作者：引线小白
 邮箱：limoncc@icloud.com
 网址：www.limoncc.com  -->
-<font face="Times" new="" roman="" size="3" color="#0066CC">1 $\displaystyle \bm{\delta}_1=\bm{\pi}^\text{T}\bm{A}$<br>2 $\displaystyle \text{ for }\,t=2:T$<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\text{ for }\,i_{t}=1:K \\<br>\quad\begin{array}{|lc}<br>\displaystyle \big[\ln\delta_t[i_t],\omega_{t-1}[i_t]\big]=\max_{i_{t-1}}\ln \bm{\delta}_{t-1}\odot \ln\bm{A}+\bm{I}\ln B_{t}[i_{t},x_t]\big]<br>\end{array}\\<br>\text{ end}\\<br>\end{array}<br>$<br>3 end<br>$\displaystyle [\ln\delta_T,\hat{z}_{T}]=\max_{i_T}\,\ln\bm{\delta}_T$<br>4 $\displaystyle \text{ for }\,t=T:2$<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\hat{z}_{t-1}=\omega_{t}[\hat{z}_{t}]<br>\end{array}<br>$<br>5 end<br>6 $\displaystyle \hat{\bm{z}}$</font>
+<font face="Times" new="" roman="" size="3" color="#0066CC">1$\displaystyle \bm{\delta}_1=\bm{\pi}^\text{T}\bm{A}$<br>2$\displaystyle \text{ for }\,t=2:T$<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\text{ for }\,i_{t}=1:K \\<br>\quad\begin{array}{|lc}<br>\displaystyle \big[\ln\delta_t[i_t],\omega_{t-1}[i_t]\big]=\max_{i_{t-1}}\ln \bm{\delta}_{t-1}\odot \ln\bm{A}+\bm{I}\ln B_{t}[i_{t},x_t]\big]<br>\end{array}\\<br>\text{ end}\\<br>\end{array}<br>$<br>3end<br>$\displaystyle [\ln\delta_T,\hat{z}_{T}]=\max_{i_T}\,\ln\bm{\delta}_T$<br>4$\displaystyle \text{ for }\,t=T:2$<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\hat{z}_{t-1}=\omega_{t}[\hat{z}_{t}]<br>\end{array}<br>$<br>5end<br>6$\displaystyle \hat{\bm{z}}$</font>
 
 <hr>
 <h5 id="四、评述"><a href="#四、评述" class="headerlink" title="四、评述"></a>四、评述</h5><p>1、在切分数据集后，同过充分利用隐马尔可夫模型的条件独立假设，我们得到迭代方程和回溯方程。<br><!-- 作者：引线小白

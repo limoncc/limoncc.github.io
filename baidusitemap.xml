@@ -4,8 +4,32 @@
 
     
   <url>
+    <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2018-01-09-%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B%E7%9A%84%E7%BB%B4%E7%89%B9%E6%AF%94%E7%AE%97%E6%B3%95/</loc>
+    <lastmod>2018-07-30T07:43:43.025Z</lastmod>
+    <data>
+        <display>
+        <title>隐马尔可夫模型的维特比算法</title>
+        <pubTime>2018-01-09T13:37:57.000Z</pubTime>
+        
+        <tag>机器学习</tag>
+         
+        <tag>维特比算法</tag>
+         
+        <tag>隐马尔可夫模型</tag>
+         
+         
+           
+             
+              <breadCrumb title="机器学习" url="http://www.limoncc.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.limoncc.com/%E6%A6%82%E7%8E%87%E8%AE%BA/2017-01-09-%E5%A4%9A%E5%85%83%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83/</loc>
-    <lastmod>2018-07-30T07:32:48.549Z</lastmod>
+    <lastmod>2018-07-30T07:40:07.792Z</lastmod>
     <data>
         <display>
         <title>多元高斯分布</title>
@@ -238,30 +262,6 @@
     </url>
 
     
-    
-  <url>
-    <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2018-01-09-%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B%E7%9A%84%E7%BB%B4%E7%89%B9%E6%AF%94%E7%AE%97%E6%B3%95/</loc>
-    <lastmod>2018-01-09T14:17:25.000Z</lastmod>
-    <data>
-        <display>
-        <title>隐马尔可夫模型的维特比算法</title>
-        <pubTime>2018-01-09T13:37:57.000Z</pubTime>
-        
-        <tag>机器学习</tag>
-         
-        <tag>维特比算法</tag>
-         
-        <tag>隐马尔可夫模型</tag>
-         
-         
-           
-             
-              <breadCrumb title="机器学习" url="http://www.limoncc.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-          
-        </display>
-    </data>
-    </url>
-
     
   <url>
     <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2016-12-27-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%A6%E5%8D%95/</loc>
