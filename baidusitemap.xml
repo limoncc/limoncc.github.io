@@ -4,6 +4,34 @@
 
     
   <url>
+    <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2017-01-08-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B00001/</loc>
+    <lastmod>2018-08-13T12:24:21.710Z</lastmod>
+    <data>
+        <display>
+        <title>机器学习概论</title>
+        <pubTime>2017-01-08T07:34:53.000Z</pubTime>
+        
+        <tag>神经网络</tag>
+         
+        <tag>机器学习</tag>
+         
+        <tag>人工智能</tag>
+         
+        <tag>大数据分析</tag>
+         
+        <tag>大数据</tag>
+         
+         
+           
+             
+              <breadCrumb title="机器学习" url="http://www.limoncc.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.limoncc.com/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90/2016-12-24-%E8%A1%8C%E5%88%97%E5%BC%8F/</loc>
     <lastmod>2018-08-13T12:12:45.175Z</lastmod>
     <data>
@@ -557,34 +585,6 @@
            
              
               <breadCrumb title="工程实践" url="http://www.limoncc.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2017-01-08-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B00001/</loc>
-    <lastmod>2017-05-22T03:38:53.000Z</lastmod>
-    <data>
-        <display>
-        <title>机器学习概论</title>
-        <pubTime>2017-01-08T07:34:53.000Z</pubTime>
-        
-        <tag>神经网络</tag>
-         
-        <tag>机器学习</tag>
-         
-        <tag>人工智能</tag>
-         
-        <tag>大数据分析</tag>
-         
-        <tag>大数据</tag>
-         
-         
-           
-             
-              <breadCrumb title="机器学习" url="http://www.limoncc.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
           
         </display>
     </data>
