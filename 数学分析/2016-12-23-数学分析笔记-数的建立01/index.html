@@ -394,8 +394,8 @@
 <h4 id="一、数的建立"><a href="#一、数的建立" class="headerlink" title="一、数的建立"></a>一、数的建立</h4><h5 id="1、有理数的缝隙"><a href="#1、有理数的缝隙" class="headerlink" title="1、有理数的缝隙"></a>1、有理数的缝隙</h5><p>数的建立是数学分析的基础。实数的最小上界性质是我们开启现代数学的钥匙。</p>
 <p>关于$p=\sqrt{2}$的重要定律：</p>
 <p>构造一个数 $\displaystyle z=\frac{2x+2}{x+2}=x-\frac{x^2-2}{x+2}$</p>
-<p>同时令  $\displaystyle A={a\mid a^2&lt;2,a\in \mathbb{Q}^+}$ </p>
-<p>又有 $\displaystyle B={b\mid b^2&gt;2, b \in \mathbb{Q}^+}$</p>
+<p>同时令  $\displaystyle A=\{a\mid a^2&lt;2,a\in \mathbb{Q}^+\}$ </p>
+<p>又有 $\displaystyle B=\{b\mid b^2&gt;2, b \in \mathbb{Q}^+\}$</p>
 <p>我们有 $\displaystyle z^2-2=\frac{2(x^2-2)}{(p+2)^2}$</p>
 <p>即可证明<br>$\displaystyle A$ 里面没有最大的数<br>$$\begin{align}<br>x \in A,\to z \in A\,, z&gt;x<br>\end{align}$$<br> $\displaystyle B$ 里面没有最小的数<br>$$\begin{align}<br>\,x \in B\to z \in B\,,0&lt;z&lt;x<br>\end{align}$$</p>
 <font face="微软雅黑" size="2" color="red">这说明尽管有理数之间还有有理数，但是有理数系还是有空隙。而实数系填满了这些空隙，这就是实数系能在分析学中能起基础作用的主要原因。</font>
@@ -406,14 +406,14 @@
 <p>$\displaystyle \ell  \mathbb{ABC}$</p>
 <h4 id="二、行列式"><a href="#二、行列式" class="headerlink" title="二、行列式"></a>二、行列式</h4><p>行列式定义： $\displaystyle det: M_n(F) \to \Bbb{R} $</p>
 <p>行列式表达式<br>$$\begin{align}<br>det(A)=\sum _{\sigma \in S_n}sgn(\sigma) \prod _{i=1}^n A_{\sigma(i)i }<br>\end{align}$$</p>
-<p>其中$\sigma$是集合$X={1,2,\,…\,n}$上的置换：$\sigma: X \to X$。$S_n$是置换$\sigma$的集合,易知$S_n$是一个对称群。$\tau(\sigma)$是$\sigma$的逆序数。$\displaystyle sgn(\sigma)=\prod_{1\leqslant i&lt;j\leqslant n}sign\big(\sigma(i)-\sigma(j)\big)=(-1)^{\tau(\sigma)}$是置换的符号函数。于是：</p>
+<p>其中$\sigma$是集合$X=\{1,2,\,…\,n\}$上的置换：$\sigma: X \to X$。$S_n$是置换$\sigma$的集合,易知$S_n$是一个对称群。$\tau(\sigma)$是$\sigma$的逆序数。$\displaystyle sgn(\sigma)=\prod_{1\leqslant i&lt;j\leqslant n}sign\big(\sigma(i)-\sigma(j)\big)=(-1)^{\tau(\sigma)}$是置换的符号函数。于是：</p>
 <p>$$\displaystyle det(A)=\sum _{\sigma \in S_n}\prod_{1\leqslant i&lt;j\leqslant n}sign\big(\sigma(i)-\sigma(j)\big)\prod _{i=1}^n A_{\sigma(i)i }=\sum _{\sigma \in S_n}(-1)^{\tau(\sigma)}\prod _{i=1}^n A_{\sigma(i)i }$$</p>
 <p>简记为：<br>$$det(A)=\sum _{\sigma \in S_n} sgn(\sigma) \prod _{i=1}^n A_{\sigma(i)i }$$</p>
-<h4 id="三、【函数的极限】"><a href="#三、【函数的极限】" class="headerlink" title="三、【函数的极限】"></a>三、【函数的极限】</h4><p>令$X$和$Y$是度量空间，假设$E \subseteq X$、$\bm{f}$将$E$映入$Y$内、且$\bm{p}$是$E$的极限点。如果 $\forall \epsilon\,,\exists \delta&gt;0$，对于 ${\bm{x} \in E\mid 0&lt;d_{X}(\bm{x},\bm{p})&lt;\delta}$中一切点 $\bm{x}$，使得 $\displaystyle d_{Y}(\bm{f}(\bm{x}),\bm{q})&lt;\epsilon,\,\bm{q}\in Y$成立。就说:</p>
+<h4 id="三、【函数的极限】"><a href="#三、【函数的极限】" class="headerlink" title="三、【函数的极限】"></a>三、【函数的极限】</h4><p>令$X$和$Y$是度量空间，假设$E \subseteq X$、$\bm{f}$将$E$映入$Y$内、且$\bm{p}$是$E$的极限点。如果 $\forall \epsilon\,,\exists \delta&gt;0$，对于 $\{\bm{x} \in E\mid 0&lt;d_{X}(\bm{x},\bm{p})&lt;\delta\}$中一切点 $\bm{x}$，使得 $\displaystyle d_{Y}(\bm{f}(\bm{x}),\bm{q})&lt;\epsilon,\,\bm{q}\in Y$成立。就说:</p>
 <p>$$\lim_{\bf{x} \to\bm{p}} \bm{f}(\bm{x})=\bm{q}$$</p>
 <p>卷积<br>$\displaystyle \mathbf{C}=\mathbf{X}*\mathbf{W}$</p>
 <p>$\displaystyle \bm{C}=\bm{X}*\bm{W}$</p>
-<p>分段函数<br>$$\displaystyle f(n)= \left{\begin{matrix} n/2, &amp; \text {if $n$ is even} \\\ 3n+1, &amp; \text{if $n$ is odd} \end{matrix}\right. \\<br>$$</p>
+<p>分段函数<br>$$\displaystyle f(n)= \left\{\begin{matrix} n/2, &amp; \text {if $n$ is even} \\\ 3n+1, &amp; \text{if $n$ is odd} \end{matrix}\right. \\<br>$$</p>
 <p>$\displaystyle \begin{bmatrix} 1 &amp; 2 \\\ 3 &amp; 4  \end{bmatrix}$</p>
 <p>我们可以看到<code> session.run</code>专业我们就可以<code>Variable</code></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line">hello = tf.constant(<span class="string">'Hello, TensorFlow!'</span>)</span><br><span class="line">sess = tf.Session()</span><br><span class="line">print(sess.run(hello).decode(<span class="string">'utf-8'</span>))</span><br></pre></td></tr></table></figure>
