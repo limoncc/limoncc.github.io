@@ -4,6 +4,34 @@
 
     
   <url>
+    <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2017-04-05-%E6%84%9F%E7%9F%A5%E5%99%A8-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A013/</loc>
+    <lastmod>2018-11-17T05:08:28.244Z</lastmod>
+    <data>
+        <display>
+        <title>感知机</title>
+        <pubTime>2017-04-05T14:49:06.000Z</pubTime>
+        
+        <tag>神经网络</tag>
+         
+        <tag>机器学习</tag>
+         
+        <tag>人工智能</tag>
+         
+        <tag>感知机</tag>
+         
+        <tag>人工神经网络</tag>
+         
+         
+           
+             
+              <breadCrumb title="机器学习" url="http://www.limoncc.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2017-01-08-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B00001/</loc>
     <lastmod>2018-08-13T12:31:28.704Z</lastmod>
     <data>
@@ -149,34 +177,6 @@
     </url>
 
     
-    
-  <url>
-    <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2017-04-05-%E6%84%9F%E7%9F%A5%E5%99%A8-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A013/</loc>
-    <lastmod>2018-06-25T15:02:09.831Z</lastmod>
-    <data>
-        <display>
-        <title>感知机</title>
-        <pubTime>2017-04-05T14:49:06.000Z</pubTime>
-        
-        <tag>神经网络</tag>
-         
-        <tag>机器学习</tag>
-         
-        <tag>人工智能</tag>
-         
-        <tag>感知机</tag>
-         
-        <tag>人工神经网络</tag>
-         
-         
-           
-             
-              <breadCrumb title="机器学习" url="http://www.limoncc.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-          
-        </display>
-    </data>
-    </url>
-
     
   <url>
     <loc>http://www.limoncc.com/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/2018-03-07-PyTorch%E5%AE%89%E8%A3%85/</loc>
