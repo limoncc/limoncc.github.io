@@ -3,6 +3,29 @@
 
 
     
+    
+  <url>
+    <loc>http://www.limoncc.com/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/2018-03-07-%E5%AE%89%E8%A3%85MXnet/</loc>
+    <lastmod>2018-11-22T12:49:23.094Z</lastmod>
+    <data>
+        <display>
+        <title>安装MXnet</title>
+        <pubTime>2018-03-07T13:26:10.000Z</pubTime>
+        
+        <tag>深度学习</tag>
+         
+        <tag>MXnet</tag>
+         
+         
+           
+             
+              <breadCrumb title="工程实践" url="http://www.limoncc.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
   <url>
     <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2017-04-05-%E6%84%9F%E7%9F%A5%E5%99%A8-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A013/</loc>
     <lastmod>2018-11-17T05:14:35.830Z</lastmod>
@@ -177,7 +200,6 @@
     </url>
 
     
-    
   <url>
     <loc>http://www.limoncc.com/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/2018-03-07-PyTorch%E5%AE%89%E8%A3%85/</loc>
     <lastmod>2018-03-11T03:40:46.000Z</lastmod>
@@ -189,28 +211,6 @@
         <tag>PyTorch</tag>
          
         <tag>深度学习</tag>
-         
-         
-           
-             
-              <breadCrumb title="工程实践" url="http://www.limoncc.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.limoncc.com/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/2018-03-07-%E5%AE%89%E8%A3%85MXnet/</loc>
-    <lastmod>2018-03-07T13:30:47.000Z</lastmod>
-    <data>
-        <display>
-        <title>安装MXnet</title>
-        <pubTime>2018-03-07T13:26:10.000Z</pubTime>
-        
-        <tag>深度学习</tag>
-         
-        <tag>MXnet</tag>
          
          
            
