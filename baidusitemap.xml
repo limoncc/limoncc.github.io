@@ -3,6 +3,34 @@
 
 
     
+  <url>
+    <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2017-01-08-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B00001/</loc>
+    <lastmod>2019-12-25T15:09:23.509Z</lastmod>
+    <data>
+        <display>
+        <title>机器学习概论</title>
+        <pubTime>2017-01-08T07:34:53.000Z</pubTime>
+        
+        <tag>神经网络</tag>
+         
+        <tag>机器学习</tag>
+         
+        <tag>人工智能</tag>
+         
+        <tag>大数据分析</tag>
+         
+        <tag>大数据</tag>
+         
+         
+           
+             
+              <breadCrumb title="机器学习" url="http://www.limoncc.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
     
   <url>
     <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2017-04-05-%E6%84%9F%E7%9F%A5%E5%99%A8-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A013/</loc>
@@ -21,34 +49,6 @@
         <tag>感知机</tag>
          
         <tag>人工神经网络</tag>
-         
-         
-           
-             
-              <breadCrumb title="机器学习" url="http://www.limoncc.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2017-01-08-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B00001/</loc>
-    <lastmod>2018-08-13T12:31:28.000Z</lastmod>
-    <data>
-        <display>
-        <title>机器学习概论</title>
-        <pubTime>2017-01-08T07:34:53.000Z</pubTime>
-        
-        <tag>神经网络</tag>
-         
-        <tag>机器学习</tag>
-         
-        <tag>人工智能</tag>
-         
-        <tag>大数据分析</tag>
-         
-        <tag>大数据</tag>
          
          
            
@@ -162,9 +162,9 @@
         <title>mac安装tensorflow1.2.0rc2与tensorboard</title>
         <pubTime>2017-05-05T12:36:43.000Z</pubTime>
         
-        <tag>深度学习</tag>
-         
         <tag>tensorflow</tag>
+         
+        <tag>深度学习</tag>
          
         <tag>神经网络</tag>
          
@@ -186,9 +186,9 @@
         <title>Google机器学习-模型训练与评估</title>
         <pubTime>2018-03-07T12:19:13.000Z</pubTime>
         
-        <tag>深度学习</tag>
-         
         <tag>tensorflow</tag>
+         
+        <tag>深度学习</tag>
          
          
            
