@@ -11,13 +11,13 @@
         <title>机器学习概论</title>
         <pubTime>2017-01-08T07:34:53.000Z</pubTime>
         
-        <tag>神经网络</tag>
-         
         <tag>机器学习</tag>
          
         <tag>人工智能</tag>
          
         <tag>大数据分析</tag>
+         
+        <tag>神经网络</tag>
          
         <tag>大数据</tag>
          
@@ -40,11 +40,11 @@
         <title>感知机</title>
         <pubTime>2017-04-05T14:49:06.000Z</pubTime>
         
-        <tag>神经网络</tag>
-         
         <tag>机器学习</tag>
          
         <tag>人工智能</tag>
+         
+        <tag>神经网络</tag>
          
         <tag>感知机</tag>
          
@@ -120,58 +120,6 @@
            
              
               <breadCrumb title="概率论" url="http://www.limoncc.com/categories/%E6%A6%82%E7%8E%87%E8%AE%BA/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.limoncc.com/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/2017-05-04-Mac%E4%B8%8BTensorflow%E7%9A%84%E5%AE%89%E8%A3%85/</loc>
-    <lastmod>2018-07-01T03:43:52.000Z</lastmod>
-    <data>
-        <display>
-        <title>Mac下Tensorflow的安装</title>
-        <pubTime>2017-05-04T09:09:47.000Z</pubTime>
-        
-        <tag>深度学习</tag>
-         
-        <tag>工程问题</tag>
-         
-        <tag>机器学习</tag>
-         
-        <tag>人工智能</tag>
-         
-        <tag>大数据</tag>
-         
-         
-           
-             
-              <breadCrumb title="工程实践" url="http://www.limoncc.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.limoncc.com/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/2017-05-05-mac%E5%AE%89%E8%A3%85tensorflow1-2-0rc2%E4%B8%8Etensorboard/</loc>
-    <lastmod>2018-07-01T03:43:37.000Z</lastmod>
-    <data>
-        <display>
-        <title>mac安装tensorflow1.2.0rc2与tensorboard</title>
-        <pubTime>2017-05-05T12:36:43.000Z</pubTime>
-        
-        <tag>tensorflow</tag>
-         
-        <tag>深度学习</tag>
-         
-        <tag>神经网络</tag>
-         
-         
-           
-             
-              <breadCrumb title="工程实践" url="http://www.limoncc.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
           
         </display>
     </data>
@@ -255,13 +203,13 @@
         <title>机器学习书单</title>
         <pubTime>2016-12-27T02:09:41.000Z</pubTime>
         
-        <tag>神经网络</tag>
-         
         <tag>机器学习</tag>
          
         <tag>人工智能</tag>
          
         <tag>大数据分析</tag>
+         
+        <tag>神经网络</tag>
          
          
            
@@ -281,9 +229,9 @@
         <title>分类分布大意</title>
         <pubTime>2017-05-06T02:22:47.000Z</pubTime>
         
-        <tag>神经网络</tag>
-         
         <tag>机器学习</tag>
+         
+        <tag>神经网络</tag>
          
         <tag>分类分布</tag>
          
@@ -555,13 +503,13 @@
         <title>贝塔-伯努利模型(Beta-Binomial Model)</title>
         <pubTime>2017-03-07T13:54:02.000Z</pubTime>
         
-        <tag>神经网络</tag>
-         
         <tag>机器学习</tag>
          
         <tag>人工智能</tag>
          
         <tag>大数据分析</tag>
+         
+        <tag>神经网络</tag>
          
         <tag>大数据</tag>
          
@@ -585,13 +533,13 @@
         <title>贝叶斯统计学概论</title>
         <pubTime>2017-03-06T03:16:01.000Z</pubTime>
         
-        <tag>神经网络</tag>
-         
         <tag>机器学习</tag>
          
         <tag>人工智能</tag>
          
         <tag>大数据分析</tag>
+         
+        <tag>神经网络</tag>
          
         <tag>大数据</tag>
          
