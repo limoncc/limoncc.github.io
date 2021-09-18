@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="引线小白, limoncc, 柠檬CC, 设计, 数据分析, 数据挖掘, 大数据, 数学, 机器学习" />
+  <meta name="keywords" content="Tensorflow,安装,mac,SSE4.1指令集,人工智能,深度学习" />
 
 
 
@@ -84,16 +84,21 @@
 
 
 
-<meta name="description" content="小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="柠檬CC">
-<meta property="og:url" content="http://www.limoncc.com/tags/日日炎炎/index.html">
+<meta name="description" content="本文主要总结在mac下安装Tensorflow的各种问题，pip安装会有SSE指令集警告提示，不能调用并行计算指令，于是我们使用源码安装，但是源码安装的坑不少，特此写成文章。">
+<meta name="keywords" content="Tensorflow,安装,mac,SSE4.1指令集,人工智能,深度学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="macOS_mojave_10.14.6下Tensorflow2.6的安装">
+<meta property="og:url" content="http://www.limoncc.com/工程实践/2021-09-18-mac安装tensorflow2.6/index.html">
 <meta property="og:site_name" content="柠檬CC">
-<meta property="og:description" content="小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。">
+<meta property="og:description" content="本文主要总结在mac下安装Tensorflow的各种问题，pip安装会有SSE指令集警告提示，不能调用并行计算指令，于是我们使用源码安装，但是源码安装的坑不少，特此写成文章。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.limoncc.com/images/cc.png">
+<meta property="og:image" content="http://www.limoncc.com/images/avatar.png">
+<meta property="og:updated_time" content="2021-09-18T13:29:39.206Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="柠檬CC">
-<meta name="twitter:description" content="小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。">
+<meta name="twitter:title" content="macOS_mojave_10.14.6下Tensorflow2.6的安装">
+<meta name="twitter:description" content="本文主要总结在mac下安装Tensorflow的各种问题，pip安装会有SSE指令集警告提示，不能调用并行计算指令，于是我们使用源码安装，但是源码安装的坑不少，特此写成文章。">
+<meta name="twitter:image" content="http://www.limoncc.com/images/cc.png">
 
 
 
@@ -112,7 +117,7 @@
 </script>
 
   <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
-  <title> 标签: 日日炎炎 | 柠檬CC </title>
+  <title> macOS_mojave_10.14.6下Tensorflow2.6的安装 | 柠檬CC </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -161,7 +166,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -292,46 +297,176 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        日日炎炎
-        <small>标签</small>
-      </h2>
-    </div>
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                macOS_mojave_10.14.6下Tensorflow2.6的安装
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2021-09-18T17:09:47+08:00" content="2021-09-18">
+              2021-09-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/工程实践/" itemprop="url" rel="index">
+                    <span itemprop="name">工程实践</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/工程实践/2021-09-18-mac安装tensorflow2.6/" class="leancloud_visitors" data-flag-title="macOS_mojave_10.14.6下Tensorflow2.6的安装">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
       
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+      
+        <p>作者: <a href="http://www.limoncc.com">引线小白</a>-本文永久链接：<a href="http://www.limoncc.com/工程实践/2021-09-18-mac安装tensorflow2.6/">http://www.limoncc.com/工程实践/2021-09-18-mac安装tensorflow2.6/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+<h4 id="一、下载源码"><a href="#一、下载源码" class="headerlink" title="一、下载源码"></a>一、下载源码</h4><p>本人电脑macOS mojave 10.14.6</p>
+<p>先下载，进入目录定位到v2.6.0<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/tensorflow/tensorflow.git</span><br><span class="line">cd tensorflow</span><br><span class="line">git checkout v2.6.0</span><br></pre></td></tr></table></figure></p>
+<h4 id="二、准备必要环境"><a href="#二、准备必要环境" class="headerlink" title="二、准备必要环境"></a>二、准备必要环境</h4><p>准备必要环境，请安装好java,和minconda</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">brew install bazelisk </span><br><span class="line">conda create -n pencil python=3.8</span><br><span class="line">conda activate pencil</span><br><span class="line">pip install  -U pip </span><br><span class="line">pip install -U six</span><br><span class="line">pip install numpy=1.19.5</span><br><span class="line">pip install -U wheel</span><br><span class="line">pip install -U keras_preprocessing --no-deps</span><br></pre></td></tr></table></figure>
+<h4 id="三、开始编译"><a href="#三、开始编译" class="headerlink" title="三、开始编译"></a>三、开始编译</h4><p>关键语句，-march=native会做cpu指令集优化</p>
+<p>bazelisk build -c opt –copt=-march=native //tensorflow/tools/pip_package:build_pip_package</p>
+<p><code>`</code>shell<br>./configure<br>You have bazel 3.7.2 installed.<br>Please specify the location of python. [Default is /Users/xiaobai/miniconda/envs/dawn/bin/python3]:</p>
+<p>Found possible Python library paths:<br>  /Users/xiaobai/miniconda/envs/dawn/lib/python3.8/site-packages<br>Please input the desired Python library path to use.  Default is [/Users/xiaobai/miniconda/envs/dawn/lib/python3.8/site-packages]</p>
+<p>Do you wish to build TensorFlow with ROCm support? [y/N]: n<br>No ROCm support will be enabled for TensorFlow.</p>
+<p>Do you wish to build TensorFlow with CUDA support? [y/N]: n<br>No CUDA support will be enabled for TensorFlow.</p>
+<p>Do you wish to download a fresh release of clang? (Experimental) [y/N]: n<br>Clang will not be downloaded.</p>
+<p>Please specify optimization flags to use during compilation when bazel option “–config=opt” is specified [Default is -Wno-sign-compare]:</p>
+<p>Would you like to interactively configure ./WORKSPACE for Android builds? [y/N]: n<br>Not configuring the WORKSPACE for Android builds.</p>
+<p>Do you wish to build TensorFlow with iOS support? [y/N]: n<br>No iOS support will be enabled for TensorFlow.</p>
+<p>Preconfigured Bazel build configs. You can use any of the below by adding “–config=&lt;&gt;” to your build command. See .bazelrc for more details.<br>    –config=mkl            # Build with MKL support.<br>    –config=mkl_aarch64    # Build with oneDNN and Compute Library for the Arm Architecture (ACL).<br>    –config=monolithic     # Config for mostly static monolithic build.<br>    –config=numa           # Build with NUMA support.<br>    –config=dynamic_kernels    # (Experimental) Build kernels into separate shared objects.<br>    –config=v1             # Build with TensorFlow 1 API instead of TF 2 API.<br>Preconfigured Bazel build configs to DISABLE default on features:<br>    –config=nogcp          # Disable GCP support.<br>    –config=nonccl         # Disable NVIDIA NCCL support.<br>Configuration finished<br>bazelisk build -c opt –copt=-march=native //tensorflow/tools/pip_package:build_pip_package<br>./bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg<br><code>`</code>shell</p>
+<p>在/tmp/tensorflow_pkg找到wheel文件，pip安装即可。</p>
+<p><hr></p>
+<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="http://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="http://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="http://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="http://www.limoncc.com">[ http://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%"><a href="http://www.limoncc.com/工程实践/2021-09-18-mac安装tensorflow2.6/">http://www.limoncc.com/工程实践/2021-09-18-mac安装tensorflow2.6/</a></td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 
-      <h1 class="post-title">
+      
+    </div>
+
+    <div>
+      
         
-            <a class="post-title-link" href="/诗集/2010-08-04-烈日炎炎/" itemprop="url">
-              
-                <span itemprop="name">烈日炎炎</span>
-              
-            </a>
+      
+    </div>
+
+    <div>
+      
         
-      </h1>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2010-08-04T16:31:28+08:00"
-              content="2010-08-04" >
-          08-04
-        </time>
-      </div>
+      
+    </div>
 
-    </header>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/工程问题/" rel="tag">#工程问题</a>
+          
+            <a href="/tags/机器学习/" rel="tag">#机器学习</a>
+          
+            <a href="/tags/人工智能/" rel="tag">#人工智能</a>
+          
+            <a href="/tags/大数据/" rel="tag">#大数据</a>
+          
+            <a href="/tags/深度学习/" rel="tag">#深度学习</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/科普/2019-01-01-测度论与革命一/" rel="next" title="测度论与革命一">
+                <i class="fa fa-chevron-left"></i> 测度论与革命一
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
-    
-  </div>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
 <!--           </div>
@@ -339,6 +474,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div> -->
         <div id="vcomments"></div>
@@ -364,8 +503,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -486,6 +634,17 @@
       </section>
 
       
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、下载源码"><span class="nav-number">1.</span> <span class="nav-text">一、下载源码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、准备必要环境"><span class="nav-number">2.</span> <span class="nav-text">二、准备必要环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、开始编译"><span class="nav-number">3.</span> <span class="nav-text">三、开始编译</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
 
     </div>
   </aside>
@@ -581,6 +740,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
