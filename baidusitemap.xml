@@ -5,10 +5,10 @@
     
   <url>
     <loc>http://www.limoncc.com/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/2021-09-18-mac%E5%AE%89%E8%A3%85tensorflow2.6/</loc>
-    <lastmod>2021-09-21T12:19:53.730Z</lastmod>
+    <lastmod>2021-09-27T06:06:23.883Z</lastmod>
     <data>
         <display>
-        <title>macOS_mojave_10.14.6下Tensorflow2.6的安装</title>
+        <title>macOS_mojave_10.14.6下Tensorflow2.6的安装与SSE, AVX, FMA</title>
         <pubTime>2021-09-18T09:09:47.000Z</pubTime>
         
         <tag>工程问题</tag>
