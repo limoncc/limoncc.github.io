@@ -92,14 +92,14 @@
 <meta property="og:site_name" content="柠檬CC">
 <meta property="og:description" content="本文意在理清广义线性模型的问题。若有错误，请大家指正。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="file:///Users/xiaobai/Documents/小白笔记/Markdown笔记/05-机器学习笔记/07-广义线性模型/广义线性模型.png">
+<meta property="og:image" content="http://www.limoncc.com/图片/广义线性模型.png">
 <meta property="og:image" content="http://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="http://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2021-09-29T07:34:47.933Z">
+<meta property="og:updated_time" content="2021-09-29T07:41:11.294Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="广义线性模型">
 <meta name="twitter:description" content="本文意在理清广义线性模型的问题。若有错误，请大家指正。">
-<meta name="twitter:image" content="file:///Users/xiaobai/Documents/小白笔记/Markdown笔记/05-机器学习笔记/07-广义线性模型/广义线性模型.png">
+<meta name="twitter:image" content="http://www.limoncc.com/图片/广义线性模型.png">
 
 
 
@@ -395,10 +395,10 @@
 <p>我们将会看到，如何方便地将指数家族中的任何成员作为一个类条件密度，以便做一个生成分类器。此外，我们还将讨论如何建立判别模型，其中的响应变量有指数族分布，其均值是输入的线性函数；这被称为广义线性模型，并将 $\displaystyle \textit{logistic } $回归中的概念推广到其他类型的响应变量中。</p>
 <h4 id="二、-指数族"><a href="#二、-指数族" class="headerlink" title="二、 指数族"></a>二、 指数族</h4><p>在定义指数族之前，我们先提几个重要原因:</p>
 <p>•可以证明，在一定的规律性条件下，指数族是唯一具有有限大小统计量的分布族，这意味着我们可以将数据压缩成一个固定大小的摘要，而不会丢失信息。这对于在线学习特别有用，我们稍后会看到。</p>
-<p>•指数族是有共轭先验分布存在的唯一分布族，这简化了后验计算(见第9.2.5节)。</p>
-<p>•在满足一些约束的假设下，指数族是熵最大的一个分布家族(参见第9.2.6节)。</p>
-<p>•指数族是广义线性模型的核心，如第9.3节所述。</p>
-<p>•指数族是变分推断的核心，如第21.2节所述。</p>
+<p>•指数族是有共轭先验分布存在的唯一分布族，这简化了后验计算。</p>
+<p>•在满足一些约束的假设下，指数族是熵最大的一个分布家族。</p>
+<p>•指数族是广义线性模型的核心。</p>
+<p>•指数族是变分推断的核心。</p>
 <h5 id="2-1、定义"><a href="#2-1、定义" class="headerlink" title="2.1、定义"></a>2.1、定义</h5><p>参数为 $\displaystyle \bm{w} $，变量为 $\displaystyle \bm{x} $ 的指数分布族定义为下面形式的概率分布集合：<br>$$<br>\begin{align}<br>p(\bm{x}\mid \bm{w})<br>&amp;=\frac{1}{Z(\bm{w})}h(\bm{x})\exp\left[\bm{w}^\text{T}\bm{T}(\bm{x})\right]<br>=h(\bm{x})\exp\big[\bm{w}^\text{T}\bm{T}(\bm{x})-A(\bm{w})\big]\<br>\end{align}<br>$$<br>特别的为了适合上述形式，参数通常是需要变形 $\displaystyle \bm{\eta}=\bm{\eta}(\bm{w})$，于是有：<br>$$\begin{align}<br>p(\bm{x}\mid \bm{w})<br>&amp;=\frac{1}{Z(\bm{w})}h(\bm{x})\exp\left[\bm{\eta}(\bm{w})^\text{T}\bm{T}(\bm{x})\right]\\\\<br>&amp;=h(\bm{x})\exp\left[\bm{\eta}(\bm{w})^\text{T}\bm{T}(\bm{x})-A(\bm{\eta}(\bm{w}))\right]\\\\<br>&amp;=\exp\left[\bm{\eta}(\bm{w})^\text{T}\bm{T}(\bm{x})-A\left(\bm{\eta}(\bm{w})\right)+B(\bm{x})\right]\\\\<br>&amp;=h(\bm{x})g(\bm{\eta})\exp\left[\bm{\eta}(\bm{w})\cdot\bm{T}(\bm{x})\right]<br>\end{align}$$其中：<br>$\displaystyle Z(\bm{w})=\int_{\mathcal{X}^n}h(\bm{x})\exp\left[\bm{\eta^\text{T}(\bm{w})}\bm{T}(\bm{x})\right]\mathrm{d}\bm{x}$</p>
 <p>$\displaystyle A(\bm{w})=\ln Z(\bm{w}) $<br>1、$\displaystyle \bm{w} $叫做自然参数 $\displaystyle \textit{(natural parameters)} $、$\displaystyle \bm{\eta(\bm{w})} $叫做规范参数 $\displaystyle \textit{(canonical parameters)} $ 。如果 $\displaystyle \dim(\bm{w})&lt;\dim(\bm{\eta}) $，称分布为曲线指数族 $\displaystyle \textit{(curved exponential family)} $。这意味比参数更多的充分统计量。</p>
 <p>2、 $\displaystyle \bm{T}(\bm{x})\in\mathbb{R}^k $叫做充分统计向量 $\displaystyle \textit{(vector of sufficient statistics)} $。</p>
@@ -418,7 +418,7 @@
 <h6 id="2-3-3、单变量高斯"><a href="#2-3-3、单变量高斯" class="headerlink" title="2.3.3、单变量高斯"></a>2.3.3、单变量高斯</h6><p>单变量高斯可以写成指数族形式，如下:</p>
 <p>$$\begin{align}<br>\mathcal{N}\big(x\mid \mu,\sigma^2\big)<br>&amp;=\big(2\pi\sigma^2\big)^{-1/2}\exp \big[\frac{1}{2\sigma^2}\big(x-\mu\big)^2\big]\\\\<br>&amp;=\big(2\pi\sigma^2\big)^{-1/2}\exp \big[\frac{\mu^2}{2\sigma^2}\big]\exp \big[-\frac{1}{2\sigma^2}x^2+\frac{\mu}{\sigma^2}x\big]\\\\<br>&amp;=\frac{1}{Z \big(\bm{\eta}\big)}\exp \big[\bm{\eta}^\text{T}\bm{T}(x)\big]<br>\end{align}$$</p>
 <p>其中:<br>$\displaystyle \bm{\eta}=\big[\frac{\mu}{\sigma^2},-\frac{1}{2\sigma^2}\big]^\text{T}$<br>$\displaystyle \bm{T}(x)=\big[x,x^2\big]^\text{T}$<br>$\displaystyle  Z \big(\bm{\eta}\big)=\big(2\pi\sigma^2\big)^{-1/2}\exp \big[\frac{\mu^2}{2\sigma^2}\big] $<br>$\displaystyle A \big(\bm{\eta}\big)=\ln Z \big(\bm{\eta}\big)=-\frac{\eta_1^2}{4\eta_2}-\frac{1}{2}\ln \big(-2\eta_2\big)-\frac{1}{2}\ln 2\pi$</p>
-<h6 id="2-2-4、非例子"><a href="#2-2-4、非例子" class="headerlink" title="2.2.4、非例子"></a>2.2.4、非例子</h6><p>并非所有的分布都属于指数族。例如均匀分布 $\displaystyle x\sim \mathrm{U}[a,b]$ 就不是，因为分布支撑集 $\displaystyle \mathcal{X}$取决于参数。此外(第11.4.5节)的学生 $\displaystyle T$分布也不属于，因为它没有必要的形式。$\displaystyle \textit{Pitman - Koopman - Darmois} $定理指出，在一定规范条件下，指数家族是唯一具有有限统计量的分布族。(在这里，大小有限与数据集的大小无关。)这个定理要求的条件之一是，分布支撑集 $\displaystyle \mathcal{X}$不依赖于参数。对于这样分布的简单示例：均匀分布<br>$$\begin{align}<br>p(x\mid w)=\mathrm{U}(x\mid w)=\frac{\mathbb{I}\big(0\leqslant x\leqslant w\big)}{w}<br>\end{align}$$<br>似然函数是：<br>$$\begin{align}<br>p \big(\mathcal{D}\big)=w^{-n}\mathbb{I}\big(0\leqslant\max\{x_i\}\leqslant w\big)<br>\end{align}$$</p>
+<h6 id="2-2-4、非例子"><a href="#2-2-4、非例子" class="headerlink" title="2.2.4、非例子"></a>2.2.4、非例子</h6><p>并非所有的分布都属于指数族。例如均匀分布 $\displaystyle x\sim \mathrm{U}[a,b]$ 就不是，因为分布支撑集 $\displaystyle \mathcal{X}$取决于参数。此外学生 $\displaystyle T$分布也不属于，因为它没有必要的形式。$\displaystyle \textit{Pitman - Koopman - Darmois} $定理指出，在一定规范条件下，指数家族是唯一具有有限统计量的分布族。(在这里，大小有限与数据集的大小无关。)这个定理要求的条件之一是，分布支撑集 $\displaystyle \mathcal{X}$不依赖于参数。对于这样分布的简单示例：均匀分布<br>$$\begin{align}<br>p(x\mid w)=\mathrm{U}(x\mid w)=\frac{\mathbb{I}\big(0\leqslant x\leqslant w\big)}{w}<br>\end{align}$$<br>似然函数是：<br>$$\begin{align}<br>p \big(\mathcal{D}\big)=w^{-n}\mathbb{I}\big(0\leqslant\max\{x_i\}\leqslant w\big)<br>\end{align}$$</p>
 <p>因此充分统计量是 $\displaystyle n$和 $\displaystyle T=\max_{i}x_i$。它是有限的，但均匀分布并不在指数家族中。因为它的支撑集 $\displaystyle \mathcal{X}=[0,w]$ 依赖于参数 $\displaystyle w$。</p>
 <h5 id="2-4、指数族的-displaystyle-textit-MLE"><a href="#2-4、指数族的-displaystyle-textit-MLE" class="headerlink" title="2.4、指数族的 $\displaystyle  \textit{MLE}$"></a>2.4、指数族的 $\displaystyle  \textit{MLE}$</h5><p>指数家族模型似然函数：<br>$$\begin{align}<br>p \big(\mathcal{D}\mid \bm{w}\big)<br>&amp;=\frac{1}{Z^n(\bm{w})}\bigg[\prod_{i=1}^n h(\bm{x}_i)\bigg]\exp \bigg[\bm{\eta}^\text{T}(\bm{w})\sum_{i=1}^n \bm{T}(\bm{x}_i)\bigg]\\\\<br>&amp;=\bigg[\prod_{i=1}^n h(\bm{x}_i)\bigg]\exp \bigg[\bm{\eta}^\text{T}(\bm{w})\bm{T}(\mathcal{D})-nA \big(\bm{\eta}\big)\bigg]<br>\end{align}$$</p>
 <p>易见似然函数也是指数族，它的充分统计量是 $\displaystyle n$和<br>$$\begin{align}<br>\bm{T}\big(\mathcal{D}\big)=\bigg[\sum_{i=1}^n T_1(\bm{x}_i),\cdots,\sum_{i=1}^nT_k(\bm{x}_i)\bigg]^\text{T}<br>\end{align}$$</p>
@@ -446,7 +446,7 @@
 <p>$\displaystyle \bm{\zeta}\in \mathbb{R}^k$是已知常数向量， $\displaystyle \bm{\phi}(\bm{x})$是一个任意向量函数，即要求满足于分布时刻与指定函数经验时刻相匹配的约束条件，那么最大熵原理 $\displaystyle \textit{maxent} $告诉我们应该选择最大熵分布(最接近于均匀分布的那个)。有约束条件的熵最大化<br>$$\begin{align}<br>J(p)=&amp; \mathrm{H}[p]=-\int p (\bm{x})\ln p(\bm{x}) d \bm{x}\\\\<br>&amp;\mathrm{s.t.}<br>\begin{cases}<br>\displaystyle p(\bm{x})\geqslant 0\\\\<br>\displaystyle \int p(\bm{x})d \bm{x}= 1\\\\<br>\displaystyle \int \bm{\phi}(\bm{x})p(\bm{x})d \bm{x}=\bm{\zeta}<br>\end{cases}<br>\end{align}$$<br>我们需要使用拉格朗日乘数法，那么拉格朗日算符更新为：<br>$$\begin{align}<br>F(p)=-p (\bm{x})\ln p(\bm{x})+\lambda p(\bm{x})+\bm{\eta}^\text{T}\big[\bm{\phi}(\bm{x})p(\bm{x})\big]\\\\<br>\end{align}$$</p>
 <p>我们可以用变分法计算函数 $\displaystyle p$，欧拉-拉格朗日方程是：<br>$$\begin{align}<br>-1-\ln p(\bm{x})+\lambda+\bm{\eta}^\text{T}\bm{\phi}(\bm{x})=0\iff p(\bm{x})=\exp[\lambda-1]\exp \big[\bm{\eta}^\text{T}\bm{\phi}(\bm{x})\big]<br>\end{align}$$<br>亦有 $\displaystyle p(\bm{x})\propto\exp \big[\bm{\eta}^\text{T}\bm{\phi}(\bm{x})\big]$、给出了归一化常数 $\displaystyle Z=\int \exp \big[\bm{\eta}^\text{T}\bm{\phi}(\bm{x})\big]d \bm{x}$ 有：<br>$$\begin{align}<br>p(\bm{x})=\frac{1}{Z}\exp \big[\bm{\eta}^\text{T}\bm{\phi}(\bm{x})\big]<br>\end{align}$$<br>因此，最大熵分布 $\displaystyle p(x)$具有指数族的形式，也称为吉布斯分布 $\displaystyle \textit{(Gibbs Distribution)} $。当然我们也可以写成离散形式，这是很容易的，略。</p>
 <h4 id="三、广义线性模型-displaystyle-textit-GLMs"><a href="#三、广义线性模型-displaystyle-textit-GLMs" class="headerlink" title="三、广义线性模型$\displaystyle  \textit{(GLMs)} $"></a>三、广义线性模型$\displaystyle  \textit{(GLMs)} $</h4><h5 id="3-1、概要"><a href="#3-1、概要" class="headerlink" title="3.1、概要"></a>3.1、概要</h5><p>我们熟悉了一下指数族，建立广义模型的初衷是要解决，经典线性模型<br>$$\begin{align}<br>y=\bm{w}^\text{T}\bm{x}+e\sim\mathcal{N}(\mu,\sigma^2)<br>\end{align}$$的缺点：<br> 1、因变量 $\displaystyle y$是连续的且服从高斯分布。<br> 2、方差是固定的。</p>
-<div align="center"><img src="file:///Users/xiaobai/Documents/小白笔记/Markdown笔记/05-机器学习笔记/07-广义线性模型/广义线性模型.png" width="550"><br>广义线性模型</div>
+<div align="center"><img src="/图片/广义线性模型.png" width="550"><br>广义线性模型</div>
 
 <p>于是内尔得和韦德伯恩（Nelder &amp; Wedderburn，1972）提出了广义线性模型。我们对指数族的形式稍加修改。<br>$$\begin{align}<br>p\left(y\mid\eta,\delta\right)=\exp\left[\frac{y \cdot\eta-A(\eta)}{\delta}+c\left(y,\delta\right)\right]<br>\end{align}$$<br>其中 $\displaystyle \delta$是散度参数，通常是1、 $\displaystyle c\left(y,\delta\right)$是归一化参数、 $\displaystyle  A(\eta) $ 是分配函数、 $\displaystyle \eta$是连接函数，所谓规范连接函数可以查阅维基百科。同时我们令连接函数：<br>$\displaystyle g(\mu)=\eta=\bm{w}^\text{T}\bm{x}$</p>
 <p>$\displaystyle \mu=\mathrm{E}\left[y\mid \bm{x}\right]=\dot{A}\left(\eta\right)=g^{-1}(\eta)$</p>
@@ -465,13 +465,14 @@
 <p>于是我们有梯度的泰勒展开：<br>$$\begin{align}<br>\nabla\left(\bm{x}_t\right)=\nabla\left(\bm{x}_t\right)+\bm{H}\left(\bm{x}_t\right)\left[\bm{x}_{t+1}-\bm{x}_t\right]+\bm{r}\left(\bm{x}_t\right)=0<br>\end{align}$$</p>
 <p>忽略余项，可以求得： $\displaystyle \bm{x}_{t+1}=\bm{x}_{t}-\bm{H}^{-1}\left(\bm{x}_t\right)\nabla \left(\bm{x}_t\right)$简写为：<br>$$\begin{align}<br>\bm{x}:=\bm{x}-\bm{H}^{-1}\nabla<br>\end{align}$$</p>
 <p>$\displaystyle \\\\$</p>
-<h5 id="3-4、极大似然分析"><a href="#3-4、极大似然分析" class="headerlink" title="3.4、极大似然分析"></a>3.4、极大似然分析</h5><p>$$\begin{align}<br>\bm{w}_{t+1}<br>&amp;=\bm{w}_t -\left[\bm{X}^\text{T}\bm{S}_t\bm{X}\right]^{-1}\bm{X}^\text{T}\left[\bm{y}-\bm{\mu}_t\right]\\\\<br>&amp;=\left[\bm{X}^\text{T}\bm{S}_t\bm{X}\right]^{-1}\left[\bm{X}^\text{T}\bm{S}_t\bm{X}\bm{w}_t-\bm{X}^\text{T}\left[\bm{y}-\bm{\mu}_t\right]\right]\\\\<br>&amp;=\left[\bm{X}^\text{T}\bm{S}_t\bm{X}\right]^{-1}\bm{X}^\text{T}\bm{S}_t\left[\bm{\eta}_t-\bm{S}_t^{-1}\left[\bm{y}-\bm{\mu}_t\right]\right]\\\\<br>&amp;=\left[\bm{X}^\text{T}\bm{S}_t\bm{X}\right]^{-1}\bm{X}^\text{T}\bm{S}_t\bm{\zeta}_t<br>\end{align}$$</p>
-<p>其中：<br>$\displaystyle \bm{\eta}_t=\bm{X}\bm{w}_t$<br>$\displaystyle \bm{\mu}_t=g^{-1}\left(\bm{\eta}_t\right)$<br>$\displaystyle \bm{S}_t<br>=\frac{\partial\bm{\mu}_t}{\partial\bm{\eta}_t^\text{T}}<br>=\mathrm{diag}\left[\frac{\partial g^{-1}(\eta_i^t)}{\partial\eta_i^t}\right]$<br>$\displaystyle \bm{\zeta}_t=\bm{\eta}_t-\bm{S}_t^{-1}\left[\bm{y}-\bm{\mu}_t\right]$</p>
+<h5 id="3-4、极大似然分析"><a href="#3-4、极大似然分析" class="headerlink" title="3.4、极大似然分析"></a>3.4、极大似然分析</h5><p>$$\begin{align}<br>\bm{w}_{t+1}<br>&amp;=\bm{w}_t -\left[\bm{X}^\text{T}\bm{S}_t\bm{X}\right]^{-1}\bm{X}^\text{T}\left[\bm{y}-\bm{\mu}_t\right]\\\\<br>&amp;=\left[\bm{X}^\text{T}\bm{S}_t\bm{X}\right]^{-1}\left[\bm{X}^\text{T}\bm{S}_t\bm{X}\bm{w}_t-\bm{X}^\text{T}\left[\bm{y}-\bm{\mu}_t\right]\right]\\\\<br>&amp;=\left[\bm{X}^\text{T}\bm{S}_t\bm{X}\right]^{-1}\bm{X}^\text{T}\bm{S}_t\left[\bm{\eta}_t-\bm{S}_t^{-1}\left[\bm{y}-\bm{\mu}_t\right]\right]\\\\<br>&amp;=\left[\bm{X}^\text{T}\bm{S}_t\bm{X}\right]^{-1}\bm{X}^\text{T}\bm{S}_t\bm{\zeta}_t<br>\end{align}$$<br><!-- 作者：引线小白
+邮箱：limoncc@icloud.com
+网址：www.limoncc.com  --><br>其中：<br>$\displaystyle \bm{\eta}_t=\bm{X}\bm{w}_t$<br>$\displaystyle \bm{\mu}_t=g^{-1}\left(\bm{\eta}_t\right)$<br>$\displaystyle \bm{S}_t<br>=\frac{\partial\bm{\mu}_t}{\partial\bm{\eta}_t^\text{T}}<br>=\mathrm{diag}\left[\frac{\partial g^{-1}(\eta_i^t)}{\partial\eta_i^t}\right]$<br>$\displaystyle \bm{\zeta}_t=\bm{\eta}_t-\bm{S}_t^{-1}\left[\bm{y}-\bm{\mu}_t\right]$</p>
 <p>现在我们加以总结，历史上我们称这种算法为：迭代加权最小二乘法（IRLS）</p>
-<p><div style="color:#2e8ccf;background-color:#f2f2f2"></div></p>
-<p><hr style="height:1px;border:none;border-top:1px dashed #0066CC;"></p>
-<p></p><p>算法：迭代加权最小二乘法（Iteratively reweighted least squares）</p><p></p>
-<p><hr style="height:1px;border:none;border-top:1px dashed #0066CC;"><br></p>
+<hr>
+<p>算法：迭代加权最小二乘法（Iteratively reweighted least squares）</p>
+
+<hr>
 <p><font face="Times" new="" roman="" size="3" color="#0066CC">1 $\displaystyle \bm{w}_0=g(\bar{y})$<br>2 $\displaystyle \text{while }\bm{w}=\text{converged}$ :<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\bm{\eta}_t=\bm{X}\bm{w}_t\\\\\displaystyle<br>\bm{\mu}_t=g^{-1}\left(\bm{\eta}_t\right)\\\\\displaystyle<br>\bm{S}_t=\frac{\partial\bm{\mu}_t}{\partial\bm{\eta}_t^\text{T}}\\\\\displaystyle<br>\bm{\zeta}_t=\bm{\eta}_t-\bm{S}_t^{-1}\left[\bm{y}-\bm{\mu}_t\right]\\\\\displaystyle<br>\bm{w}_{t+1}=\left[\bm{X}^\text{T}\bm{S}_t\bm{X}\right]^{-1}\bm{X}^\text{T}\bm{S}_t\bm{\zeta}_t<br>\end{array}\\\\<br>$<br>3 #end while</font></p>
 <hr style="height:1px;border:none;border-top:1px dashed #0066CC;">
 
