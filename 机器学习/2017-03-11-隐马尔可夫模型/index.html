@@ -92,13 +92,14 @@
 <meta property="og:site_name" content="柠檬CC">
 <meta property="og:description" content="隐马尔可夫是一个古老的模型，开始我们回顾了一下它的基本问题。然后我们使用前向后向算法和维比特算法，解决了求值和求隐状态的问题。中间我们使用EM算法，解决了参数求解的问题。人类可以通过一些精巧的设计，来获取超乎直观想象结果，当人类的思想开始集成，开始向深处，广处延伸时，上帝似乎很惊异。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="file:///Users/xiaobai/Documents/小白笔记/Markdown笔记/05-机器学习笔记/19-隐马尔可夫模型/隐马尔可夫模型.png">
 <meta property="og:image" content="http://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="http://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2022-01-02T12:06:47.483Z">
+<meta property="og:updated_time" content="2022-01-02T12:07:09.698Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="隐马尔可夫模型">
 <meta name="twitter:description" content="隐马尔可夫是一个古老的模型，开始我们回顾了一下它的基本问题。然后我们使用前向后向算法和维比特算法，解决了求值和求隐状态的问题。中间我们使用EM算法，解决了参数求解的问题。人类可以通过一些精巧的设计，来获取超乎直观想象结果，当人类的思想开始集成，开始向深处，广处延伸时，上帝似乎很惊异。">
-<meta name="twitter:image" content="http://www.limoncc.com/images/cc.png">
+<meta name="twitter:image" content="file:///Users/xiaobai/Documents/小白笔记/Markdown笔记/05-机器学习笔记/19-隐马尔可夫模型/隐马尔可夫模型.png">
 
 
 
@@ -405,6 +406,18 @@
 <p>$$\begin{align}<br>\frac{\partial \ell}{\partial \bm{A}}=\frac{\bm{I}\bm{I}^\text{T}\odot\bm{N}}{\bm{A}}+ \bm{I}^\text{T}\bm{\delta}=\frac{\bm{N}}{\bm{A}}+\bm{I}^\text{T}\bm{\delta}=\bm{0}\\<br>\frac{\partial \ell}{\partial \bm{\delta}}&amp;=\bm{A}\bm{I}-\bm{I}=\bm{0}<br>\end{align}$$</p>
 <p>得<br>$$\begin{align}<br>\bm{A}=\frac{\bm{N}}{\bm{N}\bm{I}}=\frac{\bm{N}}{\bm{N}_c}<br>\end{align}$$</p>
 <p>我们注意到：对于 $\displaystyle n$元模型 参数将会指数级增加 $\displaystyle O(C^n)$。对于5万个单词的语言模型，参数将到达惊人的25亿。显然我们是无法凑齐足够多数据，来使用极大似然法求参数。我们将面临严重的 <code>零数问题</code>。</p>
+<h5 id="1-4、平滑方法"><a href="#1-4、平滑方法" class="headerlink" title="1.4、平滑方法"></a>1.4、平滑方法</h5><h6 id="1-4-1、拉普拉斯加一平滑"><a href="#1-4-1、拉普拉斯加一平滑" class="headerlink" title="1.4.1、拉普拉斯加一平滑"></a>1.4.1、拉普拉斯加一平滑</h6><p>当然我们可以使用 <code>拉普拉斯加一平滑</code>。当这不是唯一平滑的方法。</p>
+<h6 id="1-4-2、删除插值"><a href="#1-4-2、删除插值" class="headerlink" title="1.4.2、删除插值"></a>1.4.2、删除插值</h6><p>$$\begin{align}<br>A=(1-\lambda)\frac{N_{cs}}{N_c}+\lambda \frac{N_s}{N}<br>\end{align}$$</p>
+<p>删除插值约等于一个贝叶斯模型，假设一个狄利克雷先验，易得之</p>
+<h6 id="1-4-3、古德-图灵估计与卡茨退避法"><a href="#1-4-3、古德-图灵估计与卡茨退避法" class="headerlink" title="1.4.3、古德-图灵估计与卡茨退避法"></a>1.4.3、古德-图灵估计与卡茨退避法</h6><p>我们有 <code>古德-图灵估计</code> $\displaystyle \textit{(Good-Turing Estimate)}$</p>
+<h4 id="二、隐马尔可夫模型"><a href="#二、隐马尔可夫模型" class="headerlink" title="二、隐马尔可夫模型"></a>二、隐马尔可夫模型</h4><h5 id="2-1、基本定义"><a href="#2-1、基本定义" class="headerlink" title="2.1、基本定义"></a>2.1、基本定义</h5><p>1、隐变量的一阶马尔可夫假设 $\displaystyle  p\big(z_t\mid z_{t-1},\cdots,z_1\big)=p\big(z_t\mid z_{t-1}\big)$<br>2、观测变量的独立假设 $\displaystyle p\big(\bm{x}_t\mid \bm{x}_{t-1},\cdots,\bm{x}_1,z_t,\cdots,z_1\big)=p \big(\bm{x}_t\mid z_t\big)$</p>
+<p>隐变量数据集 $\displaystyle \mathcal{D}_T^z=\{z_t\}_{t=1}^T$，观测变量数据集 $\displaystyle \mathcal{D}_T^\bm{x}=\{\bm{x}_t\}_{t=1}^T$,完全数据集 $\displaystyle \mathcal{D}^+_T=\{\mathcal{D}_T^\bm{x},\mathcal{D}_T^z\}$，且有：<br>$$\begin{align}<br>p \big(\mathcal{D}_T^+\big)<br>=p\big(\mathcal{D}_T^\bm{x},\mathcal{D}_T^z\big)<br>=p\big(\mathcal{D}_T^\bm{x}\mid \mathcal{D}_T^z\big)p\big(\mathcal{D}^z\big)<br>\end{align}$$</p>
+<div align="center"><img src="file:///Users/xiaobai/Documents/小白笔记/Markdown笔记/05-机器学习笔记/19-隐马尔可夫模型/隐马尔可夫模型.png" width="550" ==""><br>隐马尔可夫模型</div>
+
+
+
+
+
 <p><hr></p>
 <p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="http://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="http://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="http://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="http://www.limoncc.com">[ http://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%"><a href="http://www.limoncc.com/机器学习/2017-03-11-隐马尔可夫模型/">http://www.limoncc.com/机器学习/2017-03-11-隐马尔可夫模型/</a></td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
 <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
@@ -642,7 +655,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、马尔可夫模型"><span class="nav-number">1.</span> <span class="nav-text">一、马尔可夫模型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1、基本概念"><span class="nav-number">1.1.</span> <span class="nav-text">1.1、基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-1-1、符号"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1.1、符号</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-1-2、转移概率"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.1.2、转移概率</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2、应用"><span class="nav-number">1.2.</span> <span class="nav-text">1.2、应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3、极大似然法与二元模型马尔可夫过程"><span class="nav-number">1.3.</span> <span class="nav-text">1.3、极大似然法与二元模型马尔可夫过程</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、马尔可夫模型"><span class="nav-number">1.</span> <span class="nav-text">一、马尔可夫模型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1、基本概念"><span class="nav-number">1.1.</span> <span class="nav-text">1.1、基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-1-1、符号"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1.1、符号</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-1-2、转移概率"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.1.2、转移概率</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2、应用"><span class="nav-number">1.2.</span> <span class="nav-text">1.2、应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3、极大似然法与二元模型马尔可夫过程"><span class="nav-number">1.3.</span> <span class="nav-text">1.3、极大似然法与二元模型马尔可夫过程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-4、平滑方法"><span class="nav-number">1.4.</span> <span class="nav-text">1.4、平滑方法</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-4-1、拉普拉斯加一平滑"><span class="nav-number">1.4.1.</span> <span class="nav-text">1.4.1、拉普拉斯加一平滑</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-4-2、删除插值"><span class="nav-number">1.4.2.</span> <span class="nav-text">1.4.2、删除插值</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-4-3、古德-图灵估计与卡茨退避法"><span class="nav-number">1.4.3.</span> <span class="nav-text">1.4.3、古德-图灵估计与卡茨退避法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、隐马尔可夫模型"><span class="nav-number">2.</span> <span class="nav-text">二、隐马尔可夫模型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1、基本定义"><span class="nav-number">2.1.</span> <span class="nav-text">2.1、基本定义</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
