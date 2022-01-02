@@ -95,7 +95,7 @@
 <meta property="og:image" content="file:///Users/xiaobai/Documents/小白笔记/Markdown笔记/05-机器学习笔记/19-隐马尔可夫模型/隐马尔可夫模型.png">
 <meta property="og:image" content="http://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="http://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2022-01-02T12:07:09.698Z">
+<meta property="og:updated_time" content="2022-01-02T12:07:30.263Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="隐马尔可夫模型">
 <meta name="twitter:description" content="隐马尔可夫是一个古老的模型，开始我们回顾了一下它的基本问题。然后我们使用前向后向算法和维比特算法，解决了求值和求隐状态的问题。中间我们使用EM算法，解决了参数求解的问题。人类可以通过一些精巧的设计，来获取超乎直观想象结果，当人类的思想开始集成，开始向深处，广处延伸时，上帝似乎很惊异。">
@@ -414,10 +414,10 @@
 <p>隐变量数据集 $\displaystyle \mathcal{D}_T^z=\{z_t\}_{t=1}^T$，观测变量数据集 $\displaystyle \mathcal{D}_T^\bm{x}=\{\bm{x}_t\}_{t=1}^T$,完全数据集 $\displaystyle \mathcal{D}^+_T=\{\mathcal{D}_T^\bm{x},\mathcal{D}_T^z\}$，且有：<br>$$\begin{align}<br>p \big(\mathcal{D}_T^+\big)<br>=p\big(\mathcal{D}_T^\bm{x},\mathcal{D}_T^z\big)<br>=p\big(\mathcal{D}_T^\bm{x}\mid \mathcal{D}_T^z\big)p\big(\mathcal{D}^z\big)<br>\end{align}$$</p>
 <div align="center"><img src="file:///Users/xiaobai/Documents/小白笔记/Markdown笔记/05-机器学习笔记/19-隐马尔可夫模型/隐马尔可夫模型.png" width="550" ==""><br>隐马尔可夫模型</div>
 
-
-
-
-
+<p>为了简洁记，我们来定义一些符号。考虑隐变量有 $\displaystyle K$个状态 $\displaystyle z_t\in\{1,\cdots,K\}$，观测变量有 $\displaystyle O$个状态 $\displaystyle \bm{x}_t\in\{1,\cdots,O\}$。注意这里形式化的使用 $ o$来表示向量 $ \bm{x}_t$的状态，也就是说我们并没有定义向量是什么，因为这样能节约符号，和叙述上不必要的麻烦。继续定义若干参数：<br>$\displaystyle \pi[i]=p(z_1=i)$<br>$\displaystyle A[i,j]=p(z_t=j\mid z_{t-1}=i)$<br>$\displaystyle B[i,o]=p(\bm{x}_t=o\mid z_t=i)$<br>令参数集合为：<br>$$\begin{align}<br>\bm{\theta}=\{\bm{\pi},\bm{A},\bm{B}\}<br>\end{align}$$</p>
+<p>注意这里的 $ \bm{\theta}$应该做形式化的理解，它既不是矩阵，也不是向量，而是一个相当于集合符号。在机器学习领域 $ \bm{\theta}$经常被用来表示参数，不对其不加具体定义。而对于观测变量是连续的，我们定义条件概率分布 $\displaystyle \rho_t[i]=p\big(\bm{x}_t\mid z_t=i\big)$ ，注意如果 $\displaystyle \bm{x}_t$未知，则 $\displaystyle \rho_t[i]$是个概率分布。而如果我们有数据集 $\displaystyle \mathcal{D}_t^{\bm{x}}=\{\bm{x}_1,\cdots,\bm{x}_t\}$， 也就说 $\displaystyle \bm{x}_t$已知，那么 $\displaystyle \rho_t[i]$是个数。那么参数集合是：</p>
+<p>$$\begin{align}<br>\bm{\theta}=\{\bm{\pi},\bm{A},\bm{\rho}_t\}<br>\end{align}$$</p>
+<p>注意：关于符号 $\displaystyle p(x)$和 $\displaystyle p(x=a)$的解释，这时的符号 $\displaystyle p$有点点转换。由一个函数变成了一个数。</p>
 <p><hr></p>
 <p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="http://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="http://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="http://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="http://www.limoncc.com">[ http://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%"><a href="http://www.limoncc.com/机器学习/2017-03-11-隐马尔可夫模型/">http://www.limoncc.com/机器学习/2017-03-11-隐马尔可夫模型/</a></td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
 <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
