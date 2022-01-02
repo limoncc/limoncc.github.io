@@ -92,16 +92,16 @@
 <meta property="og:site_name" content="柠檬CC">
 <meta property="og:description" content="我们使用条件随机场定义条件概率。我们是基于整体特征定义了观测变量与隐变量的关系，而不像隐马尔可夫模型那样。这大大利于充分利用观测序列的信息，而不是局部信息。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="fhttp://www.limoncc.com/images/条件随机场.png">
+<meta property="og:image" content="http://www.limoncc.com/images/条件随机场.png">
 <meta property="og:image" content="http://www.limoncc.com/images/条件随机场计算复杂度.png">
 <meta property="og:image" content="http://www.limoncc.com/images/条件随机场信念传播.png">
 <meta property="og:image" content="http://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="http://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2022-01-02T12:21:08.439Z">
+<meta property="og:updated_time" content="2022-01-02T12:25:38.147Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="条件随机场模型">
 <meta name="twitter:description" content="我们使用条件随机场定义条件概率。我们是基于整体特征定义了观测变量与隐变量的关系，而不像隐马尔可夫模型那样。这大大利于充分利用观测序列的信息，而不是局部信息。">
-<meta name="twitter:image" content="fhttp://www.limoncc.com/images/条件随机场.png">
+<meta name="twitter:image" content="http://www.limoncc.com/images/条件随机场.png">
 
 
 
@@ -408,7 +408,7 @@
 <p>其中<br>$\displaystyle Z(\bm{X})=\sum_{\bm{z}\in \mathcal{Z}}\prod_{c\in \mathcal{C}}\exp \big[\bm{w}_c ^\text{T} \bm{\phi} \big(\bm{X},\bm{z}_c\big)\big]$</p>
 <h5 id="2-2、边势能和节点势能"><a href="#2-2、边势能和节点势能" class="headerlink" title="2.2、边势能和节点势能"></a>2.2、边势能和节点势能</h5><p>为了让符号与原理更加清晰，我们来明确定义一下势能函数 $\displaystyle \exp \big[\bm{w}_c ^\text{T} \bm{\phi} \big(\bm{X},\bm{z}_c\big)\big]$：注意到条件随机场的极大团 $\displaystyle \{z_{t-1},z_t\}_{2}^T,\{z_t,\bm{X}\}_1^T$，我们分别定义边势能，和节点势能。或者叫转移分数，和发射分数。同时为简单记我们直接不同参数 $\displaystyle \lambda,\mu  $融入到相应函数中， 进一步也可以把指数符号 $\displaystyle \exp$融入到相应函数中，于是有</p>
 <p>$$\begin{align}<br>\exp \big[\bm{w}_c ^\text{T} \bm{\phi} \big(\bm{X},\bm{z}_c\big)\big]<br>&amp;=\exp\big[[\lambda,\mu][s(z_{t-1},z_t,\bm{X}),k(z_t,\bm{X})]^T\big]\\<br>&amp;=\exp\big[\lambda s(z_{t-1},z_t,\bm{X})+ \mu k(z_t,\bm{X}) \big]\\<br>&amp; :\Rightarrow\exp\big[s(z_{t-1},z_t,\bm{X})+k(z_t,\bm{X}) \big]\\<br>&amp; :\Rightarrow s\big(z_{t-1},z_t,\bm{X}\big)k\big(z_t,\bm{X}\big)<br>\end{align}$$</p>
-<div align="center"><img src="fhttp://www.limoncc.com/images/条件随机场.png" width="800" ==""><br>图: 条件随机场模型</div>
+<div align="center"><img src="http://www.limoncc.com/images/条件随机场.png" width="800" ==""><br>图: 条件随机场模型</div>
 
 <p>代入，我们得到一个更加简洁，清晰的条件数据分布，</p>
 <p>$$\begin{align}<br>p\big(\bm{z}\mid\bm{X}\big)<br>&amp;=p\big(\mathcal{D}^{\cdot|\cdot}_T\big)<br>=p\big(\mathcal{D}_T^z\mid\mathcal{D}_T^\bm{x}\big)<br>=\frac{1}{Z\big(\bm{X}\big)}\prod_{t=2}^Ts\big(z_{t-1},z_t,\bm{X}\big)\prod_{t=1}^Tk\big(z_t,\bm{X}\big)\\<br>&amp;=\frac{1}{Z\big(\bm{X}\big)}k\big(z_1,\bm{X}\big)\prod_{t=2}^Ts\big(z_{t-1},z_t,\bm{X}\big)k\big(z_t,\bm{X}\big)\\<br>\end{align}$$</p>
