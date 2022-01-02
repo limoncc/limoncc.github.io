@@ -94,7 +94,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="http://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2022-01-02T11:48:26.434Z">
+<meta property="og:updated_time" content="2022-01-02T11:49:12.761Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="隐马尔可夫模型">
 <meta name="twitter:description" content="隐马尔可夫是一个古老的模型，开始我们回顾了一下它的基本问题。然后我们使用前向后向算法和维比特算法，解决了求值和求隐状态的问题。中间我们使用EM算法，解决了参数求解的问题。人类可以通过一些精巧的设计，来获取超乎直观想象结果，当人类的思想开始集成，开始向深处，广处延伸时，上帝似乎很惊异。">
@@ -387,6 +387,9 @@
 
       
         <p>作者: <a href="http://www.limoncc.com">引线小白</a>-本文永久链接：<a href="http://www.limoncc.com/机器学习/2017-03-11-隐马尔可夫模型/">http://www.limoncc.com/机器学习/2017-03-11-隐马尔可夫模型/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+<blockquote>
+<p><strong>摘要</strong>：本文意在理清隐马尔可夫模型的问题。若有错误，请大家指正。<br><strong>关键词</strong>: <code>隐马尔可夫模型</code>,<code>前向-后向算法</code>,<code>维特比算法</code>,<code>鲍姆-韦尔奇算法</code></p>
+</blockquote>
 <h4 id="一、马尔可夫模型"><a href="#一、马尔可夫模型" class="headerlink" title="一、马尔可夫模型"></a>一、马尔可夫模型</h4><h5 id="1-1、基本概念"><a href="#1-1、基本概念" class="headerlink" title="1.1、基本概念"></a>1.1、基本概念</h5><h6 id="1-1-1、符号"><a href="#1-1-1、符号" class="headerlink" title="1.1.1、符号"></a>1.1.1、符号</h6><p>我们开始讨论，离散时间离散状态，也就是离散随机序列。假定：离散时间： $\displaystyle \{1,\cdots,T\}$；离散状态：$\displaystyle x_t\in \{1,\cdots,c,\cdots,C\}$。我们称</p>
 <p>$$\begin{align}<br>p(\bm{x}_{1:T})=p(x_1)\prod_{t=2}^Tp\big(x_t\mid x_{t-1}\big)<br>\end{align}$$<br>为一阶马尔可夫模型。下面来初步认识一下这个模型。</p>
 <h6 id="1-1-2、转移概率"><a href="#1-1-2、转移概率" class="headerlink" title="1.1.2、转移概率"></a>1.1.2、转移概率</h6><p>转移概率: 从状态 $\displaystyle i$到状态 $\displaystyle j$的概率 $\displaystyle A_{ij}=p\big(x_t=j\mid x_{t-1}=i\big)$，于是有转移矩阵$\displaystyle \bm{A}=\big[A_{ij}\big]$，且有 $\displaystyle \sum_{j=1}^KA_{ij}=\bm{I}^\text{T}\bm{a}_i=1$ 也就说 $\displaystyle \bm{A}$的每一行相加等于1。这样的矩阵我们称之为随机矩阵 $\displaystyle \textit{(stochastic matrix)}$。注意这个时候我们定义的转移矩阵与离散的时间没有关系。</p>
