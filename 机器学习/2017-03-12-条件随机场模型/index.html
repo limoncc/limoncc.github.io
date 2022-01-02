@@ -1,0 +1,1141 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="机器学习,概率图,条件随机场模型" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="我们使用条件随机场定义条件概率。我们是基于整体特征定义了观测变量与隐变量的关系，而不像隐马尔可夫模型那样。这大大利于充分利用观测序列的信息，而不是局部信息。">
+<meta name="keywords" content="机器学习,概率图,条件随机场模型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="条件随机场模型">
+<meta property="og:url" content="http://www.limoncc.com/机器学习/2017-03-12-条件随机场模型/index.html">
+<meta property="og:site_name" content="柠檬CC">
+<meta property="og:description" content="我们使用条件随机场定义条件概率。我们是基于整体特征定义了观测变量与隐变量的关系，而不像隐马尔可夫模型那样。这大大利于充分利用观测序列的信息，而不是局部信息。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="fhttp://www.limoncc.com/images/条件随机场.png">
+<meta property="og:image" content="http://www.limoncc.com/images/条件随机场计算复杂度.png">
+<meta property="og:image" content="http://www.limoncc.com/images/条件随机场信念传播.png">
+<meta property="og:image" content="http://www.limoncc.com/images/cc.png">
+<meta property="og:image" content="http://www.limoncc.com/images/avatar.png">
+<meta property="og:updated_time" content="2022-01-02T12:21:08.439Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="条件随机场模型">
+<meta name="twitter:description" content="我们使用条件随机场定义条件概率。我们是基于整体特征定义了观测变量与隐变量的关系，而不像隐马尔可夫模型那样。这大大利于充分利用观测序列的信息，而不是局部信息。">
+<meta name="twitter:image" content="fhttp://www.limoncc.com/images/条件随机场.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <title> 条件随机场模型 | 柠檬CC </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-73837972-3', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d225b8f8559eb2eb6a8bd8792e01ebb9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=60130136";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">柠檬CC</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">小白爱吃柠檬O(∩_∩)O</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-poetry">
+          <a href="/poetry" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-leaf"></i> <br />
+            
+            诗集
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                条件随机场模型
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-12T20:37:57+08:00" content="2017-03-12">
+              2017-03-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/机器学习/2017-03-12-条件随机场模型/" class="leancloud_visitors" data-flag-title="条件随机场模型">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作者: <a href="http://www.limoncc.com">引线小白</a>-本文永久链接：<a href="http://www.limoncc.com/机器学习/2017-03-12-条件随机场模型/">http://www.limoncc.com/机器学习/2017-03-12-条件随机场模型/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+<blockquote>
+<p><strong>摘要</strong>：本文意在理清机器学习的基础问题。若有错误，请大家指正。<br><strong>关键词</strong>: <code>无向图</code>,<code>哈默斯利-克利福德定理</code>,<code>条件随机场</code></p>
+</blockquote>
+<p>[TOC]</p>
+<h4 id="一、哈默斯利-克利福德定理Hammersley-Clifford定理"><a href="#一、哈默斯利-克利福德定理Hammersley-Clifford定理" class="headerlink" title="一、哈默斯利-克利福德定理Hammersley-Clifford定理"></a>一、哈默斯利-克利福德定理Hammersley-Clifford定理</h4><p>由于没有与无向图相关的拓扑排序，我们不能使用链式法则来表示 $ p \big(\bm{x}\big)$。因此，我们将概率密度与每个节点关联起来替换方法是，将势函数或因子与图中每个极大团联系起来。我们将团 $ c$势函数记为 $ \psi_c \big(\bm{x}_c\mid \bm{\theta}_c\big)$。势函数可以是其参数的任何非负函数。然后定义联合分布与团势函数乘积成比例。令人惊讶的是，可以通过这样的方式来表示任何可以由无向图模型表达条件独立性质的正分布。我们更正式地陈述这个结果如下</p>
+<p>【 <strong>Hammersley-Clifford </strong>定理】<br>一个正分布 $ p \big(\bm{x}\big)&gt;0$ 能满足一个无向图模型 $ \mathcal{G}$的条件独立性质，当且仅当 $ p$能够被每个极大团因子的乘积表示。</p>
+<p>$$\begin{align}<br>\forall x\to p(x)&gt;0\Rightarrow \mathcal{I}(p)=\mathcal{I}(\mathcal{G})<br>\iff p \big(\bm{x}\mid \bm{\theta}\big)=\frac{1}{Z(\bm{\theta})}\prod_{c\in \mathcal{C}}\psi_c \big(\bm{x}_c\mid \bm{\theta}_c\big)<br>\end{align}$$</p>
+<p>其中 $ \mathcal{C}$是图 $ \mathcal{G}$ 所有极大团的集合。 $ Z(\bm{\theta})$是配分函数：<br>$$\begin{align}<br>Z(\bm{\theta})=\sum_{\bm{x}}\prod_{c\in \mathcal{C}}\psi_c \big(\bm{x}_c\mid \bm{\theta}_c\big)<br>\end{align}$$</p>
+<p>请注意，配分函数确保了整体分布总和为 $ 1$。</p>
+<h4 id="二、条件随机场Conditional-random-ﬁelds-CRFs"><a href="#二、条件随机场Conditional-random-ﬁelds-CRFs" class="headerlink" title="二、条件随机场Conditional random ﬁelds (CRFs)"></a>二、条件随机场Conditional random ﬁelds (CRFs)</h4><h5 id="2-1、一般定义"><a href="#2-1、一般定义" class="headerlink" title="2.1、一般定义"></a>2.1、一般定义</h5><p>条件随机场<strong>conditional random ﬁeld(CRF) </strong>(Lafferty et al . 2001年)，又称判别随机场 (Kumar and Hebert 2003)，是 <strong>MRF </strong>的一个版本，其中所有团势以输入特征为条件:</p>
+<p>$$\begin{align}<br>p \big(\bm{z}\mid \bm{X},\bm{w}\big)<br>=\frac{1}{Z \big(\bm{X},\bm{w}\big)}\prod_{c\in \mathcal{C}} \psi_c \big(\bm{z}_c\mid \bm{X},\bm{w}\big)<br>\end{align}$$</p>
+<p><strong>CRF </strong>可以被认为是逻辑回归的结构化输出扩展，在此模型中，我们对输入特征的输出标签之间的关联进行建模。我们通常会假设一个对数线性表示的势能:</p>
+<p>$$\begin{align}<br>\psi_c \big(\bm{z}_c\mid \bm{X},\bm{w}\big)<br>=\exp \big[\bm{w}_c ^\text{T} \bm{\phi} \big(\bm{X},\bm{z}_c\big)\big]<br>\end{align}$$<br>其中 $ \bm{\phi} \big(\bm{X},\bm{z}_c\big)$是一个由全局输入 $ \bm{X}$和局部标签 $ \bm{z}_c$所衍生的特征向量。</p>
+<p>为了方便描述，我们形式化的定义隐变量数据集 $\displaystyle \mathcal{D}_T^z=\{z_t\}_{t=1}^T$，观测变量数据集$\displaystyle \mathcal{D}_T^{\bm{x}}=\{\bm{x}_t\}_1^T=:\bm{X}=[\bm{x}_1,\cdots,\bm{x}_T]^T$, 完全数据集$\displaystyle \mathcal{D}^+_T=\{\mathcal{D}_T^z,\mathcal{D}_T^\bm{x}\}$， 条件数据集 $\displaystyle \mathcal{D}^{\cdot|\cdot}_T=\{\mathcal{D}_T^\bm{x}\mid\mathcal{D}_T^z\}$ 。于是有</p>
+<p>$$\begin{align}<br>p\big(\bm{z}\mid\bm{X}\big)<br>&amp;=p\big(\mathcal{D}^{\cdot|\cdot}_T\big)<br>=p\big(\mathcal{D}_T^z\mid\mathcal{D}_T^\bm{x}\big)<br>=\frac{1}{Z \big(\bm{X}\big)}\prod_{c\in \mathcal{C}} \psi_c \big(\bm{z}_c\mid \bm{X},\bm{w}\big)\\<br>&amp;=\frac{1}{Z \big(\bm{X}\big)}\prod_{c\in \mathcal{C}}\exp \big[\bm{w}_c ^\text{T} \bm{\phi} \big(\bm{X},\bm{z}_c\big)\big]\\<br>\end{align}$$</p>
+<p>其中<br>$\displaystyle Z(\bm{X})=\sum_{\bm{z}\in \mathcal{Z}}\prod_{c\in \mathcal{C}}\exp \big[\bm{w}_c ^\text{T} \bm{\phi} \big(\bm{X},\bm{z}_c\big)\big]$</p>
+<h5 id="2-2、边势能和节点势能"><a href="#2-2、边势能和节点势能" class="headerlink" title="2.2、边势能和节点势能"></a>2.2、边势能和节点势能</h5><p>为了让符号与原理更加清晰，我们来明确定义一下势能函数 $\displaystyle \exp \big[\bm{w}_c ^\text{T} \bm{\phi} \big(\bm{X},\bm{z}_c\big)\big]$：注意到条件随机场的极大团 $\displaystyle \{z_{t-1},z_t\}_{2}^T,\{z_t,\bm{X}\}_1^T$，我们分别定义边势能，和节点势能。或者叫转移分数，和发射分数。同时为简单记我们直接不同参数 $\displaystyle \lambda,\mu  $融入到相应函数中， 进一步也可以把指数符号 $\displaystyle \exp$融入到相应函数中，于是有</p>
+<p>$$\begin{align}<br>\exp \big[\bm{w}_c ^\text{T} \bm{\phi} \big(\bm{X},\bm{z}_c\big)\big]<br>&amp;=\exp\big[[\lambda,\mu][s(z_{t-1},z_t,\bm{X}),k(z_t,\bm{X})]^T\big]\\<br>&amp;=\exp\big[\lambda s(z_{t-1},z_t,\bm{X})+ \mu k(z_t,\bm{X}) \big]\\<br>&amp; :\Rightarrow\exp\big[s(z_{t-1},z_t,\bm{X})+k(z_t,\bm{X}) \big]\\<br>&amp; :\Rightarrow s\big(z_{t-1},z_t,\bm{X}\big)k\big(z_t,\bm{X}\big)<br>\end{align}$$</p>
+<div align="center"><img src="fhttp://www.limoncc.com/images/条件随机场.png" width="800" ==""><br>图: 条件随机场模型</div>
+
+<p>代入，我们得到一个更加简洁，清晰的条件数据分布，</p>
+<p>$$\begin{align}<br>p\big(\bm{z}\mid\bm{X}\big)<br>&amp;=p\big(\mathcal{D}^{\cdot|\cdot}_T\big)<br>=p\big(\mathcal{D}_T^z\mid\mathcal{D}_T^\bm{x}\big)<br>=\frac{1}{Z\big(\bm{X}\big)}\prod_{t=2}^Ts\big(z_{t-1},z_t,\bm{X}\big)\prod_{t=1}^Tk\big(z_t,\bm{X}\big)\\<br>&amp;=\frac{1}{Z\big(\bm{X}\big)}k\big(z_1,\bm{X}\big)\prod_{t=2}^Ts\big(z_{t-1},z_t,\bm{X}\big)k\big(z_t,\bm{X}\big)\\<br>\end{align}$$</p>
+<p>其中<br>$\displaystyle  Z(\bm{X})=\sum_{z_{1},\cdots,z_T\in \mathcal{Z}}\prod_{t=2}^Ts\big(z_{t-1},z_t,\bm{X}\big)\prod_{t=1}^Tk\big(z_t,\bm{X}\big)$</p>
+<p>为了简洁记，我们来定义一些符号。考虑隐变量有 $\displaystyle C$个状态 $\displaystyle z_t\in\{1,\cdots,C\}=\mathcal{Z}$，观测变量有 $\displaystyle O$个状态 $\displaystyle \bm{x}_t\in\{1,\cdots,O\}=\mathcal{X}$. 如果是文本，就是有多少个词。注意这里形式化的使用 $ o$来表示向量 $ \bm{x}_t$的状态，也就是说我们并没有定义向量是什么，因为这样能节约符号，和叙述上不必要的麻烦。继续定义若干参数：<br>$\displaystyle \pi[v]=k\big(z_1=v,\bm{X}\big)$<br>$\displaystyle A_t[i,j]=s\big(z_{t-1}=i,z_t=j,\bm{X})$<br>$\displaystyle \rho_t[j]=k\big(z_t=j,\bm{X})$<br>令参数集合为：<br>$$\begin{align}<br>\bm{\theta}=\{\bm{\pi},\bm{A}\}<br>\end{align}$$</p>
+<p>注意在实际应用中，我们会加 $\displaystyle \log$，避免数据上溢，和下溢：$\displaystyle s\big(z_{t-1},z_t,\bm{X}\big) = \exp\big[\ln A_t[i,j]\big]$、$\displaystyle k\big(z_t,\bm{X}\big) = \exp\big[\ln \rho_t[j]\big]$。同时 $\displaystyle \pi[v]$中的 $v$一般指的是标签 $\displaystyle <start>$</start></p>
+<h4 id="三、前向向后算法"><a href="#三、前向向后算法" class="headerlink" title="三、前向向后算法"></a>三、前向向后算法</h4><h5 id="3-1、直接计算"><a href="#3-1、直接计算" class="headerlink" title="3.1、直接计算"></a>3.1、直接计算</h5><p>我们要解决如何高效求条件数据集分布的问题，下面我们要分析一下这个基本问题。</p>
+<p>$$\begin{align}<br>p\big(\mathcal{D}^{\cdot|\cdot}_T,\bm{\theta} \big)<br>&amp;=p\big(\mathcal{D}_T^z\mid\mathcal{D}_T^\bm{x}, \bm{\theta} \big)<br>=\frac{1}{Z\big(\bm{X}\big)}k\big(z_1,\bm{X}\big)\prod_{t=2}^Ts\big(z_{t-1},z_t,\bm{X}\big)k\big(z_t,\bm{X}\big)\\<br>&amp;=\frac{1}{Z\big(\bm{X}\big)}\pi[v]\prod_{t=2}^TA_t[i,j]\rho_t[j]<br>\end{align}$$</p>
+<p>我们取对数有</p>
+<p>$$\begin{align}<br>\ln p\big(\mathcal{D}^{\cdot|\cdot}_T\mid \bm{\theta} \big)<br>&amp;=\ln p\big(\mathcal{D}_T^z\mid\mathcal{D}_T^\bm{x},\bm{\theta} \big)<br>=\ln\bigg[\frac{1}{Z\big(\bm{X}\big)}\pi[v]\prod_{t=2}^TA_t[i,j]\rho_t[j]\bigg]\\<br>&amp;=\underbrace{\mathop{\ln \pi[v]+\sum_{t=2}^T\big[\ln A_t[i,j]+\ln \rho_t[j]\big]}}_{\ln\text{true path}} - \underbrace{\mathop{\ln Z(\bm{X})}}_{\ln\text{total path}}<br>\end{align}$$</p>
+<p>在给定条件数据集 $\displaystyle \mathcal{D}^{\cdot|\cdot}_T=\{\mathcal{D}_T^\bm{x}\mid\mathcal{D}_T^z\}=\{\bm{x}_1,\cdots,\bm{x}_T\mid z_1,\cdots,z_T\}$，条件数据集分布的计算分为两部分：</p>
+<p>$$\begin{align}<br>\ln\text{true_path} = \ln \pi[v]+\sum_{t=2}^T\big[\ln A_t[i,j]+\ln \rho_t[j]\big]<br>\end{align}$$<br>计算复杂度是 $\displaystyle O(2T)$。为什么取名 <code>true path</code>和 <code>total path</code>，如下图：</p>
+<div align="center"><img src="http://www.limoncc.com/images/条件随机场计算复杂度.png" width="800" ==""><br>图: 条件随机场直接计算复杂度</div>
+
+<p>难点在于第二部的计算</p>
+<p>$$\begin{align}<br>\ln\text{total_path}<br>&amp;= \ln Z(\bm{X})<br>= \ln \sum_{i,j\in \mathcal{Z}}\bigg[ \pi[v]\prod_{t=2}^TA_t[i,j]\rho_t[j]\bigg]\\<br>&amp;=\ln \pi[v]+\ln\bigg[\underbrace{\mathop{\sum_{i,j\in \mathcal{Z}}\prod_{t=2}^T}}_{O(2TC^T)}A_t[i,j]\rho_t[j]\bigg]<br>\end{align}$$</p>
+<p>这个方法的计算复杂度是 $\displaystyle O\big({2TC}^T\big)$, 例如 $\displaystyle C=5,T=10$，那么就要约计算 $\displaystyle 1.95\times10^8$已经非常夸张了。为了更快的计算条件分布，我们需要充分利用条件随机场的马尔可夫的性质。</p>
+<h5 id="3-2、前向计算"><a href="#3-2、前向计算" class="headerlink" title="3.2、前向计算"></a>3.2、前向计算</h5><p>我们单独考虑 $\displaystyle \text{total_path}$： $\displaystyle  Z(\bm{X})=\sum_{z_{1},\cdots,z_T\in \mathcal{Z}}\prod_{t=2}^Ts\big(z_{t-1},z_t,\bm{X}\big)\prod_{t=1}^Tk\big(z_t,\bm{X}\big)$。</p>
+<p>我们从序列的第 $\displaystyle 1$步看到第 $\displaystyle t$步，并令 $\displaystyle t$步状态为 $\displaystyle j$。这种操作也称为 <strong><code>sum-out</code></strong>。于是可以观测到</p>
+<p>$$\begin{align}<br>\alpha_t[j]<br> &amp;= \mathop{Z}^{\rightharpoonup}\big(\bm{X},z_t=j\big)\\<br> &amp;=\sum_{z_1,\cdots,z_{t-1}\in \mathcal{Z}}k\big(z_1,\bm{X}\big)\prod_{\tau=2}^{t-1}\bigg[s\big(z_{\tau-1},z_\tau,\bm{X}\big)k\big(z_\tau,\bm{X}\big)\times s\big(z_{t-1},z_t=j,\bm{X}\big)k\big(z_t=j,\bm{X}\big)\bigg]\\<br> &amp;=\sum_{z_{t-1}=i\in \mathcal{Z}}\sum_{z_1,\cdots,z_{t-2}\in \mathcal{Z}}k\big(z_1,\bm{X}\big)\prod_{\tau=2}^{t-2}\bigg[s\big(z_{\tau-1},z_\tau,\bm{X}\big)k\big(z_\tau,\bm{X}\big)<br> \times s\big(z_{t-2},z_{t-1}=i,\bm{X}\big)k\big(z_{t-1}=i,\bm{X}\big)\\&amp;\times s\big(z_{t-1}=i,z_t=j,\bm{X}\big)k\big(z_t=j,\bm{X}\big)\bigg]\\<br> &amp;=\sum_{z_{t-1}=i\in \mathcal{Z}}\Bigg[\sum_{z_1,\cdots,z_{t-2}\in \mathcal{Z}}\bigg[k\big(z_1,\bm{X}\big)\prod_{\tau=2}^{t-2}s\big(z_{\tau-1},z_\tau,\bm{X}\big)k\big(z_\tau,\bm{X}\big)\bigg]\\<br>&amp;\times s\big(z_{t-2},z_{t-1}=i,\bm{X}\big)k\big(z_{t-1}=i,\bm{X}\big)\times s\big(z_{t-1}=i,z_t=j,\bm{X}\big)\Bigg]\\<br>&amp;k\big(z_t=j,\bm{X}\big)\\<br> &amp;=\sum_{z_{t-1}=i\in \mathcal{Z}}\alpha_{t-1}[i]A_t[i,j]\rho_t[j]<br>\end{align}$$</p>
+<p>$$\begin{align}<br> \alpha_t[j]=\rho_t[j]\sum_{z_{t-1}=i\in \mathcal{Z}}\bigg[\alpha_{t-1}[i]\cdot A_t[i,j]\bigg]<br>\end{align}$$</p>
+<p>易知道 $\displaystyle \alpha_1[i]=\pi[i]$，我们把它写成向量形式</p>
+<p>$$\begin{align}<br>\bm{\alpha}_t = \bm{\rho}_t\odot\big[\bm{A}^T\bm{\alpha}_{t-1}\big]<br>\end{align}$$<br> 这种操作也叫 <strong><code>sum-product</code></strong>的操作，即是我们把求和算子转化了乘积算子 $ \sum\to \prod$</p>
+<p>于是 $\displaystyle \text{total_path}$就是</p>
+<p>$$\begin{align}<br>\ln \text{total_path}<br>= \ln Z\big(\bm{X}\big)<br>= \ln \sum_{z_T=i\in \mathcal{Z}} \mathop{Z}^{\rightharpoonup}\big(\bm{X},z_T=i\big)<br>= \ln \sum_{i\in \mathcal{Z}}\alpha_{T}[i]<br>= \ln  \bm{I}^T\bm{\alpha}_T<br>\end{align}$$</p>
+<p>计算复杂变成了 $\displaystyle O\big(TS^2\big)$</p>
+<h5 id="3-3、前向后向算法"><a href="#3-3、前向后向算法" class="headerlink" title="3.3、前向后向算法"></a>3.3、前向后向算法</h5><p>我们也可以反向从序列的第 $\displaystyle T$步看到第 $\displaystyle t$步，可以观测到</p>
+<p>$$\begin{align}<br>\beta_t[i]<br>&amp;=\mathop{Z}^{\leftharpoonup}\big(\bm{X},z_t=i\big)\\<br>&amp;=\sum_{z_{t+1},\cdots,z_T\in \mathcal{Z}}s\big(z_{t}=i,z_{t+1},\bm{X}\big)k\big(z_{t+1},\bm{X}\big)\prod_{\tau=t+2}^{T}s\big(z_{\tau-1},z_\tau,\bm{X}\big)k\big(z_\tau,\bm{X}\big)\\<br>&amp;=\sum_{z_{t+1}=j\in \mathcal{Z}}s\big(z_{t}=i,z_{t+1}=j,\bm{X}\big)k\big(z_{t+1}=j,\bm{X}\big)\\<br>&amp;\sum_{z_{t+2},\cdots,z_T\in \mathcal{Z}}s\big(z_{t+1}=j,z_{t+2},\bm{X}\big)k\big(z_{t+2},\bm{X}\big)\prod_{\tau=t+3}^{T}s\big(z_{\tau-1},z_\tau,\bm{X}\big)k\big(z_\tau,\bm{X}\big)\\<br>&amp;=\sum_{z_{t+1}=j\in \mathcal{Z}}s\big(z_{t}=i,z_{t+1}=j,\bm{X}\big)k\big(z_{t+1}=j,\bm{X}\big)\beta_{t+1}[j]\\<br>&amp;=\sum_{z_{t+1}=j\in \mathcal{Z}}A_{t+1}[i,j]\rho_{t+1}[j]\beta_{t+1}[j]<br>\end{align}$$<br>即是</p>
+<p>$$\begin{align}<br>\beta_t[i]=\sum_{z_{t+1}=j\in \mathcal{Z}}A_{t+1}[i,j]\rho_{t+1}[j]\beta_{t+1}[j]<br>\end{align}$$</p>
+<p>写成矩阵形式有</p>
+<p>$$\begin{align}<br>\bm{\beta}_t=\bm{A}\big[\bm{\rho}_{t+1}\odot \bm{\beta}_{t+1}\big]<br>\end{align}$$</p>
+<p>于是 $\displaystyle \text{total_path}$就是</p>
+<p>$$\begin{align}<br>\ln \text{total_path}<br>&amp;= \ln Z\big(\bm{X}\big)<br>= \ln \sum_{z_t=i\in \mathcal{Z}} \mathop{Z}^{\rightharpoonup}\big(\bm{X},z_t=i\big)\mathop{Z}^{\leftharpoonup}\big(\bm{X},z_t=i\big)\\<br>&amp;= \ln \sum_{i\in \mathcal{Z}}\alpha_{t}[i]\beta_t[i]<br>= \ln  \bm{I}^T\big[\bm{\alpha}_t\odot\bm{\beta}_t\big]<br>\end{align}$$</p>
+<p>这就是前向后向算法。</p>
+<div align="center"><img src="http://www.limoncc.com/images/条件随机场信念传播.png" width="800" ==""><br>图: 条件随机场信念传播</div>
+
+<h5 id="3-4、一些概率与期望的计算"><a href="#3-4、一些概率与期望的计算" class="headerlink" title="3.4、一些概率与期望的计算"></a>3.4、一些概率与期望的计算</h5><p>利用前向后向算法，很容实现一些计算：</p>
+<p>1、条件概率<br>$$\begin{align}<br>p\big(z_t=i\mid\bm{X}\big)<br>&amp;=p\big(z_t=i\mid \mathcal{D}_T^\bm{x}\big)<br>=\frac{\bm{\alpha}_t\odot\bm{\beta}_t}{\bm{I}^T\bm{\alpha}_t\cdot\bm{\beta}_t}\\<br>p\big(z_{t-1}=j,z_t=i\mid\bm{X}\big)<br>&amp;=p\big(z_t=i\mid \mathcal{D}_T^\bm{x}\big)<br>=\frac{\bm{A}^T\bm{\alpha}_{t-1}\odot\bm{\beta}_t}{\bm{I}^T\bm{\alpha}_t\cdot\bm{\beta}_t}<br>\end{align}$$</p>
+<p>2、期望值</p>
+<p>$$\begin{align}<br>\mathrm{E}_{p\big(\mathcal{D}_T^z\mid\mathcal{D}_T^\bm{x}\big)}\bigg[s\big(z_{t-1},z_t,\bm{X}\big)\bigg]<br>&amp;=\sum_{z_{t-1},z_t\in \mathcal{D}}s\big(z_{t-1},z_t,\bm{X}\big)<br>\frac{\alpha_{t-1}[z_{t-1}]A[z_{t-1},z_t]\beta_t[z_t]}{\bm{I}^T\bm{\alpha}_t\cdot\bm{\beta}_t}\\<br>\mathrm{E}_{p\big(\mathcal{D}_T^z\mid\mathcal{D}_T^\bm{x}\big)}\bigg[k\big(z_t,\bm{X}\big)\bigg]<br>&amp;=\sum_{z_t\in \mathcal{D}}k\big(z_t,\bm{X}\big)<br>\frac{\alpha_{t}[z_{t}]\beta_t[z_t]}{\bm{I}^T\bm{\alpha}_t\cdot\bm{\beta}_t}<br>\end{align}$$</p>
+<p>若有观测数据集经验分布 $\displaystyle \tilde{p}\big(\bm{X}\big)= \tilde{p}\big(\mathcal{D}_T^\bm{x}\big)$</p>
+<p>$$\begin{align}<br>\mathrm{E}_{p\big(\mathcal{D}_T^z,\mathcal{D}_T^\bm{x}\big)}\bigg[s\big(z_{t-1},z_t,\bm{X}\big)\bigg]<br>&amp;=\sum_{\bm{X}\in \mathcal{X}}\tilde{p}\big(\bm{X}\big)\sum_{z_{t-1},z_t\in \mathcal{D}}s\big(z_{t-1},z_t,\bm{X}\big)<br>\frac{\alpha_{t-1}[z_{t-1}]A[z_{t-1},z_t]\beta_t[z_t]}{\bm{I}^T\bm{\alpha}_t\cdot\bm{\beta}_t}\\<br>\mathrm{E}_{p\big(\mathcal{D}_T^z,\mathcal{D}_T^\bm{x}\big)}\bigg[k\big(z_t,\bm{X}\big)\bigg]<br>&amp;=\sum_{\bm{X}\in \mathcal{X}}\tilde{p}\big(\bm{X}\big)\sum_{z_t\in \mathcal{D}}k\big(z_t,\bm{X}\big)<br>\frac{\alpha_{t}[z_{t}]\beta_t[z_t]}{\bm{I}^T\bm{\alpha}_t\cdot\bm{\beta}_t}<br>\end{align}$$</p>
+<h4 id="四、维特比算法"><a href="#四、维特比算法" class="headerlink" title="四、维特比算法"></a>四、维特比算法</h4><h5 id="4-1、问题描述"><a href="#4-1、问题描述" class="headerlink" title="4.1、问题描述"></a>4.1、问题描述</h5><p>维比特算法要解决的是求隐变量最可能状态序列。可以理解为：已知观测变量数据集，推断隐变量数据集。</p>
+<p>$$\begin{align}<br>\widehat{\mathcal{D}}_T^z<br>=\widehat{\bm{z}}<br>=\mathop{\mathrm{argmax}}_{\mathcal{D}_T^z}p\big(\mathcal{D}_T^{\cdot\mid\cdot}\big)<br>=\mathop{\mathrm{argmax}}_{\mathcal{D}_T^z}p\big(\mathcal{D}_T^z\mid \mathcal{D}_T^\bm{x}\big)<br>=\mathop{\mathrm{argmax}}_{\bm{z}}p\big(\bm{z}\mid \bm{X}\big)<br>\end{align}$$</p>
+<p>我们有条件数据集分布<br>$$\begin{align}<br>p\big(\mathcal{D}_T^z\mid\mathcal{D}_T^\bm{x} \big)<br>&amp;=\frac{1}{Z\big(\bm{X}\big)}k\big(z_1,\bm{X}\big)\prod_{t=2}^Ts\big(z_{t-1},z_t,\bm{X}\big)k\big(z_t,\bm{X}\big)\\<br>&amp;=\frac{1}{Z\big(\bm{X}\big)}\pi[v]\prod_{t=2}^TA_t[i,j]\rho_t[j]<br>\end{align}$$</p>
+<p>令 $\displaystyle g\big(\mathcal{D}_T^z,\mathcal{D}_T^\bm{x}\big)<br>=g\big(\bm{z},\bm{X}\big)<br>=k\big(z_1,\bm{X}\big)\prod_{t=2}^Ts\big(z_{t-1},z_t,\bm{X}\big)k\big(z_t,\bm{X}\big)<br>=\pi[v]\prod_{t=2}^TA_t[i,j]\rho_t[j]$</p>
+<p>则有，我们去掉了一个常数 $1/Z\big(\bm{X}\big)$，以简化计算。<br>$$\begin{align}<br>\widehat{\mathcal{D}}_T^z<br>&amp;=\mathop{\mathrm{argmax}}_{\mathcal{D}_T^z}p\big(\mathcal{D}_T^z\mid \mathcal{D}_T^\bm{x}\big)<br>\propto \mathop{\mathrm{argmax}}_{\mathcal{D}_T^z}g\big(\mathcal{D}_T^z,\mathcal{D}_T^\bm{x}\big)<br>\end{align}$$</p>
+<p>也就是说我们选择最大化</p>
+<p>$$\begin{align}<br>\max_{\mathcal{D}_T^z}g\big(\mathcal{D}_T^z,\mathcal{D}_T^\bm{x}\big)<br>&amp;=\max_{\mathcal{D}_T^z}\bigg[k\big(z_1,\bm{X}\big)\prod_{t=2}^Ts\big(z_{t-1},z_t,\bm{X}\big)k\big(z_t,\bm{X}\big)\bigg]\\<br>&amp;=\max_{\mathcal{D}_T^z}\bigg[\pi[i_1]\prod_{t=2}^TA_t[i_{t-1},i_{t}]\rho_t[i_{t}]\bigg]<br>\end{align}$$</p>
+<p>其中 $\displaystyle i_t$是隐变量 $\displaystyle z_t$在时刻 $\displaystyle t$的状态。请反复体会这翻来覆去的表达式变换。不同的形式在不同场景下有利于说明不同的问题。</p>
+<h5 id="4-2、前向计算"><a href="#4-2、前向计算" class="headerlink" title="4.2、前向计算"></a>4.2、前向计算</h5><p>我们可以拆分隐变量数据集 $\displaystyle \mathcal{D}_t^z=\mathcal{D}_{t-1}^z\cup\{z_t\}$，这一拆分的关键自觉是时刻 $\displaystyle 1 \rightsquigarrow t$的最可能路径必须是由 $\displaystyle 1 \rightsquigarrow t-1$的最可能路径组成的。问题就变成</p>
+<p>$$\begin{align}<br>\max_{\mathcal{D}_t^z}g\big(\mathcal{D}_t^z,\mathcal{D}_t^\bm{x}\big)<br>&amp;=\max_{z_t}\max_{\mathcal{D}_{t-1}^z}g\big(\mathcal{D}_{t-1}^z,z_t,\mathcal{D}_t^\bm{x}\big)<br>\end{align}$$</p>
+<p>这种操作也称为 <strong><code>max-out</code></strong>.</p>
+<p>已知条件数据集和模型参数，计算条件数据集分布概率的前向计算中我们使用了一种 <strong><code>sum-product</code></strong>的操作简化了问题，同样在维比特算法的前向计算中，我们也可以使用叫做 <strong><code>max-product</code></strong>的操作来简化问题。追寻这一思想，下面来具体分析一下。令时刻 $\displaystyle t$的状态为 $\displaystyle i_t$，进而定义路径 $\displaystyle \mathcal{D}_t^z=\mathcal{D}_{t-1}^z\cup\{z_t=i_t\}$的最大权重：</p>
+<p>$$\begin{align}<br>\delta_t[i_t]=\max_{\mathcal{D}_{t-1}^z}g\big(\mathcal{D}_{t-1}^z,z_t,\mathcal{D}_t^\bm{x}\big)<br>\end{align}$$</p>
+<p>我们继续拆分数据集：令时刻 $\displaystyle t-1$的状态为 $\displaystyle i_{t-1}$，于是有</p>
+<p>$$\begin{align}<br>\delta_t[i_t]<br>&amp;=\max_{\mathcal{D}_{t-1}^z}g\big(\mathcal{D}_{t-1}^z,z_t,\mathcal{D}_T^\bm{x}\big)\\<br>&amp;=\max_{\mathcal{D}_{t-2}^z,z_{t-1}=i_{t-1}}\bigg[k\big(z_1,\bm{X}\big)\prod_{\tau=2}^{t-2}s\big(z_{\tau-1},z_\tau,\bm{X}\big)k\big(z_\tau,\bm{X}\big)<br>s\big(z_{t-2},z_{t-1}=i_{t-1},\bm{X}\big)k\big(z_{t-1}=i_{t-1},\bm{X}\big)\\<br>&amp;\quad s\big(z_{t-1}=i_{t-1},z_{t}=i_{t},\bm{X}\big)k\big(z_{t}=i_{t},\bm{X}\big)<br>\bigg]\\<br>&amp;=\max_{i_{t-1}}\delta_{t-1}[i_{t-1}]A[i_{t-1},i_t]\rho_t[i_t]<br>\end{align}$$</p>
+<p>也就是说：时刻 $\displaystyle t$行至状态 $\displaystyle i_t$的最可能路径必须有是由时刻$\displaystyle t-1$行至其他状态 $\displaystyle i_{t-1}$的最可能路径中权重最大的那个。</p>
+<p>$$\begin{align}<br>\delta_t[i_t]=\max_{i_{t-1}}\delta_{t-1}[i_{t-1}]A[i_{t-1},i_t]\rho_t[i_t]<br>\end{align}$$</p>
+<p>写成矩阵形式固定 $\displaystyle i_t$，令$\displaystyle a[i_{t-1}]=A[i_{t-1},i_t]$则有</p>
+<p>$$\begin{align}<br>\delta_t[i_t],\widehat{i}_{t-1}[z_t=i_t]<br>&amp;=\max[\bm{\delta}_{t-1}\odot\bm{a}_{t-1}]\rho_t[i_t]\\<br>\bm{\delta}_t,\widehat{\bm{i}}_{t-1}<br>&amp;=\big[\mathop{\mathrm{colmax}}[\bm{\delta}_{t-1}\odot\bm{A}]^\text{T}\odot\bm{\rho}_t<br>\end{align}$$</p>
+<p>定义初始状态 $ \delta_1[i_1]=k\big(z_1=i_1,\bm{X}\big)=\pi[i_1]$，同时我们注意到 $\displaystyle i_t$是可以任意的，递归计算我们得到一个网格图 <strong><code>trellis diagram</code></strong>。</p>
+<p>$$\begin{align}<br>\Delta=\{\bm{\delta}_1,\cdots,\bm{\delta}_t,\cdots,\bm{\delta}_T\}<br>\end{align}$$</p>
+<h5 id="4-3、后向回溯"><a href="#4-3、后向回溯" class="headerlink" title="4.3、后向回溯"></a>4.3、后向回溯</h5><p>经过前向计算我们得到了最大的权重</p>
+<p>$$\begin{align}<br>\max_{\mathcal{D}_t^z}g\big(\mathcal{D}_t^z,\mathcal{D}_t^\bm{x}\big)<br>=\max_{i_t}\delta_t[i_t]<br>=\max_{i_t}\max_{i_{t-1}}\max_{\cdots}\max_{i_2}\max_{i_2}\max_{i_1}\pi[i_1]<br>\prod_{t=2}^TA[i_{t-1},i_t]\rho_t[i_t]<br>\end{align}$$</p>
+<p>求最佳隐数据集本质是网格图 <strong><code>trellis diagram</code></strong> $\displaystyle \Delta=\{\bm{\delta}_1,\cdots,\bm{\delta}_t,\cdots,\bm{\delta}_T\}$上搜索最短距离。为了解决这个问题，回顾动态规划思想：最优路径 $ \widehat{\mathcal{D}}_{1:T}^z$的一部分 $ \widehat{\mathcal{D}}_{t:T}^z$对于 $ t:T$的所有可能路径 $ \mathcal{D}_{t:T}^z$必然是最优。如果存在另外一条路径 $  \tilde{\mathcal{D}}_{t:T}^z$是最优的，那么会出现矛盾 $ \widehat{\mathcal{D}}_{1:t}^z\cup   \tilde{\mathcal{D}}_{t:T}^z\neq \widehat{\mathcal{D}}_{1:T}^z $，所以 $ \widehat{\mathcal{D}}_{t:T}^z$ 必须是最优的。根据这一思想，我们定义回溯操作 <strong>traceback </strong>: $ \omega_t[\cdot]$，来从后向前还原最优状态序列。</p>
+<p>$$\begin{align}<br>\widehat{z}_{t-1}<br>=\omega_t[z_t=i_t]<br>=\omega_t[i_t]<br>=\mathop{\mathrm{argmax}}_{i_{t-1}}\,\delta_{t-1}[i_{t-1}]A[i_{t-1},i_t] \rho_t[i_t]<br>\end{align}$$</p>
+<p>定义 $ T$时刻最优状态 $\displaystyle \widehat{z}_{T}=\mathop{\mathrm{argmax}}_{i_T}\,\delta_T[i_T]$。应用回溯操作，得到最优路径：<br>$$\begin{align}<br>\widehat{\mathcal{D}}_{T}^z=\{\widehat{z}_{T}=\mathop{\mathrm{argmax}}_{i_T}\,\delta_T[i_T]\}\cup\{\widehat{z}_{t-1}=\omega_t[\hat{z}_{t}]\}_{t=T}^1<br>\end{align}$$</p>
+<p>为了解决数据下溢问题，我们可以取对数<br>$$\begin{align}<br>&amp;\ln\delta_{t}[i_t]<br>=\max_{i_{t-1}}\big[\ln\rho_t[i_t]+\ln A[i_{t-1},i_t]+\ln\delta_{t-1}[i_{t-1}]\big]\\<br>&amp;\hat{z}_{t-1}=\omega_t[i_t]=\mathop{\mathrm{argmax}}_{i_{t-1}}\,\big[\ln\rho_t[i_t]+\ln A[i_{t-1},i_t]+\ln\delta_{t-1}[i_{t-1}]\big]<br>\end{align}$$</p>
+<p><div style="color:#2e8ccf;background-color:#f2f2f2"></div></p>
+<p><hr style="height:1px;border:none;border-top:1px dashed #0066CC;"></p>
+<p></p><p>算法：维特比算法</p><p></p>
+<p><hr style="height:1px;border:none;border-top:1px dashed #0066CC;"><br></p>
+<p><font face="Times" new="" roman="" size="3" color="#0066CC">1 $\displaystyle \bm{\delta}_1=\bm{\pi}$<br>2 $\displaystyle \text{ for }\,t=2:T$<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\text{ for }\,i_{t}=1:C \\<br>\quad\begin{array}{|lc}<br>\displaystyle \text{Traceback_Data}=\big[\ln\delta_t[i_t],\omega_{t-1}[i_t]\big]=\big[\mathop{\mathrm{colmax}}[\ln\bm{\delta}_{t-1}+\ln\bm{A}\big]^\text{T}+\ln\bm{\rho}_t<br>\end{array}\\<br>\text{ end}\\<br>\end{array}<br>$<br>3 end<br>$\displaystyle [\ln\delta_T,\hat{z}_{T}]=\max_{i_T}\,\ln\bm{\delta}_T$<br>4 $\displaystyle \text{ for }\,t=T:2$<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\hat{z}_{t-1}=\omega_{t}[\hat{z}_{t}]<br>\end{array}<br>$<br>5 end<br>6 $\displaystyle \hat{\bm{z}}$</font></p>
+<hr style="height:1px;border:none;border-top:1px dashed #0066CC;">
+
+
+
+
+<h4 id="五、条件随机场的训练"><a href="#五、条件随机场的训练" class="headerlink" title="五、条件随机场的训练"></a>五、条件随机场的训练</h4><h5 id="5-1、数据集的对数似然函数"><a href="#5-1、数据集的对数似然函数" class="headerlink" title="5.1、数据集的对数似然函数"></a>5.1、数据集的对数似然函数</h5><p>$$\begin{align}<br>p\big(\bm{z}\mid\bm{X}\big)<br>&amp;=p\big(\mathcal{D}^{\cdot|\cdot}_T\big)<br>=p\big(\mathcal{D}_T^z\mid\mathcal{D}_T^\bm{x}\big)<br>=\frac{1}{Z\big(\bm{X}\big)}\prod_{t=2}^Ts\big(z_{t-1},z_t,\bm{X}\big)\prod_{t=1}^Tk\big(z_t,\bm{X}\big)\\<br>&amp;=\frac{1}{Z\big(\bm{X}\big)}k\big(z_1,\bm{X}\big)\prod_{t=2}^Ts\big(z_{t-1},z_t,\bm{X}\big)k\big(z_t,\bm{X}\big)\\<br>\end{align}$$</p>
+<p>定义整体数据集 $\displaystyle \mathcal{D}=\{\mathcal{[D}_T^z\mid \mathcal{D}_T^\bm{x}]_i\}_{i=1}^n$，含义是很清楚的：如果是句子的序列标注，就是 $\displaystyle n$带标注的句子。其中标注就是隐变量数据集，句子就是观测变量数据集。多个带标注的句子就是我们的 $\displaystyle \mathcal{D}$。</p>
+<p>$$\begin{align}<br>\ln p\big(\mathcal{D}\big)<br>&amp;=\ln \prod_{i=1}^np\big([\mathcal{D}_T^z\mid \mathcal{D}_T^\bm{x}]_i\big)<br>=\sum_{i=1}^n\ln p\big([\mathcal{D}_T^z\mid \mathcal{D}_T^\bm{x}]_i\big)\\<br>&amp;=\sum_{i=1}^n\Bigg[\ln k\big(z_{1,i},\bm{X}_i\big)+\sum_{t=2}^T\bigg[\ln s\big(z_{t-1,i},z_{t,i},\bm{X}_i\big)+\ln k\big(z_{t,i},\bm{X}_i\big)\bigg]-\ln Z\big(\bm{X}_i\big)\Bigg]\\<br>&amp;=\sum_{i=1}^n\ln k\big(z_{1,i},\bm{X}_i\big)+\sum_{i=1}^n\sum_{t=2}^T\bigg[\ln s\big(z_{t-1,i},z_{t,i},\bm{X}_i\big)+\ln k\big(z_{t,i},\bm{X}_i\big)\bigg]-\sum_{i=1}^n\ln Z\big(\bm{X}_i\big)\\<br>&amp;=\sum_{i=1}^n\sum_{t=1}^T\ln k\big(z_{t,i},\bm{X}_i\big)+\sum_{i=1}^n\sum_{t=2}^T\ln s\big(z_{t-1,i},z_{t,i},\bm{X}_i\big)-\sum_{i=1}^n\ln Z\big(\bm{X}_i\big)\\<br>&amp;=\sum_{i=1}^n\ln g\big(\bm{z}_{i},\bm{X}_{i}\big)-\sum_{i=1}^n\ln Z\big(\bm{X}_i\big)\\<br>\end{align}$$</p>
+<p>我们必须清晰定义函数 $\displaystyle s,k$才能使得求导变得显然(注意转置 $\displaystyle \mathrm{T}$与下标 $\displaystyle T$)的区别，同时注意 $\displaystyle i$表示的是隐变量的状态。这样发射分数 $\displaystyle k(\cdot)$和转换分数函数 $\displaystyle s(\cdot)$就是类似于分类分布和矩阵分类分布的形势，如下：</p>
+<p>$$\begin{align}<br>k\big(z_t=i,\bm{X}\big)&amp;=\pi_{tc}^{\mathbb{I}(z_t=i)}\\<br>s\big(z_{t-1}=i,z_t=j,\bm{X}\big)&amp;=A[i,j]^{\mathbb{I}(z_{t-1}=i)\mathbb{I}(z_t=j)}<br>\end{align}$$<br>为了更加简洁，我们重新定义隐变量 $\displaystyle z_t\in \mathcal{Z}=\{1,\cdots,C\}$的表现形式。我们使用 $\displaystyle 0-1$编码对隐边重新定义： $\displaystyle \bm{z}_t\in \mathcal{Z}=\{0,1\}^C$<br>$$\begin{align}<br>\bm{z}_t=[ 0\cdots1\cdots0 ]^\text{T}\iff \bm{z}_t[i]=z_{ti}=1\iff z_t=i<br>\end{align}$$<br>同时我们定义 $\displaystyle \bm{Z}_{T\times C}=[\bm{z}_1,\cdots,\bm{z}_t,\cdots,\bm{z}_T]^T$、$\displaystyle [\bm{\pi}_t]_{C\times 1}=\big[\pi_{z_1=1},\cdots,\pi_{z_t=i},\cdots,\pi_{z_T=C}\big]^T$。还定义 $\displaystyle \bm{\Pi}_{C\times T}=[\bm{\pi}_1,\cdots,\bm{\pi}_T]$。需要注意的是我们对向量的定义默认是列向量，对数据集的矩阵定义已行就是一条数据、一列就是一个特征。相关参数的定义适应数据集矩阵定义。继续，这样有</p>
+<p>$$\begin{align}<br>k\big(z_t=i,\bm{X}\big)&amp;=\bm{I}^\mathrm{T}\big[\bm{z}_t\odot\bm{\pi}_t\big]\\<br>s\big(z_{t-1}=i,z_t=j,\bm{X}\big)&amp;=\bm{I}^\mathrm{T}\big[\bm{z}_{t-1}\bm{z}_t\odot \bm{A}\big]\bm{I}<br>\end{align}$$</p>
+<p>我们将注意力再次集中到似然函数：<br>$$\begin{align}<br>\ell\big(\mathcal{D}\big)<br>&amp;=\ln p\big(\mathcal{D}\big)<br>=\sum_{i=1}^n\ln g\big(\bm{Z}_{i},\bm{X}_{i}\big)-\sum_{i=1}^n\ln Z\big(\bm{X}_{i}\big)\\<br>&amp;=\sum_{i=1}^n\sum_{t=1}^T\bm{I}^\mathrm{T}\big[\bm{z}_{t,i}\odot\ln\bm{\pi}_t\big]<br>+\sum_{i=1}^n\sum_{t=2}^T\bm{I}^\mathrm{T}\big[\bm{z}_{t-1,i}\bm{z}_{t,i}^\mathrm{T}\odot\ln\bm{A}\big]\bm{I}-\sum_{i=1}^n\ln Z\big(\bm{X_i}\big)\\<br>&amp;=\sum_{i=1}^n\bm{I}^\mathrm{T}\big[\bm{Z}^\mathrm{T}\odot\ln\bm{\Pi}\big]\bm{I}+\sum_{i=1}^n\sum_{t=2}^T\bm{I}^\mathrm{T}\big[\bm{z}_{t-1,i}\bm{z}_{t,i}^\mathrm{T}\odot\ln\bm{A}\big]\bm{I}-\sum_{i=1}^n\ln Z\big(\bm{X_i}\big)<br>\end{align}$$</p>
+<p>其中<br>$\displaystyle \ln g\big(\bm{Z},\bm{X}\big)<br>=\bm{I}^\mathrm{T}\big[\bm{Z}^\mathrm{T}\odot\ln\bm{\Pi}\big]\bm{I}<br>+\sum_{t=2}^T\bm{I}^\mathrm{T}\big[\bm{z}_{t-1}\bm{z}_{t}^\mathrm{T}\odot\ln\bm{A}\big]\bm{I}$<br>$\displaystyle \ln Z\big(\bm{X}\big)<br>=\ln\sum_{\bm{Z}}g(\bm{Z}, \bm{X})<br>=\ln\sum_{\bm{Z}}\bigg[\bm{I}^\mathrm{T}\big[\bm{Z}^\mathrm{T}\odot\bm{\Pi}\big]\bm{I}<br>+\sum_{t=2}^T\bm{I}^\mathrm{T}\big[\bm{z}_{t-1}\bm{z}_{t}^\mathrm{T}\odot\bm{A}\big]\bm{I}\bigg]$</p>
+<h5 id="5-2、对数似然函数求导"><a href="#5-2、对数似然函数求导" class="headerlink" title="5.2、对数似然函数求导"></a>5.2、对数似然函数求导</h5><p>于是对参数 $\displaystyle \bm{\theta}=\{\bm{\Pi},\bm{A}\}$求导有</p>
+<p>$$\begin{align}<br>\frac{\partial \ell}{\partial  \bm{\varXi}}<br>&amp;=\frac{\sum_{i}^n \bm{Z}_i^\mathrm{T}}{\bm{\Pi}}-\sum_{i=1}^n\frac{\sum_{\bm{Z}\in \mathcal{Z}}\bm{Z}_i^\mathrm{T}}{Z\big(\bm{X}_i\big)}<br>=\frac{\sum_{i}^n \bm{Z}_i^\mathrm{T}}{\bm{\Pi}}-\frac{nC^{C-1}\bm{I}_{C\times T}}{\sum_{i=1}^nZ\big(\bm{X}_i\big)}<br>=\bm{0}\\<br>\frac{\partial \ell}{\partial  \bm{A}}<br>&amp;=\frac{\sum_{i}^n \bm{z}_{t-1,i}\bm{z}_{t,i}^\mathrm{T}}{\bm{A}}-\sum_{i=1}^n\frac{\sum_{\bm{Z}\in \mathcal{Z}}\bm{z}_{t-1,i}\bm{z}_{t,i}^\mathrm{T}}{Z\big(\bm{X}_i\big)}<br>=\frac{\bm{S}}{\bm{A}}-\frac{nC^{C-1}\bm{I}_{C\times C}}{\sum_{i}^nZ\big(\bm{X}_i\big)}=\bm{0}<br>\end{align}$$</p>
+<p>求解我们有：<br>$$\begin{align}<br>\bm{\Pi}&amp;=\frac{1}{nC^{C-1}}\sum_{i=1}^nZ\big(\bm{X}_i\big)\sum_{i}^n \bm{Z}_i^\mathrm{T}\\<br>\bm{A}&amp;=\frac{1}{nC^{C-1}}\sum_{i=1}^nZ\big(\bm{X}_i\big)\bm{S}<br>\end{align}$$</p>
+<p>我们来理解一下这个公式的含义，发射分数实际上就是整体数据集中序列状态（0-1编码向量）的加和然后取平均。转移分数也是整体数据序列转移状态(0-1编码矩阵)的加和然后取平均，最后它们都乘以了一个归一常数。到这里参数 $\displaystyle \bm{\pi}_t$似乎从天而降,我们来明细一下。令 $\displaystyle \dim[\bm{X}]=T\times F$。观测变量 $\displaystyle \bm{x}$有 $\displaystyle F$个特征维度。定义 $\displaystyle \bm{\pi}_t=\bm{W}^\mathrm{T}\bm{x}_t+\bm{\omega}$</p>
+<p>于是又有<br>$$\begin{align}<br>\bm{\Pi}_{C\times T}=\bm{W}_{C\times F}\bm{X}_{T\times F}^{\mathrm{T}}+\bm{\omega}_{C\times 1}\odot \bm{I}_{C\times T}<br>=\bm{W}\bm{X}^{\mathrm{T}}+\bm{\varXi}<br>\end{align}$$<br>$$\begin{align}<br>\ell\big(\mathcal{D}\big)<br>&amp;=\ln p\big(\mathcal{D}\big)<br>=\sum_{i=1}^n\ln g\big(\bm{Z}_{i},\bm{X}_{i}\big)-\sum_{i=1}^n\ln Z\big(\bm{X}_{i}\big)\\<br>&amp;=\sum_{i=1}^n\bm{I}^\mathrm{T}\big[\bm{Z}^\mathrm{T}\odot\ln \big[\bm{W}\bm{X}^{\mathrm{T}}+\bm{\varXi}\big]\big]\bm{I}+\sum_{i=1}^n\sum_{t=2}^T\bm{I}^\mathrm{T}\big[\bm{z}_{t-1,i}\bm{z}_{t,i}^\mathrm{T}\odot\ln\bm{A}\big]\bm{I}-\sum_{i=1}^n\ln Z\big(\bm{X_i}\big)<br>\end{align}$$<br>表达式已经比较复杂，求解析解存在困难，这里我们一般用拟牛顿，或者其他各种优化方法求解。</p>
+<h4 id="六、总结"><a href="#六、总结" class="headerlink" title="六、总结"></a>六、总结</h4><p>1、我们使用条件随机场定义条件概率 $\displaystyle p\big(\bm{z}\mid \bm{X}\big)$。我们是基于整体特征定义了观测变量与隐变量的关系 $\displaystyle k\big(z_t,\bm{X}\big)$，而不像隐马尔可夫模型那样 $\displaystyle p\big(\bm{x}_t\mid z_t\big)$。这大大利于充分利用观测序列的信息。而不是局部信息。<br>2、然后我们使用图模型的信念传播 <code>Belife Propagation</code>,先后使用前向后向算法和维比特算法，解决了求值和求隐状态的问题。<br>3、最后我们定义了特殊的发射分数函数，和转移分数函数，解析的求解了参数，获得了参数自觉的一些解释。<br>4、人类可以通过一些精巧的设计，来获取超乎直观想象结果，上帝似乎很惊异。</p>
+<p><hr></p>
+<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="http://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="http://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="http://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="http://www.limoncc.com">[ http://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%"><a href="http://www.limoncc.com/机器学习/2017-03-12-条件随机场模型/">http://www.limoncc.com/机器学习/2017-03-12-条件随机场模型/</a></td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/机器学习/" rel="tag">#机器学习</a>
+          
+            <a href="/tags/概率图/" rel="tag">#概率图</a>
+          
+            <a href="/tags/条件随机场模型/" rel="tag">#条件随机场模型</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/机器学习/2017-03-11-隐马尔可夫模型/" rel="next" title="隐马尔可夫模型">
+                <i class="fa fa-chevron-left"></i> 隐马尔可夫模型
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/机器学习/2017-04-05-感知器-机器学习/" rel="prev" title="感知机">
+                感知机 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+<!--           </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div> -->
+        <div id="vcomments"></div>
+        <script>new Valine({
+          el: "#vcomments",
+      appId: "BVjuNRCpkVSkz82jFmadIvY8-gzGzoHsz",
+    appKey: "bRjXPp55dop7RTC2xgunGdiP"})
+  </script>'
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="引线小白" />
+          <p class="site-author-name" itemprop="name">引线小白</p>
+          <p class="site-description motion-element" itemprop="description">小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">27</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="" target="_blank" title="Design">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Design
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.behance.net/limoncc" target="_blank" title="Behance">
+                  
+                    <i class="fa fa-fw fa-behance"></i>
+                  
+                  Behance
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.pinterest.com/aegeanfan/" target="_blank" title="Pinterest">
+                  
+                    <i class="fa fa-fw fa-pinterest"></i>
+                  
+                  Pinterest
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/limoncc" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://weibo.com/3483157951" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://www.zhihu.com/people/limoncc" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              设计不止，折腾不息。
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://chuangzaoshi.com" title="创造狮" target="_blank">创造狮</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、哈默斯利-克利福德定理Hammersley-Clifford定理"><span class="nav-number">1.</span> <span class="nav-text">一、哈默斯利-克利福德定理Hammersley-Clifford定理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、条件随机场Conditional-random-ﬁelds-CRFs"><span class="nav-number">2.</span> <span class="nav-text">二、条件随机场Conditional random ﬁelds (CRFs)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1、一般定义"><span class="nav-number">2.1.</span> <span class="nav-text">2.1、一般定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2、边势能和节点势能"><span class="nav-number">2.2.</span> <span class="nav-text">2.2、边势能和节点势能</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、前向向后算法"><span class="nav-number">3.</span> <span class="nav-text">三、前向向后算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1、直接计算"><span class="nav-number">3.1.</span> <span class="nav-text">3.1、直接计算</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2、前向计算"><span class="nav-number">3.2.</span> <span class="nav-text">3.2、前向计算</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3、前向后向算法"><span class="nav-number">3.3.</span> <span class="nav-text">3.3、前向后向算法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4、一些概率与期望的计算"><span class="nav-number">3.4.</span> <span class="nav-text">3.4、一些概率与期望的计算</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、维特比算法"><span class="nav-number">4.</span> <span class="nav-text">四、维特比算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1、问题描述"><span class="nav-number">4.1.</span> <span class="nav-text">4.1、问题描述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2、前向计算"><span class="nav-number">4.2.</span> <span class="nav-text">4.2、前向计算</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-3、后向回溯"><span class="nav-number">4.3.</span> <span class="nav-text">4.3、后向回溯</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#五、条件随机场的训练"><span class="nav-number">5.</span> <span class="nav-text">五、条件随机场的训练</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#5-1、数据集的对数似然函数"><span class="nav-number">5.1.</span> <span class="nav-text">5.1、数据集的对数似然函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-2、对数似然函数求导"><span class="nav-number">5.2.</span> <span class="nav-text">5.2、对数似然函数求导</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#六、总结"><span class="nav-number">6.</span> <span class="nav-text">六、总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">引线小白&nbsp &nbsp |&nbsp &nbsp  一个理想主义者，再造自我，以期未来。</span>
+</div>
+
+<div class="powered-by">
+  由 <a rel="external nofollow" class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a rel="external nofollow" class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>&nbsp &nbsp| &nbsp &nbsp Hosted by  <a href="https://github.com" style="font-weight: bold">Github Pages</a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+<!--   
+   
+  
+
+  
+
+ -->
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+     showMathMenu: false,
+     showMathMenuMSIE: false,
+     tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+          processEscapes: true
+        },
+        TeX: {
+          equationNumbers: {autoNumber: 'AMS'},
+          Macros: {bm: "\\boldsymbol"}
+        },
+        'HTML-CSS': {
+          imageFont: null
+        }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Es7wAnqi0QiGhMLoyl7mkrQo-gzGzoHsz", "BxPXaoPFp3PzWqBTSe6VUuQS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</body>
+</html>
