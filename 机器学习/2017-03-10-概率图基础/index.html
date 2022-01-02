@@ -97,7 +97,7 @@
 <meta property="og:image" content="http://www.limoncc.com/images/图模型比较.png">
 <meta property="og:image" content="http://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="http://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2022-01-02T08:37:30.986Z">
+<meta property="og:updated_time" content="2022-01-02T08:39:50.334Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="概率图基础">
 <meta name="twitter:description" content="概率是一个好工具，这个工具的核心在于概率的条件独立性质。或者说高级一点条件期望。没有条件期望，概率论不过是测度论的一个表现形式。正是我们定义了条件概率，概率论才枝深叶茂起来。但是表达条件概率不仅仅用数学公式，还可以用图。于是一门新的学科诞生了：概率图。本文通过清晰的数学符号，简洁的描述带你入门概率图。">
@@ -410,7 +410,7 @@
 <!-- 作者：引线小白
 邮箱：limoncc@icloud.com
 网址：www.limoncc.com  -->
-<p>有向边：$\displaystyle s\to t=v_s\to v_t\Rightarrow\mathcal{G}(s,t)=1\Rightarrow \&lt;st>\in E(\mathcal{G})$<br>无向边：$\displaystyle s-t=v_s-v_t\Rightarrow \mathcal{G}(s,t)=1\land\mathcal{G}(s,t)=1\Rightarrow(st)\in E(\mathcal{G})$<br>某种边：$\displaystyle s\rightleftarrows t=v_s\rightleftarrows v_t\Rightarrow \mathcal{G}(s,t)=1\lor\mathcal{G}(s,t)=1\Rightarrow st\in E(\mathcal{G})$<br>没有边：$\displaystyle \require{cancel} s\cancel{\rightleftarrows}t\Rightarrow\mathcal{G}(s,t)=0\Rightarrow st \notin E(\mathcal{G})$</p>
+<p>有向边：$\displaystyle s\to t=v_s\to v_t\Rightarrow\mathcal{G}(s,t)=1\Rightarrow \\&lt;st>\in E(\mathcal{G})$<br>无向边：$\displaystyle s-t=v_s-v_t\Rightarrow \mathcal{G}(s,t)=1\land\mathcal{G}(s,t)=1\Rightarrow(st)\in E(\mathcal{G})$<br>某种边：$\displaystyle s\rightleftarrows t=v_s\rightleftarrows v_t\Rightarrow \mathcal{G}(s,t)=1\lor\mathcal{G}(s,t)=1\Rightarrow st\in E(\mathcal{G})$<br>没有边：$\displaystyle \require{cancel} s\cancel{\rightleftarrows}t\Rightarrow\mathcal{G}(s,t)=0\Rightarrow st \notin E(\mathcal{G})$</p>
 <p>【分类】如果一个图的所有边都是有向边，则称其为有向图 $\displaystyle \textit{(Directed Graph)}$；如果都是无向边，则称其为无向图 $\displaystyle \textit{(Undirected Graph)}$；如果皆有之，则称其为混合图$\displaystyle \textit{(Mixed Graph)}$</p>
 <h5 id="2-3、关于节点认识"><a href="#2-3、关于节点认识" class="headerlink" title="2.3、关于节点认识"></a>2.3、关于节点认识</h5><h6 id="2-3-1、有向图下的节点基本概念"><a href="#2-3-1、有向图下的节点基本概念" class="headerlink" title="2.3.1、有向图下的节点基本概念"></a>2.3.1、有向图下的节点基本概念</h6><p>一个节点的 $Parent$父节点集: $\displaystyle pa(s)=\{t\mid\mathcal{G}(t,s)=1,t\in V(\mathcal{G})\}$<br>一个节点的 $Child$子节点集: $\displaystyle ch(s)=\{t\mid\mathcal{G}(s,t)=1,t\in V(\mathcal{G}) \}$<br>一个节点的 $Family$族节点集: $\displaystyle fam(s)=\{s\}\cup Pa(s)$</p>
 <p>一个节点是 $root$根: $\displaystyle \exists  pa(s)=\emptyset\to \textit{s is a root}$<br>一个节点是 $leaf$叶: $\displaystyle \exists ch(s)=\emptyset\to \textit{s is a leaf}$</p>
