@@ -95,7 +95,7 @@
 <meta property="og:image" content="http://www.limoncc.com/images/隐马尔可夫模型.png">
 <meta property="og:image" content="http://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="http://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2022-01-02T12:13:57.282Z">
+<meta property="og:updated_time" content="2022-01-02T12:55:59.673Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="隐马尔可夫模型">
 <meta name="twitter:description" content="隐马尔可夫是一个古老的模型，开始我们回顾了一下它的基本问题。然后我们使用前向后向算法和维比特算法，解决了求值和求隐状态的问题。中间我们使用EM算法，解决了参数求解的问题。人类可以通过一些精巧的设计，来获取超乎直观想象结果，当人类的思想开始集成，开始向深处，广处延伸时，上帝似乎很惊异。">
@@ -453,14 +453,13 @@
 <h6 id="2-4-3、后向回溯"><a href="#2-4-3、后向回溯" class="headerlink" title="2.4.3、后向回溯"></a>2.4.3、后向回溯</h6><p>回到我们的问题：已知观测变量数据集，推断隐变量数据集。最大化联合概率问题变为<br>$$\begin{align}<br>\max_{\mathcal{D}_T^z} p\big(\mathcal{D}_T^\bm{x},\mathcal{D}_T^z\big)<br>=\max_{i_T}\max_{i_{T-1}}A[i_{T-1},i_t] \rho_T[i_T]\cdots\max_{i_1}\delta_1[i_1]A[i_{1},i_2] \rho_2[i_2]<br>\end{align}$$</p>
 <p>为了解决这个问题，回顾动态规划思想：最优路径 $ \hat{\mathcal{D}}_{1:T}^z$的一部分 $ \hat{\mathcal{D}}_{t:T}^z$对于 $ t:T$的所有可能路径 $ \mathcal{D}_{t:T}^z$必然是最优。如果存在另外一条路径 $  \tilde{\mathcal{D}}_{t:T}^z$是最优的，那么会出现矛盾 $ \hat{\mathcal{D}}_{1:t}^z\cup   \tilde{\mathcal{D}}_{t:T}^z\neq \hat{\mathcal{D}}_{1:T}^z $，所以 $ \hat{\mathcal{D}}_{t:T}^z$ 必须是最优的。根据这一思想，我们定义回溯操作 <strong>traceback </strong>: $ \omega_t[\cdot]$，来从后向前还原最优状态序列。<br>$$\begin{align}<br>\hat{z}_{t-1}=\omega_t[i_t]=\mathop{\mathrm{argmax}}_{i_{t-1}}\,\delta_{t-1}[i_{t-1}]A[i_{t-1},i_t] \rho_t[i_t]<br>\end{align}$$定义 $ T$时刻最优状态 $\displaystyle \hat{z}_{T}=\mathop{\mathrm{argmax}}_{i_T}\,\delta_T[i_T]$。应用回溯操作，得到最优路径：<br>$$\begin{align}<br>\hat{\mathcal{D}}_{T}^z=\{\hat{z}_{t-1}=\omega_t[\hat{z}_{t}]\}_{t=T}^1<br>\end{align}$$</p>
 <p>为了解决数据下溢问题，我们可以取对数<br>$$\begin{align}<br>&amp;\ln\delta_{t}[i_t]<br>=\max_{i_{t-1}}\big[\ln\delta_{t-1}[i_{t-1}]+\ln A[i_{t-1},i_t] +\ln\rho_t[i_t]\big]\\<br>&amp;\hat{z}_{t-1}=\omega_t[i_t]=\mathop{\mathrm{argmax}}_{i_{t-1}}\,\big[\ln\delta_{t-1}[i_{t-1}]+\ln A[i_{t-1},i_t] +\ln\rho_t[i_t]\big]<br>\end{align}$$</p>
-<p><div style="color:#2e8ccf;background-color:#f2f2f2"></div></p>
-<p><hr style="height:1px;border:none;border-top:1px dashed #0066CC;"></p>
-<p></p><p>算法：维特比算法</p><p></p>
-<p><hr style="height:1px;border:none;border-top:1px dashed #0066CC;"><br></p>
-<p><font face="Times" new="" roman="" size="3" color="#0066CC">1 $\displaystyle \bm{\delta}_1=\bm{\pi}$<br>2 $\displaystyle \text{ for }\,t=2:T$<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\text{ for }\,i_{t}=1:C \\<br>\quad\begin{array}{|lc}<br>\displaystyle \text{Traceback_Data}=\big[\ln\delta_t[i_t],\omega_{t-1}[i_t]\big]=\big[\mathop{\mathrm{colmax}}[\ln\bm{\delta}_{t-1}+\ln\bm{A}\big]^\text{T}+\ln\bm{\rho}_t<br>\end{array}\\<br>\text{ end}\\<br>\end{array}<br>$<br>3 end<br>$\displaystyle [\ln\delta_T,\hat{z}_{T}]=\max_{i_T}\,\ln\bm{\delta}_T$<br>4 $\displaystyle \text{ for }\,t=T:2$<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\hat{z}_{t-1}=\omega_{t}[\hat{z}_{t}]<br>\end{array}<br>$<br>5 end<br>6 $\displaystyle \hat{\bm{z}}$</font></p>
-<hr style="height:1px;border:none;border-top:1px dashed #0066CC;">
-
-
+<hr>
+<p>算法：维特比算法</p><p></p>
+<hr>
+<p><!-- 作者：引线小白
+邮箱：limoncc@icloud.com
+网址：www.limoncc.com  --><font face="Times" new="" roman="" size="3" color="#0066CC">1 $\displaystyle \bm{\delta}_1=\bm{\pi}$<br>2 $\displaystyle \text{ for }\,t=2:T$<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\text{ for }\,i_{t}=1:C \\<br>\quad\begin{array}{|lc}<br>\displaystyle \text{Traceback_Data}=\big[\ln\delta_t[i_t],\omega_{t-1}[i_t]\big]=\big[\mathop{\mathrm{colmax}}[\ln\bm{\delta}_{t-1}+\ln\bm{A}\big]^\text{T}+\ln\bm{\rho}_t<br>\end{array}\\<br>\text{ end}\\<br>\end{array}<br>$<br>3 end<br>$\displaystyle [\ln\delta_T,\hat{z}_{T}]=\max_{i_T}\,\ln\bm{\delta}_T$<br>4 $\displaystyle \text{ for }\,t=T:2$<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\hat{z}_{t-1}=\omega_{t}[\hat{z}_{t}]<br>\end{array}<br>$<br>5 end<br>6 $\displaystyle \hat{\bm{z}}$</font></p>
+<hr>
 <h4 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h4><p>1、隐马尔可夫是一个古老的模型，开始我们回顾了一下它的基本问题<br>2、然后我们使用前向后向算法和维比特算法，解决了求值和求隐状态的问题。<br>3、中间我们使用 $\displaystyle EM$算法，解决了参数求解的问题。<br>4、人类可以通过一些精巧的设计，来获取超乎直观想象结果，当人类的思想开始集成，开始向深处，广处延伸时，上帝似乎很惊异。</p>
 <p><hr></p>
 <p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="http://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="http://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="http://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="http://www.limoncc.com">[ http://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%"><a href="http://www.limoncc.com/机器学习/2017-03-11-隐马尔可夫模型/">http://www.limoncc.com/机器学习/2017-03-11-隐马尔可夫模型/</a></td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>

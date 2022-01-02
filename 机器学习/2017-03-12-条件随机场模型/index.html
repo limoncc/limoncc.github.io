@@ -97,7 +97,7 @@
 <meta property="og:image" content="http://www.limoncc.com/images/条件随机场信念传播.png">
 <meta property="og:image" content="http://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="http://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2022-01-02T12:25:38.147Z">
+<meta property="og:updated_time" content="2022-01-02T12:56:05.274Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="条件随机场模型">
 <meta name="twitter:description" content="我们使用条件随机场定义条件概率。我们是基于整体特征定义了观测变量与隐变量的关系，而不像隐马尔可夫模型那样。这大大利于充分利用观测序列的信息，而不是局部信息。">
@@ -478,16 +478,13 @@
 <p>$$\begin{align}<br>\widehat{z}_{t-1}<br>=\omega_t[z_t=i_t]<br>=\omega_t[i_t]<br>=\mathop{\mathrm{argmax}}_{i_{t-1}}\,\delta_{t-1}[i_{t-1}]A[i_{t-1},i_t] \rho_t[i_t]<br>\end{align}$$</p>
 <p>定义 $ T$时刻最优状态 $\displaystyle \widehat{z}_{T}=\mathop{\mathrm{argmax}}_{i_T}\,\delta_T[i_T]$。应用回溯操作，得到最优路径：<br>$$\begin{align}<br>\widehat{\mathcal{D}}_{T}^z=\{\widehat{z}_{T}=\mathop{\mathrm{argmax}}_{i_T}\,\delta_T[i_T]\}\cup\{\widehat{z}_{t-1}=\omega_t[\hat{z}_{t}]\}_{t=T}^1<br>\end{align}$$</p>
 <p>为了解决数据下溢问题，我们可以取对数<br>$$\begin{align}<br>&amp;\ln\delta_{t}[i_t]<br>=\max_{i_{t-1}}\big[\ln\rho_t[i_t]+\ln A[i_{t-1},i_t]+\ln\delta_{t-1}[i_{t-1}]\big]\\<br>&amp;\hat{z}_{t-1}=\omega_t[i_t]=\mathop{\mathrm{argmax}}_{i_{t-1}}\,\big[\ln\rho_t[i_t]+\ln A[i_{t-1},i_t]+\ln\delta_{t-1}[i_{t-1}]\big]<br>\end{align}$$</p>
-<p><div style="color:#2e8ccf;background-color:#f2f2f2"></div></p>
-<p><hr style="height:1px;border:none;border-top:1px dashed #0066CC;"></p>
-<p></p><p>算法：维特比算法</p><p></p>
-<p><hr style="height:1px;border:none;border-top:1px dashed #0066CC;"><br></p>
-<p><font face="Times" new="" roman="" size="3" color="#0066CC">1 $\displaystyle \bm{\delta}_1=\bm{\pi}$<br>2 $\displaystyle \text{ for }\,t=2:T$<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\text{ for }\,i_{t}=1:C \\<br>\quad\begin{array}{|lc}<br>\displaystyle \text{Traceback_Data}=\big[\ln\delta_t[i_t],\omega_{t-1}[i_t]\big]=\big[\mathop{\mathrm{colmax}}[\ln\bm{\delta}_{t-1}+\ln\bm{A}\big]^\text{T}+\ln\bm{\rho}_t<br>\end{array}\\<br>\text{ end}\\<br>\end{array}<br>$<br>3 end<br>$\displaystyle [\ln\delta_T,\hat{z}_{T}]=\max_{i_T}\,\ln\bm{\delta}_T$<br>4 $\displaystyle \text{ for }\,t=T:2$<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\hat{z}_{t-1}=\omega_{t}[\hat{z}_{t}]<br>\end{array}<br>$<br>5 end<br>6 $\displaystyle \hat{\bm{z}}$</font></p>
-<hr style="height:1px;border:none;border-top:1px dashed #0066CC;">
-
-
-
-
+<hr>
+<p>算法：维特比算法</p><p></p>
+<hr>
+<p><!-- 作者：引线小白
+邮箱：limoncc@icloud.com
+网址：www.limoncc.com  --><font face="Times" new="" roman="" size="3" color="#0066CC">1 $\displaystyle \bm{\delta}_1=\bm{\pi}$<br>2 $\displaystyle \text{ for }\,t=2:T$<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\text{ for }\,i_{t}=1:C \\<br>\quad\begin{array}{|lc}<br>\displaystyle \text{Traceback_Data}=\big[\ln\delta_t[i_t],\omega_{t-1}[i_t]\big]=\big[\mathop{\mathrm{colmax}}[\ln\bm{\delta}_{t-1}+\ln\bm{A}\big]^\text{T}+\ln\bm{\rho}_t<br>\end{array}\\<br>\text{ end}\\<br>\end{array}<br>$<br>3 end<br>$\displaystyle [\ln\delta_T,\hat{z}_{T}]=\max_{i_T}\,\ln\bm{\delta}_T$<br>4 $\displaystyle \text{ for }\,t=T:2$<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\hat{z}_{t-1}=\omega_{t}[\hat{z}_{t}]<br>\end{array}<br>$<br>5 end<br>6 $\displaystyle \hat{\bm{z}}$</font></p>
+<hr>
 <h4 id="五、条件随机场的训练"><a href="#五、条件随机场的训练" class="headerlink" title="五、条件随机场的训练"></a>五、条件随机场的训练</h4><h5 id="5-1、数据集的对数似然函数"><a href="#5-1、数据集的对数似然函数" class="headerlink" title="5.1、数据集的对数似然函数"></a>5.1、数据集的对数似然函数</h5><p>$$\begin{align}<br>p\big(\bm{z}\mid\bm{X}\big)<br>&amp;=p\big(\mathcal{D}^{\cdot|\cdot}_T\big)<br>=p\big(\mathcal{D}_T^z\mid\mathcal{D}_T^\bm{x}\big)<br>=\frac{1}{Z\big(\bm{X}\big)}\prod_{t=2}^Ts\big(z_{t-1},z_t,\bm{X}\big)\prod_{t=1}^Tk\big(z_t,\bm{X}\big)\\<br>&amp;=\frac{1}{Z\big(\bm{X}\big)}k\big(z_1,\bm{X}\big)\prod_{t=2}^Ts\big(z_{t-1},z_t,\bm{X}\big)k\big(z_t,\bm{X}\big)\\<br>\end{align}$$</p>
 <p>定义整体数据集 $\displaystyle \mathcal{D}=\{\mathcal{[D}_T^z\mid \mathcal{D}_T^\bm{x}]_i\}_{i=1}^n$，含义是很清楚的：如果是句子的序列标注，就是 $\displaystyle n$带标注的句子。其中标注就是隐变量数据集，句子就是观测变量数据集。多个带标注的句子就是我们的 $\displaystyle \mathcal{D}$。</p>
 <p>$$\begin{align}<br>\ln p\big(\mathcal{D}\big)<br>&amp;=\ln \prod_{i=1}^np\big([\mathcal{D}_T^z\mid \mathcal{D}_T^\bm{x}]_i\big)<br>=\sum_{i=1}^n\ln p\big([\mathcal{D}_T^z\mid \mathcal{D}_T^\bm{x}]_i\big)\\<br>&amp;=\sum_{i=1}^n\Bigg[\ln k\big(z_{1,i},\bm{X}_i\big)+\sum_{t=2}^T\bigg[\ln s\big(z_{t-1,i},z_{t,i},\bm{X}_i\big)+\ln k\big(z_{t,i},\bm{X}_i\big)\bigg]-\ln Z\big(\bm{X}_i\big)\Bigg]\\<br>&amp;=\sum_{i=1}^n\ln k\big(z_{1,i},\bm{X}_i\big)+\sum_{i=1}^n\sum_{t=2}^T\bigg[\ln s\big(z_{t-1,i},z_{t,i},\bm{X}_i\big)+\ln k\big(z_{t,i},\bm{X}_i\big)\bigg]-\sum_{i=1}^n\ln Z\big(\bm{X}_i\big)\\<br>&amp;=\sum_{i=1}^n\sum_{t=1}^T\ln k\big(z_{t,i},\bm{X}_i\big)+\sum_{i=1}^n\sum_{t=2}^T\ln s\big(z_{t-1,i},z_{t,i},\bm{X}_i\big)-\sum_{i=1}^n\ln Z\big(\bm{X}_i\big)\\<br>&amp;=\sum_{i=1}^n\ln g\big(\bm{z}_{i},\bm{X}_{i}\big)-\sum_{i=1}^n\ln Z\big(\bm{X}_i\big)\\<br>\end{align}$$</p>
