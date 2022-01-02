@@ -8,11 +8,11 @@
         <category>工程实践</category>
       </categories>
       <tags>
+        <tag>工程问题</tag>
         <tag>机器学习</tag>
         <tag>大数据</tag>
         <tag>人工智能</tag>
         <tag>深度学习</tag>
-        <tag>工程问题</tag>
       </tags>
   </entry>
   <entry>
@@ -133,8 +133,8 @@
         <category>统计学</category>
       </categories>
       <tags>
-        <tag>统计学</tag>
         <tag>机器学习</tag>
+        <tag>统计学</tag>
         <tag>矩阵高斯分布</tag>
       </tags>
   </entry>
@@ -251,10 +251,10 @@
         <category>工程实践</category>
       </categories>
       <tags>
-        <tag>工程问题</tag>
         <tag>python</tag>
         <tag>notebook</tag>
         <tag>计算环境</tag>
+        <tag>工程问题</tag>
       </tags>
   </entry>
   <entry>
@@ -290,8 +290,8 @@
       </categories>
       <tags>
         <tag>诗集</tag>
-        <tag>大学城</tag>
         <tag>诗歌</tag>
+        <tag>大学城</tag>
         <tag>小谷围</tag>
       </tags>
   </entry>

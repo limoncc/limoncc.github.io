@@ -55,6 +55,8 @@
         <title>macOS_mojave_10.14.6下Tensorflow2.6的安装与SSE, AVX, FMA</title>
         <pubTime>2021-09-18T09:09:47.000Z</pubTime>
         
+        <tag>工程问题</tag>
+         
         <tag>机器学习</tag>
          
         <tag>大数据</tag>
@@ -62,8 +64,6 @@
         <tag>人工智能</tag>
          
         <tag>深度学习</tag>
-         
-        <tag>工程问题</tag>
          
          
            
@@ -204,9 +204,9 @@
         <title>矩阵高斯分布</title>
         <pubTime>2017-01-11T03:45:17.000Z</pubTime>
         
-        <tag>统计学</tag>
-         
         <tag>机器学习</tag>
+         
+        <tag>统计学</tag>
          
         <tag>矩阵高斯分布</tag>
          
@@ -425,9 +425,9 @@
         
         <tag>诗集</tag>
          
-        <tag>大学城</tag>
-         
         <tag>诗歌</tag>
+         
+        <tag>大学城</tag>
          
         <tag>小谷围</tag>
          
@@ -525,13 +525,13 @@
         <title>pyhton-notebook主题颜色配置</title>
         <pubTime>2016-05-01T07:50:12.000Z</pubTime>
         
-        <tag>工程问题</tag>
-         
         <tag>python</tag>
          
         <tag>notebook</tag>
          
         <tag>计算环境</tag>
+         
+        <tag>工程问题</tag>
          
          
            
