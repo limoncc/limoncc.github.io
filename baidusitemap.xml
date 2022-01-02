@@ -4,6 +4,30 @@
 
     
   <url>
+    <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2017-03-11-%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B/</loc>
+    <lastmod>2022-01-02T11:48:26.434Z</lastmod>
+    <data>
+        <display>
+        <title>隐马尔可夫模型</title>
+        <pubTime>2017-03-11T13:37:57.000Z</pubTime>
+        
+        <tag>机器学习</tag>
+         
+        <tag>概率图</tag>
+         
+        <tag>隐马尔可夫模型</tag>
+         
+         
+           
+             
+              <breadCrumb title="机器学习" url="http://www.limoncc.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.limoncc.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2017-03-10-%E6%A6%82%E7%8E%87%E5%9B%BE%E5%9F%BA%E7%A1%80/</loc>
     <lastmod>2022-01-02T08:39:50.334Z</lastmod>
     <data>
@@ -55,8 +79,6 @@
         <title>macOS_mojave_10.14.6下Tensorflow2.6的安装与SSE, AVX, FMA</title>
         <pubTime>2021-09-18T09:09:47.000Z</pubTime>
         
-        <tag>工程问题</tag>
-         
         <tag>机器学习</tag>
          
         <tag>大数据</tag>
@@ -64,6 +86,8 @@
         <tag>人工智能</tag>
          
         <tag>深度学习</tag>
+         
+        <tag>工程问题</tag>
          
          
            
@@ -425,9 +449,9 @@
         
         <tag>诗集</tag>
          
-        <tag>诗歌</tag>
-         
         <tag>大学城</tag>
+         
+        <tag>诗歌</tag>
          
         <tag>小谷围</tag>
          
@@ -525,13 +549,13 @@
         <title>pyhton-notebook主题颜色配置</title>
         <pubTime>2016-05-01T07:50:12.000Z</pubTime>
         
+        <tag>工程问题</tag>
+         
         <tag>python</tag>
          
         <tag>notebook</tag>
          
         <tag>计算环境</tag>
-         
-        <tag>工程问题</tag>
          
          
            
