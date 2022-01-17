@@ -95,7 +95,7 @@
 <meta property="og:image" content="http://www.limoncc.com/images/隐马尔可夫模型.png">
 <meta property="og:image" content="http://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="http://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2022-01-02T12:55:59.673Z">
+<meta property="og:updated_time" content="2022-01-17T01:20:56.809Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="隐马尔可夫模型">
 <meta name="twitter:description" content="隐马尔可夫是一个古老的模型，开始我们回顾了一下它的基本问题。然后我们使用前向后向算法和维比特算法，解决了求值和求隐状态的问题。中间我们使用EM算法，解决了参数求解的问题。人类可以通过一些精巧的设计，来获取超乎直观想象结果，当人类的思想开始集成，开始向深处，广处延伸时，上帝似乎很惊异。">
@@ -448,6 +448,8 @@
 <h6 id="2-4-2、前向计算"><a href="#2-4-2、前向计算" class="headerlink" title="2.4.2、前向计算"></a>2.4.2、前向计算</h6><p>我们可以拆分隐变量数据集 $ \mathcal{D}_t^z=\mathcal{D}_{t-1}^z\cup \{z_t\}$，拆分的关键直觉是时刻 $ t$的最可能路径必须有是由时刻 $ t-1$的最可能路径组成。问题变为<br>$$\begin{align}<br>\max_{\mathcal{D}_t^z} p\big(\mathcal{D}_t^\bm{x},\mathcal{D}_t^z\big)<br>=\max_{z_t}\max_{\mathcal{D}_{t-1}^z} p \big(\mathcal{D}_{t-1}^z,z_t, \mathcal{D}_t^\bm{x}\big)<br>\end{align}$$追寻这一关键思想，下面来具体化：我们假设 $ t$时刻的状态为 $ i_t$，进而定义路径$ \mathcal{D}_t^z=\mathcal{D}_{t-1}^z\cup \{z_t=i_t\}$的最大概率(权重)：<br>$$\begin{align}<br>\delta_t[i_t]=\max_{\mathcal{D}_{t-1}^z} p \big(\mathcal{D}_{t-1}^z,z_t=i_t, \mathcal{D}_t^\bm{x}\big)<br>\end{align}$$为了充分利用隐马尔可夫模型的条件独立性质和动态规划思想，假设 $ t-1$的状态为 $ i_{t-1}$。继续拆分数据集于是有：<br>$$\begin{align}<br>\delta_{t}[i_t]<br>&amp;=\max_{\mathcal{D}_{t-1}^z} p \big(\mathcal{D}_{t-1}^z,z_t=i_t, \mathcal{D}_t^\bm{x}\big)\\<br>&amp;=\max_{\mathcal{D}_{t-2}^z,z_{t-1}=i_{t-1}}\left[ p\big(z_1\big)p\big(\bm{x}_1\mid z_1\big)\bigg[\prod_{\tau=2}^tp\big(z_\tau\mid z_{\tau-1}\big)p\big(\bm{x}_\tau\mid z_\tau\big)\bigg]\right]\\<br>&amp;=\max_{i_{t-1}}\bigg[p\big(z_t=i_t\mid z_{t-1}=i_{t-1}\big)p\big(\bm{x}_t\mid z_t=i_t\big)\max_{\mathcal{D}_{t-2}^z} p \big(\mathcal{D}_{t-2}^\bm{x},\mathcal{D}_{t-1}^z,z_{t-1}=i_{t-1}\big)\bigg]\\<br>&amp;=\max_{i_{t-1}}  \delta_{t-1}[i_{t-1}]A[i_{t-1},i_t]\rho_t[i_t]\\<br>\end{align}$$<br>也就是说：时刻 $ t$行至状态 $ i_t$的最可能路径必须有是由时刻 $ t-1$ 行至其他状态 $ i_{t-1}$的最可能路径组成。<br>$$\begin{align}<br>\delta_{t}[i_t]=\max_{i_{t-1}}\delta_{t-1}[i_{t-1}]A[i_{t-1},i_t] \rho_t[i_t]<br>\end{align}$$</p>
 <p>写成矩阵形式固定 $\displaystyle i_t$，令$\displaystyle a[i_{t-1}]=A[i_{t-1},i_t]$则有</p>
 <p>$$\begin{align}<br>\delta_t[i_t],\widehat{i}_{t-1}[z_t=i_t]<br>&amp;=\max[\bm{\delta}_{t-1}\odot\bm{a}_{t-1}]\rho_t[i_t]\\<br>\bm{\delta}_t,\widehat{\bm{i}}_{t-1}<br>&amp;=\big[\mathop{\mathrm{colmax}}[\bm{\delta}_{t-1}\odot\bm{A}]^\text{T}\odot\bm{\rho}_t<br>\end{align}$$</p>
+<p>加上维度应该更容易理解</p>
+<p>$$\begin{align}<br>\bm{\delta}_t,\widehat{\bm{i}}_{t-1}<br>&amp;=\big[\underbrace{\mathop{\mathop{\mathrm{colmax}}[\underbrace{\mathop{\bm{\delta}_{t-1}}}_{1\times C}\odot\underbrace{\mathop{\bm{A}}}_{C \times C}}}_{C\times 1}\big]^\text{T}\odot\underbrace{\mathop{\bm{\rho}_t}}_{1\times C}<br>\end{align}$$</p>
 <p>定义初始状态 $ \delta_1[i_1]=\pi[i_1]\rho_1[i_1]$，同时我们注意到 $\displaystyle i_t$是可以任意的，递归计算我们得到一个网格图 <strong><code>trellis diagram</code></strong>。</p>
 <p>$$\begin{align}<br>\Delta=\{\bm{\delta}_1,\cdots,\bm{\delta}_t,\cdots,\bm{\delta}_T\}<br>\end{align}$$</p>
 <h6 id="2-4-3、后向回溯"><a href="#2-4-3、后向回溯" class="headerlink" title="2.4.3、后向回溯"></a>2.4.3、后向回溯</h6><p>回到我们的问题：已知观测变量数据集，推断隐变量数据集。最大化联合概率问题变为<br>$$\begin{align}<br>\max_{\mathcal{D}_T^z} p\big(\mathcal{D}_T^\bm{x},\mathcal{D}_T^z\big)<br>=\max_{i_T}\max_{i_{T-1}}A[i_{T-1},i_t] \rho_T[i_T]\cdots\max_{i_1}\delta_1[i_1]A[i_{1},i_2] \rho_2[i_2]<br>\end{align}$$</p>

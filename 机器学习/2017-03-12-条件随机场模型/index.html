@@ -97,7 +97,7 @@
 <meta property="og:image" content="http://www.limoncc.com/images/条件随机场信念传播.png">
 <meta property="og:image" content="http://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="http://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2022-01-02T12:56:05.274Z">
+<meta property="og:updated_time" content="2022-01-17T01:20:15.439Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="条件随机场模型">
 <meta name="twitter:description" content="我们使用条件随机场定义条件概率。我们是基于整体特征定义了观测变量与隐变量的关系，而不像隐马尔可夫模型那样。这大大利于充分利用观测序列的信息，而不是局部信息。">
@@ -470,6 +470,8 @@
 <p>$$\begin{align}<br>\delta_t[i_t]=\max_{i_{t-1}}\delta_{t-1}[i_{t-1}]A[i_{t-1},i_t]\rho_t[i_t]<br>\end{align}$$</p>
 <p>写成矩阵形式固定 $\displaystyle i_t$，令$\displaystyle a[i_{t-1}]=A[i_{t-1},i_t]$则有</p>
 <p>$$\begin{align}<br>\delta_t[i_t],\widehat{i}_{t-1}[z_t=i_t]<br>&amp;=\max[\bm{\delta}_{t-1}\odot\bm{a}_{t-1}]\rho_t[i_t]\\<br>\bm{\delta}_t,\widehat{\bm{i}}_{t-1}<br>&amp;=\big[\mathop{\mathrm{colmax}}[\bm{\delta}_{t-1}\odot\bm{A}]^\text{T}\odot\bm{\rho}_t<br>\end{align}$$</p>
+<p>加上维度应该更容易理解</p>
+<p>$$\begin{align}<br>\bm{\delta}_t,\widehat{\bm{i}}_{t-1}<br>&amp;=\big[\underbrace{\mathop{\mathop{\mathrm{colmax}}[\underbrace{\mathop{\bm{\delta}_{t-1}}}_{1\times C}\odot\underbrace{\mathop{\bm{A}}}_{C \times C}}}_{C\times 1}\big]^\text{T}\odot\underbrace{\mathop{\bm{\rho}_t}}_{1\times C}<br>\end{align}$$</p>
 <p>定义初始状态 $ \delta_1[i_1]=k\big(z_1=i_1,\bm{X}\big)=\pi[i_1]$，同时我们注意到 $\displaystyle i_t$是可以任意的，递归计算我们得到一个网格图 <strong><code>trellis diagram</code></strong>。</p>
 <p>$$\begin{align}<br>\Delta=\{\bm{\delta}_1,\cdots,\bm{\delta}_t,\cdots,\bm{\delta}_T\}<br>\end{align}$$</p>
 <h5 id="4-3、后向回溯"><a href="#4-3、后向回溯" class="headerlink" title="4.3、后向回溯"></a>4.3、后向回溯</h5><p>经过前向计算我们得到了最大的权重</p>
