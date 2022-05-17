@@ -1,0 +1,14 @@
+# hexo robots.txt
+User-agent: * Allow: /
+Allow: /archives/
+Allow: /categories/
+Allow: /about/
+Allow: /tags/
+Disallow: /vendors/
+Disallow: /js/
+Disallow: /css/
+Disallow: /fonts/
+Disallow: /vendors/
+Disallow: /fancybox/
+Sitemap: https://www.limoncc.com/sitemap.xml
+Sitemap: https://www.limoncc.com/baidusitemap.xml

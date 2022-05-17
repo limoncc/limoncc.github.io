@@ -92,13 +92,13 @@
 <meta property="og:site_name" content="柠檬CC">
 <meta property="og:description" content="本文主要总结在mac下安装Tensorflow的各种问题，pip安装会有SSE指令集警告提示，不能调用并行计算指令，于是我们使用源码安装，但是源码安装的坑不少，特此写成文章。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.limoncc.com/images/cc.png">
-<meta property="og:image" content="http://www.limoncc.com/images/avatar.png">
+<meta property="og:image" content="https://www.limoncc.com/images/cc.png">
+<meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
 <meta property="og:updated_time" content="2021-09-27T06:06:23.883Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="macOS_mojave_10.14.6下Tensorflow2.6的安装与SSE, AVX, FMA">
 <meta name="twitter:description" content="本文主要总结在mac下安装Tensorflow的各种问题，pip安装会有SSE指令集警告提示，不能调用并行计算指令，于是我们使用源码安装，但是源码安装的坑不少，特此写成文章。">
-<meta name="twitter:image" content="http://www.limoncc.com/images/cc.png">
+<meta name="twitter:image" content="https://www.limoncc.com/images/cc.png">
 
 
 
@@ -386,7 +386,7 @@
       
 
       
-        <p>作者: <a href="http://www.limoncc.com">引线小白</a>-本文永久链接：<a href="http://www.limoncc.com/工程实践/2021-09-18-mac安装tensorflow2.6/">http://www.limoncc.com/工程实践/2021-09-18-mac安装tensorflow2.6/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+        <p>作者: <a href="https://www.limoncc.com">引线小白</a>-本文永久链接：<a href="http://www.limoncc.com/工程实践/2021-09-18-mac安装tensorflow2.6/">http://www.limoncc.com/工程实践/2021-09-18-mac安装tensorflow2.6/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
 <h4 id="一、下载源码"><a href="#一、下载源码" class="headerlink" title="一、下载源码"></a>一、下载源码</h4><p>本人电脑macOS mojave 10.14.6, 编译tensorflow解决SSE4.1 SSE4.2 AVX指令集问题。</p>
 <p>先下载，进入目录定位到v2.6.0<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/tensorflow/tensorflow.git</span><br><span class="line">cd tensorflow</span><br><span class="line">git checkout v2.6.0</span><br></pre></td></tr></table></figure></p>
 <h4 id="二、准备必要环境"><a href="#二、准备必要环境" class="headerlink" title="二、准备必要环境"></a>二、准备必要环境</h4><p>准备必要环境，请安装好java,和minconda</p>
@@ -414,7 +414,7 @@
 </tbody>
 </table>
 <p><hr></p>
-<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="http://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="http://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="http://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="http://www.limoncc.com">[ http://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%"><a href="http://www.limoncc.com/工程实践/2021-09-18-mac安装tensorflow2.6/">http://www.limoncc.com/工程实践/2021-09-18-mac安装tensorflow2.6/</a></td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
+<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="https://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="https://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="https://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="https://www.limoncc.com">[ https://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%"><a href="http://www.limoncc.com/工程实践/2021-09-18-mac安装tensorflow2.6/">http://www.limoncc.com/工程实践/2021-09-18-mac安装tensorflow2.6/</a></td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
 <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 
       
@@ -437,6 +437,8 @@
       
         <div class="post-tags">
           
+            <a href="/tags/工程问题/" rel="tag">#工程问题</a>
+          
             <a href="/tags/机器学习/" rel="tag">#机器学习</a>
           
             <a href="/tags/大数据/" rel="tag">#大数据</a>
@@ -444,8 +446,6 @@
             <a href="/tags/人工智能/" rel="tag">#人工智能</a>
           
             <a href="/tags/深度学习/" rel="tag">#深度学习</a>
-          
-            <a href="/tags/工程问题/" rel="tag">#工程问题</a>
           
         </div>
       
