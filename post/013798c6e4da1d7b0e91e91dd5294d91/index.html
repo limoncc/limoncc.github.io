@@ -1,0 +1,1100 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="贝塔-伯努利模型,beta-binomial model,机器学习,笔记,引线小白,机器学习框架" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="贝塔-伯努利模型(beta-binomial model)是非常经典的离散二维模型，通过它我们能得到很多关键概念的感觉，和初步认识。进而熟悉了贝叶斯方法的基本概念、流程、特点。同时一旦我们熟悉了伯努利、二项、贝塔、均匀、贝塔-伯努利分布后，很多关键的东西就可以用文字表述清楚，并且有深刻认识">
+<meta name="keywords" content="贝塔-伯努利模型,beta-binomial model,机器学习,笔记,引线小白,机器学习框架">
+<meta property="og:type" content="article">
+<meta property="og:title" content="贝塔-伯努利模型(Beta-Binomial Model)">
+<meta property="og:url" content="http://www.limoncc.com/post/013798c6e4da1d7b0e91e91dd5294d91/index.html">
+<meta property="og:site_name" content="柠檬CC">
+<meta property="og:description" content="贝塔-伯努利模型(beta-binomial model)是非常经典的离散二维模型，通过它我们能得到很多关键概念的感觉，和初步认识。进而熟悉了贝叶斯方法的基本概念、流程、特点。同时一旦我们熟悉了伯努利、二项、贝塔、均匀、贝塔-伯努利分布后，很多关键的东西就可以用文字表述清楚，并且有深刻认识">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.limoncc.com/images/cc.png">
+<meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
+<meta property="og:updated_time" content="2023-03-27T12:29:32.658Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="贝塔-伯努利模型(Beta-Binomial Model)">
+<meta name="twitter:description" content="贝塔-伯努利模型(beta-binomial model)是非常经典的离散二维模型，通过它我们能得到很多关键概念的感觉，和初步认识。进而熟悉了贝叶斯方法的基本概念、流程、特点。同时一旦我们熟悉了伯努利、二项、贝塔、均匀、贝塔-伯努利分布后，很多关键的东西就可以用文字表述清楚，并且有深刻认识">
+<meta name="twitter:image" content="https://www.limoncc.com/images/cc.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <title> 贝塔-伯努利模型(Beta-Binomial Model) | 柠檬CC </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-73837972-3', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d225b8f8559eb2eb6a8bd8792e01ebb9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=60130136";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">柠檬CC</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">小白爱吃柠檬O(∩_∩)O</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-poetry">
+          <a href="/poetry" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-leaf"></i> <br />
+            
+            诗集
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                贝塔-伯努利模型(Beta-Binomial Model)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-07T21:54:02+08:00" content="2017-03-07">
+              2017-03-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/post/013798c6e4da1d7b0e91e91dd5294d91/" class="leancloud_visitors" data-flag-title="贝塔-伯努利模型(Beta-Binomial Model)">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作者: <a href="https://www.limoncc.com">引线小白</a>-本文永久链接：<a href="https://www.limoncc.com/post/013798c6e4da1d7b0e91e91dd5294d91/">https://www.limoncc.com/post/013798c6e4da1d7b0e91e91dd5294d91/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+<h4 id="一、贝塔-伯努利模型-beta-binomial-model"><a href="#一、贝塔-伯努利模型-beta-binomial-model" class="headerlink" title="一、贝塔-伯努利模型(beta-binomial model)"></a>一、贝塔-伯努利模型(beta-binomial model)</h4><p>伯努利分布： </p>
+<p>$$\begin{align}<br>x\sim \mathrm{Ber}(\mu), x\in\{0,1\},\mu\in[0,1]<br>\end{align}$$</p>
+<h5 id="1、0-1分布-bernoulli-distribution-概率质量函数可以表示为："><a href="#1、0-1分布-bernoulli-distribution-概率质量函数可以表示为：" class="headerlink" title="1、0-1分布(bernoulli distribution)概率质量函数可以表示为："></a>1、0-1分布(bernoulli distribution)概率质量函数可以表示为：</h5><p>$$\begin{align}<br>\mathrm{PMF}：\mathrm{Ber}(x\mid \mu)=\mu^x(1-\mu)^{1-x}<br>\end{align}$$<br>其他表示方法：<br>$\displaystyle  \mathrm{Ber}(x\mid \mu)=\mu^{\mathbb{I}(x=1)}(1-\mu)^{\mathbb{I}(x=0)}  $</p>
+<p>$\displaystyle  \mathrm{Ber}(x\mid \mu)=\begin{cases}\mu&amp;\text{if }x=1\\\nu=1-\mu&amp;\text{if }x=0\end{cases} $</p>
+<h5 id="2、均值与方差："><a href="#2、均值与方差：" class="headerlink" title="2、均值与方差："></a>2、均值与方差：</h5><p>知道 $\displaystyle \varphi_x(t)=\mu\mathrm{e}^{\mathrm{i}t}+\nu$</p>
+<p>$\displaystyle \mathrm{E}[x]=(-\mathrm{i})^1\left.\frac{\partial{\varphi(t)}}{\partial{t}}\right| _{t=0}=\mu$</p>
+<p>$\displaystyle \mathrm{var}[x]=(-\mathrm{i})^2\left.\frac{\partial^2{\varphi(t)}}{\partial{t}^2}\right| _{t=0}-\mathrm{E}^2[x]=\mu(1-\mu)=\mu\nu$</p>
+<h5 id="3、似然函数-likelihood"><a href="#3、似然函数-likelihood" class="headerlink" title="3、似然函数(likelihood)"></a>3、似然函数(likelihood)</h5><p>有数据集： $\displaystyle \mathcal{D}=\{x_i\}_{i=1}^{n}$于是有似然函数</p>
+<p>$$\begin{align}<br>\mathrm{L}(\mu)=p(\mathcal{D}\mid\mu)=p(\boldsymbol{X}\mid\mu)=\prod_{i=1}^{n}\mu^{x_i}(1-\mu)^{1-x_i}=\mu^{N_1}(1-\mu)^{N_0}<br>\end{align}$$</p>
+<p>其中 $\displaystyle N_1=\sum_{i=1}^{n}\mathbb{I}(x_i=1)$， $\displaystyle N_0=\sum_{i=1}^{n}\mathbb{I}(x_i=0)$</p>
+<h5 id="4、对数似然函数"><a href="#4、对数似然函数" class="headerlink" title="4、对数似然函数"></a>4、对数似然函数</h5><p>$$\begin{align}<br>\mathcal{L}(\mu)<br>&amp;=\ln p(\mathcal{D}\mid\mu)=\ln \prod_{i=1}^{n}\mu^{x_i}(1-\mu)^{1-x_i}=\sum_{i=1}^{n}\left(x_i\ln\mu+(1-x_i)\ln(1-\mu)\right)\\<br>&amp;=\boldsymbol{I}^\text{T}\boldsymbol{x}\ln\mu+\boldsymbol{I}^\text{T}(\boldsymbol{I}-\boldsymbol{x})\ln(1-\mu)<br>\end{align}$$</p>
+<h5 id="5、求极大似然估计："><a href="#5、求极大似然估计：" class="headerlink" title="5、求极大似然估计："></a>5、求极大似然估计：</h5><p>$$ \frac{\partial{\mathcal{L}}}{\partial{\mu}}=\frac{1}{\mu}\boldsymbol{I}^\text{T}\boldsymbol{x}-\frac{1}{1-\mu}\boldsymbol{I}^\text{T}(\boldsymbol{I}-\boldsymbol{x})=0\\<br>\mu\boldsymbol{I}^\text{T}\boldsymbol{I}=\boldsymbol{I}^\text{T}\boldsymbol{x}<br>$$$\begin{align}<br>\mu_{MLE}=\frac{\boldsymbol{I}^\text{T}\boldsymbol{x}}{\boldsymbol{I}^\text{T}\boldsymbol{I}}=\frac{1}{n}\sum_{i=1}^{n}x_i=\bar{x}<br>\end{align}$<br>极大似然估计分析：<br>我们知道 $\displaystyle x\in\{0,1\}$，在0-1分布的n次试验中, $\displaystyle x=1$的次数为 $\displaystyle k$。于是<br>$$<br>\begin{align}<br>\mu_{MLE}=\frac{1}{n}\sum_{i=1}^{n}=\frac{k}{n}<br>\end{align}<br>$$<br>现在我们假设抛硬币3次，3次都是正面朝上，那么 $\displaystyle n=k=3$，那么 $\displaystyle \mu_{MLE}=1$。这种情况下，极大似然的结果预测所有未来的观察值都是正面向上。常识告诉我们这是不合理的。事实上，这就是极大似然中过拟合现象的一个极端例子。下面我们引入 $\displaystyle \mu$的先验分布，我们会得到一个更合理的结论。</p>
+<h5 id="6、二项式分布-binomial-distribution"><a href="#6、二项式分布-binomial-distribution" class="headerlink" title="6、二项式分布(binomial distribution)"></a>6、二项式分布(binomial distribution)</h5><p>我们现在把 $\displaystyle k$作为随机变量 $\displaystyle k=x_1+x_2+…+x_n$，于是我们有 $\displaystyle k\in\{N_1\}$，易知二项式分布和0-1分布的似然函数有相同的形式，是正比关系。最大化它们的 $\displaystyle \mu$都是 $\displaystyle \frac{k}{n}$。</p>
+<p>$$\begin{align}<br>\mathrm{L}(\mu)\propto\mathrm{Bin}(k\mid \mu,n)=\mathrm{C}_{n}^k\,\mu^k(1-\mu)^{n-k}<br>\end{align}$$</p>
+<p>为了与后面符号衔接：我们令 $\displaystyle k=N_1,n=N,N_0=n-k$于是又有：<br>$$\begin{align}<br>p(\mathcal{D}\mid\mu)=\mathrm{L}(\mu)\propto\mathrm{Bin}(N_1\mid \mu,N_1+N_0)=\mathrm{C}_{N}^{N_1}\,\mu^{N_1}(1-\mu)^{N_0}<br>\end{align}$$</p>
+<p>我们知道 $\displaystyle \mathrm{C}_{n}^{k}=\frac{n!}{(n-k)!k!}$。<br>同时我们有离散随机变量特征函数$\displaystyle \varphi(t)=\mathrm{E}[\mathrm{e}^{\mathrm{i}t x_i}]=\sum_{i=1}^{\infty}p_i\mathrm{e}^{\mathrm{i}t x_i}$，注意虚数 $\displaystyle \mathrm{i}$和变量$\displaystyle i$的区别。我们令 $\displaystyle \nu=1-\mu$于是有：<br>$$\begin{align}<br>\varphi_k(t)=(\mu\mathrm{e}^{\mathrm{i}t}+\nu)^n<br>\end{align} $$<br>$\displaystyle \mathrm{E}[k]=\sum_{k=0}^{n}k\mathrm{Bin}(k\mid \mu,n)=(-\mathrm{i})^1\left.\frac{\partial{\varphi(t)}}{\partial{t}}\right| _{t=0}=n\mu$<br>$\displaystyle \mathrm{var}[k]=\sum_{k=0}^{n}(k-\mathrm{E}[k])^2\mathrm{Bin}(k\mid \mu,n)=(-\mathrm{i})^2\left.\frac{\partial^2{\varphi(t)}}{\partial{t}^2}\right| _{t=0}-\mathrm{E}^2[k]=n\mu(1-\mu)=n\mu\nu$</p>
+<h5 id="7、共轭先验分布"><a href="#7、共轭先验分布" class="headerlink" title="7、共轭先验分布"></a>7、共轭先验分布</h5><p>如果先验和似然函数有相同形式，那就非常方便：这样后验也有相同形式。这个时候我们称之为共轭先验(conjugate prior)。现在，我们把 $\displaystyle \mu$做为一个变量观察似然函数得到<br>$$\begin{align}<br>p(\mu)\propto\mu^{\rho_1}(1-\mu)^{\rho_2}<br>\end{align}$$<br>这样计算后验就很容易了： </p>
+<p>$\displaystyle p(\mu\mid\mathcal{D})\propto p(\mathcal{D}\mid \mu)p(\mu)=\mu^{N_1}(1-\mu)^{N_0}\mu^{\rho_1}(1-\mu)^{\rho_2}=\mu^{N_1+\rho_1}(1-\mu)^{N_0+\rho_2}$</p>
+<p>在给出先验分布之前，我们看看这个两个函数。之后我们会补充 $\displaystyle \Gamma(x),\mathrm{B}(a,b)$函数的性质的证明。<br>$\displaystyle \Gamma(x)=\int_0^\infty u^{x-1}\mathrm{e}^{-u}\mathrm{d}u, x&gt;0$<br>$\displaystyle \mathrm{B}(a,b)=\int_{0}^{1}x^{a-1}(1-x)^{b-1}\mathrm{d}x,a&gt;0,b&gt;0$<br>$\displaystyle \Gamma(x+1)=x\Gamma(x)$<br>$\displaystyle \Gamma(n+1)=n!$<br>$\displaystyle \mathrm{B}(a,b)=\mathrm{B}(b,a)$<br>$\displaystyle \mathrm{B}(a,b)=\frac{b-1}{a+b-1}\mathrm{B}(a,b-1),a&gt;0,b&gt;1$</p>
+<p>$\displaystyle \mathrm{B}(a,b)=\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}$</p>
+<p>然后我们知道贝塔分布： $\displaystyle \mathrm{Beta}(\mu\mid a,b)=\frac{\Gamma(a+b)}{\Gamma{a}\Gamma(b)}\mu^{a-1}(1-\mu)^{b-1} $。这正是我们要的共轭先验。</p>
+<p>$$\begin{align}<br>\mathrm{Beta}(\mu\mid a,b)=\frac{1}{\mathrm{B}(a,b)}\mu^{a-1}(1-\mu)^{b-1}<br>\end{align}$$利用 $\displaystyle \Gamma$函数性质易知：<br>$\displaystyle  \mathrm{E}[\mu]=\frac{a}{a+b} $<br>$\displaystyle \mathrm{var}[\mu]=\frac{ab}{(a+b)^2(a+b+1)}$<br>$\displaystyle \mathrm{mode}[\mu]=\mathop{\mathrm{argmax}}_{\mu}\,\mathrm{Beta}(\mu\mid a,b)=\frac{a-1}{a+b-2},a&gt;0,b&gt;0$</p>
+<h5 id="8、后验分布"><a href="#8、后验分布" class="headerlink" title="8、后验分布"></a>8、后验分布</h5><p>我们用似然函数乘以贝塔先验得到后验分布：<br>$$\begin{align}<br>p(\mu\mid\mathcal{D})<br>\propto\mathrm{Bin}(N_1\mid\mu, N_1+N_0)\mathrm{Beta}(\mu \mid a,b)\end{align}$$ 归一化得：<br>$$\begin{align}<br>p(\mu\mid\mathcal{D})=\mathrm{Beta}(\mu\mid N_1+a,N_0+b)<br>\end{align}$$</p>
+<h6 id="1、在线学习"><a href="#1、在线学习" class="headerlink" title="1、在线学习"></a>1、在线学习</h6><p>容易证明 $\displaystyle \mathrm{Beta}$分布具有再生性质。于是我们可以假设我们有两个数据集 $\displaystyle \mathcal{D}_1,\mathcal{D}_2$。于是有：<br>1、当我们观察到 $\displaystyle \mathrm{D}_1$时，有<br>$$p(\mu\mid\mathcal{D}_1)=\mathrm{Beta}(\mu\mid N_1^1+a,N_0^1+b)$$<br>2、当我们观察到 $\displaystyle \mathcal{D}_2$时，有<br>$$p(\mu\mid\mathcal{D}_1,\mathcal{D}_2)\propto p(\mathcal{D}_2\mid\mu) p(\mu\mid\mathcal{D}_1)$$<br>易得：<br>$$\begin{align}<br>p(\mu\mid\mathcal{D}_1,\mathcal{D}_2)=\mathrm{Beta}(\mu\mid N_1^1+N_1^2+a,N_0^1+N_0^2+b)<br>\end{align}$$<br>这表明 该贝叶斯推断具有在线学习的良好性质。</p>
+<h6 id="2、后验均值与众数"><a href="#2、后验均值与众数" class="headerlink" title="2、后验均值与众数"></a>2、后验均值与众数</h6><p>最大后验估计：<br>$$\begin{align}<br>\mu_{MAP}=\mathrm{mode}[\mu]=\mathop{\mathrm{argmax}}_{\mu}\,p(\mu\mid\mathcal{D})=\frac{N_1+a-1}{N+a+b-2}=\frac{k+a-1}{n+a+b-2}<br>\end{align}$$<br>极大似然估计：</p>
+<p> $$\begin{align}<br> \mu_{MLE}=\frac{N_1}{N}=\frac{k}{n}<br> \end{align}$$</p>
+<p>后验均值:</p>
+<p>$$\begin{align}<br>\mathrm{E}[\mu\mid\mathcal{D}]=\frac{N_1+a}{N+a+b}=\frac{k+a}{n+a+b}\end{align}$$<br>我们发现众数和均值不同。<br>我们还发现 后验均值是先验均值和最大似然估计的凸组合。下面我们下证明这一点。  令先验均值$\displaystyle \frac{a}{a+b}=\mu_0,a+b=c$。</p>
+<p>$$\begin{align}<br>\mathrm{E}[\mu\mid\mathcal{D}]=\frac{k+a}{n+a+b}=\frac{c}{n+c}\mu_0+\frac{n}{n+c}\mu_{MLE}=\lambda\mu_0+(1-\lambda)\mu_{MLE}<br>\end{align}$$ </p>
+<p>我们发现 $\displaystyle c$可以理解为先验对于后验的等价样本大小。 $\displaystyle \lambda=\frac{c}{n+c}$是先验对于后验的等价样本大小比率。</p>
+<p>同理可知最大后验估计是先验众数和最大似然估计的凸组合，而且更加倾向于最大似然估计：<br>$$\begin{align}<br>\mu_{MAP}=\frac{c-2}{n+c-2}\mathrm{mode}[\mu_0]+\frac{n}{n+c-2}\mu_{MLE}=\eta\mathrm{mode}[\mu_0]+(1-\eta)\mu_{MLE}<br>\end{align}$$ </p>
+<h6 id="3、后验方差"><a href="#3、后验方差" class="headerlink" title="3、后验方差"></a>3、后验方差</h6><p>$$\begin{align}<br>\mathrm{var}(\mu\mid\mathcal{D}]=\frac{(N_1+a)(N_0+b)}{(N_1+a+N_0+b)^2(N_1+a+N_0+b+1)}<br>\end{align}$$<br>当 $\displaystyle N$足够大时：<br>$$\begin{align}<br>\mathrm{var}(\mu\mid\mathcal{D}]\approx\frac{N_1N_0}{NNN}=\frac{\mu_{MLE}(1-\mu_{MLE})}{n}<br>\end{align}$$<br>后验标准差</p>
+<p>$$\begin{align}<br>\sigma=\sqrt{\frac{\mu_{MLE}(1-\mu_{MLE})}{n}}<br>\end{align}$$<br>1、它随着我们数据的增加以 $\displaystyle \sqrt{\frac{1}{n}}$的速度下降。<br>2、 $\displaystyle \mu=\mathop{\mathrm{argmax}}_{\mu}\sigma(\mu)=0.5$<br>3、 $\displaystyle \mu=\mathop{\mathrm{argmin}}_{\mu}\sigma(\mu)=0\,or\,1$</p>
+<h6 id="4、后验预测分布-posterior-predictive-distribution"><a href="#4、后验预测分布-posterior-predictive-distribution" class="headerlink" title="4、后验预测分布(posterior predictive distribution)"></a>4、后验预测分布(posterior predictive distribution)</h6><p>上述，我们讨论了未知参数的推断，现在我们来讨论预测问题。在这之前：我们令后验分布 $\displaystyle p(\mu\mid\mathcal{D})=\mathrm{Beta}(a,b)$以简化符号 。考虑 $\displaystyle x_{n+1}$发生了，那么我们想预测 $\displaystyle x_{n+1}=0\,or\,1$的概率。为了简记，令 $\displaystyle \tilde{x}$为一随机变量，代表 $\displaystyle n$次观测后的值。同时考虑到 $\displaystyle \tilde{x}\in\{0,1\}$于是有：<br>$$\begin{align}<br>p(\tilde{x}\mid \mathcal{D})<br>&amp;=\int_0^1p(x\mid \mu)p(\mu\mid\mathcal{D})\mathrm{d}\mu\\<br>&amp;=\int_0^1\mu^\tilde{x}(1-\mu)^{1-\tilde{x}}\frac{\Gamma(a+b)}{\Gamma{a}\Gamma(b)}\mu^{a-1}(1-\mu)^{b-1}\mathrm{d}\mu\\<br>&amp;=\frac{\Gamma(a+b)}{\Gamma{a}\Gamma(b)}\int_0^1\mu^{a+\tilde{x}-1}(1-\mu)^{b+1-\tilde{x}-1}\mathrm{d}\mu\\<br>&amp;=\frac{\Gamma(a+b)}{\Gamma{a}\Gamma(b)}\frac{\Gamma(a+\tilde{x})\Gamma(b+1-\tilde{x})}{\Gamma(a+b+1)}\\<br>&amp;=\frac{a^{\tilde{x}}b^{1-\tilde{x}}}{(a+b)^{\tilde{x}}(a+b)^{1-\tilde{x}}}\\<br>&amp;=\left(\frac{a}{a+b}\right)^{\tilde{x}}\left(\frac{b}{a+b}\right)^{1-\tilde{x}}\\<br>&amp;=\mathrm{Ber}\left(\tilde{x}\mid\mathrm{E}[\mu\mid\mathcal{D}]\right)<br>\end{align}$$</p>
+<p>所以可以看到，后验预测分布等价于plug-in$\displaystyle \mathrm{E}[\mu\mid\mathcal{D}]$。这里的plug-in x是插值近似 plug-in approximation的意思。</p>
+<h6 id="5、过拟合与黑天鹅悖论"><a href="#5、过拟合与黑天鹅悖论" class="headerlink" title="5、过拟合与黑天鹅悖论"></a>5、过拟合与黑天鹅悖论</h6><p>如果我们使用 $\displaystyle plug-in\,\mu_{MLE}$：<br>$$\begin{align}<br>p(\tilde{x}\mid \mathcal{D})\approx\mathrm{Ber}\left(\tilde{x}\mid\mu_{MLE}\right)<br>\end{align}$$<br>1、当数据集较小，例如 $\displaystyle n=3,k=0,then,\mu_{MLE}=\frac{0}{3}=0$。这样我们预测 $\displaystyle \tilde{x}=0$的概率为 $\displaystyle 0$。这叫零数问题(zero count problem)，或者叫数据匮乏问题(sparse data problem)。这种问题在小样本情况，经常发生。当然有人就要说了，现在是大数据时代，干嘛关注这个问题？如果我们基于特定的目的，划分数据：例如特定的人做特别的事——个人购物推荐。这种情况下即使是在大数据时代，数据也不会很大。所以 $$即使在大数据当道的时代，贝叶斯方法依然是有用的！[Jordan2011]$$<br>2、零数问题类似于黑天鹅事情。<br>3、我们来用贝叶斯方法来解决这个问题： 使用均匀分布先验 $\displaystyle \mathrm{Beat}(1,1)=\mathrm{U}[0,1]$，plug-$\displaystyle in\,\mathrm{E}[\mu\mid\mathcal{D}]$给出了拉普拉斯继承规则(laplace’s rule of succession):<br>$$\begin{align}<br>p(\tilde{x}=1\mid\mathcal{D})=\mathrm{E}[\mu\mid\mathcal{D}]=\frac{k+1}{n+2}<br>\end{align}$$<br>可以理解为：在实践中，通常在数据集中加一应该是正确的做法。称之为加一平滑(add-one smoothing)<br>4、注意到：plug-in$\displaystyle \mu_{MAP}$没有这个性质。</p>
+<h6 id="6、多试验预测"><a href="#6、多试验预测" class="headerlink" title="6、多试验预测"></a>6、多试验预测</h6><p>考虑这个问题，我们又观察到了 $\displaystyle m$个数据，那么发生 $\displaystyle \tilde{x}=1$的次数是 $\displaystyle s$次的概率。<br>$$\begin{align}<br>p(s\mid\mathcal{D},m)<br>&amp;=\int_0^1\mathrm{Bin}(s\mid\mu,m)\mathrm{Beta}(\mu\mid a.b)\mathrm{d}\mu\\<br>&amp;=\frac{\mathrm{C}_m^s}{\mathrm{B}(a.b)}\int_0^1\mu^{s+a-1}(1-\mu)^{m-s+b-1}\mathrm{d}\mu\\<br>&amp;=\mathrm{C}_m^s\frac{\mathrm{B}(s+a,m-s+b)}{\mathrm{B}(a.b)}<br>\end{align}$$<br>我们称 $\displaystyle \mathrm{Bb}(s\mid a,b,m)=\mathrm{C}_m^s\frac{\mathrm{B}(s+a,m-s+b)}{\mathrm{B}(a.b)}$为贝塔-二项式分布(beta-binomial distribution)。易知(使用积分表达式,同时利用 $\displaystyle \mathrm{Bin}(s\mid \mu,m)$容易求得)：<br>$\displaystyle \mathrm{E}[s\mid\mathcal{D},m]=m\frac{a}{a+b}$</p>
+<p>$\displaystyle \mathrm{var}[s\mid\mathcal{D},m]=\frac{mab}{(a+b)^2}\frac{a+b+m}{a+b+1}$</p>
+<p>$\displaystyle \mathrm{var}[s\mid\mu_{MAP}]=\frac{m(a-1)(b-1)}{(a+b-2)^2}$(插值求得的)<br>于是有：<br>$$\begin{align}<br> \mathrm{var}[s\mid\mathcal{D},m]\geqslant\mathrm{var}[s\mid\mu_{MAP}]<br>\end{align}$$<br>至于证明，可以分析这个式子： $\displaystyle f(a,b)=ab \left( a+b-2 \right) ^{2} \left( a+b+m \right) - \left( a-1<br> \right)  \left( b-1 \right)  \left( a+b \right) ^{2} \left( a+b+1<br> \right) \geqslant 0,(a&gt;0,b&gt;0)<br>$可以使用微积分一阶导数，二阶导数证明。所以 贝叶斯预测的概率密度更宽、拥有长尾，从而避免了过拟合和黑天鹅悖论$$</p>
+<h5 id="9、评述"><a href="#9、评述" class="headerlink" title="9、评述"></a>9、评述</h5><p>通过贝塔-伯努利模型，我们熟悉了贝叶斯方法的基本概念、流程、特点。一旦我们熟悉了伯努利、二项、贝塔、均匀、贝塔-伯努利分布后，很多关键的东西就可以用文字表述清楚了。</p>
+<p>1、上帝给 $\displaystyle x$选择了一个分布：$\displaystyle  x\sim \mathrm{Ber}(\mu), x\in\{0,1\},\mu\in[0,1] =\mu^x(1-\mu)^{1-x} $ 这个分布由 $\displaystyle \mu$确定。</p>
+<p>2、犹豫种种原因，人类也知晓了 $\displaystyle x$的分布类型，但是不知道 $\displaystyle \mu$。于是人类搞了假设空间 $\displaystyle \mathcal{H}=\{\mu_i\}$，为了找到上帝的那个 $\displaystyle \hat{\mu}$，于是人类的征程开始了。</p>
+<p>3、人类的智者，选择了用概率来解决这个难题。因为我们可以根据我们在某个时刻，不断知晓的信息流 $\displaystyle \mathcal{D}_t,\mathcal{D}_{t+1}$，来给假设空间的每个 $\displaystyle \mu$更新概率。于是这个表达式横空出世 $\displaystyle p(\mu\mid \mathcal{D}_{t+1},\mathcal{D}_t)\propto p(\mathcal{D}_{t+1}\mid\mu)p(\mu\mid \mathcal{D}_{t})$。于是我们得到了：<br>$$p(\mu\mid\mathcal{D}_t)=\mathrm{Beta}(\mu\mid N_1^t+a,N_0^t+b) $$<br>这样我们就把假设空间的 $\displaystyle \mu$的都给了个概率。至于人类相信那一个。贝叶斯方法说，基于不同的目的，我们要重新开发一门学问，叫决策论。</p>
+<p>4、上帝微微一笑，  人类继续开始征程：令 $\tilde{x}$为一随机变量，代表 n次观测后的值，于是得到：<br>$$ p(\tilde{x}\mid \mathcal{D}_t)=\int_0^1p(x\mid \mu)p(\mu\mid\mathcal{D}_t)\mathrm{d}\mu=\mathrm{Ber}\left(\tilde{x}\mid\mathrm{E}[\mu\mid\mathcal{D}_t]\right)$$<br>于是基于对假设空间赋概，我们对未来的可能值也赋概。至于人类相信那一个。贝叶斯方法说，基于不同的目的，我们要重新开发一门学问，叫决策论。</p>
+<p>5、上帝开始感觉人类是个聪明的物种，甚为满意！ 我们又观察到了 m个数据，那么发生 $\tilde{x}=1$的次数是$s$次的概率<br>$$\begin{align}<br>p(s\mid\mathcal{D}_t,m)<br>&amp;=\int_0^1\mathrm{Bin}(s\mid\mu,m)p(\mu\mid\mathcal{D}_t)\mathrm{d}\mu\\<br>&amp;=\int_0^1\mathrm{Bin}(s\mid\mu,m)\mathrm{Beta}(\mu\mid N_1^t+a,N_0^t+b)\mathrm{d}\mu\\<br>&amp;=\mathrm{Bb}(s\mid N_1^t+a,N_0^t+b,m)<br>\end{align}$$<br>这样我们对 $\displaystyle s$的可能值也赋概了。至于人类相信那一个。贝叶斯方法说，基于不同的目的，我们要重新开发一门学问，叫决策论。</p>
+<p>6、至此，当 $\displaystyle \lim_{t\to\infty}\mathcal{D}_t$人类基本可以看到上帝裸体了。</p>
+<p>7、靠那个贝叶斯是谁，怎么总要出来嘟囔一下。决策论是啥？被冷落的贝叶斯微微一笑。</p>
+<p><hr></p>
+<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="https://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="https://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="https://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="https://www.limoncc.com">[ https://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%"><a href="https://www.limoncc.com/post/013798c6e4da1d7b0e91e91dd5294d91/">https://www.limoncc.com/post/013798c6e4da1d7b0e91e91dd5294d91/</a></td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/大数据/" rel="tag">#大数据</a>
+          
+            <a href="/tags/机器学习/" rel="tag">#机器学习</a>
+          
+            <a href="/tags/人工智能/" rel="tag">#人工智能</a>
+          
+            <a href="/tags/神经网络/" rel="tag">#神经网络</a>
+          
+            <a href="/tags/大数据分析/" rel="tag">#大数据分析</a>
+          
+            <a href="/tags/贝塔-伯努利模型/" rel="tag">#贝塔-伯努利模型</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/e9c2d3bda7c379c2b051cb34e04f2c3c/" rel="next" title="贝叶斯统计学概论">
+                <i class="fa fa-chevron-left"></i> 贝叶斯统计学概论
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/5afe722cdba3caacf42894f5bfd847d4/" rel="prev" title="狄利克雷-多项式模型(Dirichlet-Multionmial Model)">
+                狄利克雷-多项式模型(Dirichlet-Multionmial Model) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+<!--           </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div> -->
+        <div id="vcomments"></div>
+        <script>new Valine({
+          el: "#vcomments",
+      appId: "BVjuNRCpkVSkz82jFmadIvY8-gzGzoHsz",
+    appKey: "bRjXPp55dop7RTC2xgunGdiP"})
+  </script>'
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="引线小白" />
+          <p class="site-author-name" itemprop="name">引线小白</p>
+          <p class="site-description motion-element" itemprop="description">小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">27</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="" target="_blank" title="Design">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Design
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.behance.net/limoncc" target="_blank" title="Behance">
+                  
+                    <i class="fa fa-fw fa-behance"></i>
+                  
+                  Behance
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.pinterest.com/aegeanfan/" target="_blank" title="Pinterest">
+                  
+                    <i class="fa fa-fw fa-pinterest"></i>
+                  
+                  Pinterest
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/limoncc" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://weibo.com/3483157951" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://www.zhihu.com/people/limoncc" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              设计不止，折腾不息。
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://chuangzaoshi.com" title="创造狮" target="_blank">创造狮</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、贝塔-伯努利模型-beta-binomial-model"><span class="nav-number">1.</span> <span class="nav-text">一、贝塔-伯努利模型(beta-binomial model)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、0-1分布-bernoulli-distribution-概率质量函数可以表示为："><span class="nav-number">1.1.</span> <span class="nav-text">1、0-1分布(bernoulli distribution)概率质量函数可以表示为：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、均值与方差："><span class="nav-number">1.2.</span> <span class="nav-text">2、均值与方差：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、似然函数-likelihood"><span class="nav-number">1.3.</span> <span class="nav-text">3、似然函数(likelihood)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、对数似然函数"><span class="nav-number">1.4.</span> <span class="nav-text">4、对数似然函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5、求极大似然估计："><span class="nav-number">1.5.</span> <span class="nav-text">5、求极大似然估计：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6、二项式分布-binomial-distribution"><span class="nav-number">1.6.</span> <span class="nav-text">6、二项式分布(binomial distribution)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7、共轭先验分布"><span class="nav-number">1.7.</span> <span class="nav-text">7、共轭先验分布</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8、后验分布"><span class="nav-number">1.8.</span> <span class="nav-text">8、后验分布</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1、在线学习"><span class="nav-number">1.8.1.</span> <span class="nav-text">1、在线学习</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2、后验均值与众数"><span class="nav-number">1.8.2.</span> <span class="nav-text">2、后验均值与众数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3、后验方差"><span class="nav-number">1.8.3.</span> <span class="nav-text">3、后验方差</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4、后验预测分布-posterior-predictive-distribution"><span class="nav-number">1.8.4.</span> <span class="nav-text">4、后验预测分布(posterior predictive distribution)</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#5、过拟合与黑天鹅悖论"><span class="nav-number">1.8.5.</span> <span class="nav-text">5、过拟合与黑天鹅悖论</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#6、多试验预测"><span class="nav-number">1.8.6.</span> <span class="nav-text">6、多试验预测</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9、评述"><span class="nav-number">1.9.</span> <span class="nav-text">9、评述</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">引线小白&nbsp &nbsp |&nbsp &nbsp  一个理想主义者，再造自我，以期未来。</span>
+</div>
+
+<div class="powered-by">
+  由 <a rel="external nofollow" class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a rel="external nofollow" class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>&nbsp &nbsp| &nbsp &nbsp Hosted by  <a href="https://github.com" style="font-weight: bold">Github Pages</a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+<!--   
+   
+  
+
+  
+
+ -->
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+<!--   <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+     showMathMenu: false,
+     showMathMenuMSIE: false,
+     tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+          processEscapes: true
+        },
+        TeX: {
+          equationNumbers: {autoNumber: 'AMS'},
+          Macros: {bm: "\\boldsymbol"}
+        },
+        'HTML-CSS': {
+          imageFont: null
+        }
+    });
+  </script> -->
+<!--     MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    }); -->
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+    processEscapes: true,
+    tags: 'ams',
+    macros: {
+                                            bm: "\\boldsymbol",
+                                            oiint: "{\\iint\\kern{-20mu}{\\unicode{x2B2D}}}",
+                                            oiiint: "{\\iiint\\kern{-24.5mu}\\large{\\unicode{x2B2D}}}"
+                                },
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+  <script type="text/x-mathjax-config">
+MathJax.texReset();
+MathJax.typeset();
+  </script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_SVG-full"></script> -->
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Es7wAnqi0QiGhMLoyl7mkrQo-gzGzoHsz", "BxPXaoPFp3PzWqBTSe6VUuQS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</body>
+</html>

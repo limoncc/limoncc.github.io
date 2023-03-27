@@ -301,7 +301,7 @@
       
         
       
-      嗯..! 目前共计 28 篇日志。 继续努力。
+      嗯..! 目前共计 27 篇日志。 继续努力。
     </span>
 
     
@@ -325,7 +325,7 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/统计学/2017-01-11-矩阵高斯分布/" itemprop="url">
+            <a class="post-title-link" href="/post/de5bb50dcf56fc4c002f955d5408509f/" itemprop="url">
               
                 <span itemprop="name">矩阵高斯分布</span>
               
@@ -362,7 +362,7 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/概率论/2017-01-10-多元高斯分布的熵/" itemprop="url">
+            <a class="post-title-link" href="/post/14200aef4e9c3ca0ec1cd56bf3b3a039/" itemprop="url">
               
                 <span itemprop="name">多元高斯分布的熵</span>
               
@@ -399,7 +399,7 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/概率论/2017-01-09-多元高斯分布/" itemprop="url">
+            <a class="post-title-link" href="/post/f42f3da0d7da5dc7a4ac62b0a0cdb640/" itemprop="url">
               
                 <span itemprop="name">多元高斯分布</span>
               
@@ -436,7 +436,7 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/机器学习/2017-01-08-机器学习笔记0001/" itemprop="url">
+            <a class="post-title-link" href="/post/72a5edcac04cd1a3e93a37ee90ac9259/" itemprop="url">
               
                 <span itemprop="name">机器学习概论</span>
               
@@ -473,7 +473,7 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/统计学/2017-01-08-三大分布/" itemprop="url">
+            <a class="post-title-link" href="/post/fcad1ed76dc00166a235da24da7c2799/" itemprop="url">
               
                 <span itemprop="name">三大分布</span>
               
@@ -510,7 +510,7 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/概率论/2017-01-07-伽马函数/" itemprop="url">
+            <a class="post-title-link" href="/post/f86d15ef1be4f2b424d4ad1ccc917c3d/" itemprop="url">
               
                 <span itemprop="name">伽马函数</span>
               
@@ -581,7 +581,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">27</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -705,7 +705,7 @@
         <div class="copyright" >
   
   &copy;  2016 - 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -939,7 +939,7 @@
   </script>
 
   
-  <script type="text/x-mathjax-config">
+<!--   <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
      showMathMenu: false,
      showMathMenuMSIE: false,
@@ -956,17 +956,38 @@
           imageFont: null
         }
     });
-  </script>
-
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
+  </script> -->
+<!--     MathJax.Hub.Queue(function() {
       var all = MathJax.Hub.getAllJax(), i;
       for (i=0; i < all.length; i += 1) {
         all[i].SourceElement().parentNode.className += ' has-jax';
       }
-    });
+    }); -->
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+    processEscapes: true,
+    tags: 'ams',
+    macros: {
+                                            bm: "\\boldsymbol",
+                                            oiint: "{\\iint\\kern{-20mu}{\\unicode{x2B2D}}}",
+                                            oiiint: "{\\iiint\\kern{-24.5mu}\\large{\\unicode{x2B2D}}}"
+                                },
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+  <script type="text/x-mathjax-config">
+MathJax.texReset();
+MathJax.typeset();
   </script>
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_SVG-full"></script> -->
 
 
   

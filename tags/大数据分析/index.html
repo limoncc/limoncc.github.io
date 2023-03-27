@@ -308,7 +308,7 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/机器学习/2017-03-07-机器学习笔记03/" itemprop="url">
+            <a class="post-title-link" href="/post/013798c6e4da1d7b0e91e91dd5294d91/" itemprop="url">
               
                 <span itemprop="name">贝塔-伯努利模型(Beta-Binomial Model)</span>
               
@@ -336,7 +336,7 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/机器学习/2017-03-06-机器学习笔记02/" itemprop="url">
+            <a class="post-title-link" href="/post/e9c2d3bda7c379c2b051cb34e04f2c3c/" itemprop="url">
               
                 <span itemprop="name">贝叶斯统计学概论</span>
               
@@ -364,7 +364,7 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/机器学习/2017-01-08-机器学习笔记0001/" itemprop="url">
+            <a class="post-title-link" href="/post/72a5edcac04cd1a3e93a37ee90ac9259/" itemprop="url">
               
                 <span itemprop="name">机器学习概论</span>
               
@@ -392,7 +392,7 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/机器学习/2016-12-27-机器学习书单/" itemprop="url">
+            <a class="post-title-link" href="/post/7b229b54afd86ff3877ec77e611f29a6/" itemprop="url">
               
                 <span itemprop="name">机器学习书单</span>
               
@@ -460,7 +460,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">27</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -584,7 +584,7 @@
         <div class="copyright" >
   
   &copy;  2016 - 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -812,7 +812,7 @@
   </script>
 
   
-  <script type="text/x-mathjax-config">
+<!--   <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
      showMathMenu: false,
      showMathMenuMSIE: false,
@@ -829,17 +829,38 @@
           imageFont: null
         }
     });
-  </script>
-
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
+  </script> -->
+<!--     MathJax.Hub.Queue(function() {
       var all = MathJax.Hub.getAllJax(), i;
       for (i=0; i < all.length; i += 1) {
         all[i].SourceElement().parentNode.className += ' has-jax';
       }
-    });
+    }); -->
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+    processEscapes: true,
+    tags: 'ams',
+    macros: {
+                                            bm: "\\boldsymbol",
+                                            oiint: "{\\iint\\kern{-20mu}{\\unicode{x2B2D}}}",
+                                            oiiint: "{\\iiint\\kern{-24.5mu}\\large{\\unicode{x2B2D}}}"
+                                },
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+  <script type="text/x-mathjax-config">
+MathJax.texReset();
+MathJax.typeset();
   </script>
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_SVG-full"></script> -->
 
 
   

@@ -1,0 +1,1125 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="狄利克雷-多项式模型,Dirichlet-Multionmial Model,机器学习" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本文总结了狄利克雷-多项式模型的部分，我们将再一次熟悉贝叶斯方法的基本概念、流程、特点。把我们思维进化到更高的维度。">
+<meta name="keywords" content="狄利克雷-多项式模型,Dirichlet-Multionmial Model,机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="狄利克雷-多项式模型(Dirichlet-Multionmial Model)">
+<meta property="og:url" content="http://www.limoncc.com/post/5afe722cdba3caacf42894f5bfd847d4/index.html">
+<meta property="og:site_name" content="柠檬CC">
+<meta property="og:description" content="本文总结了狄利克雷-多项式模型的部分，我们将再一次熟悉贝叶斯方法的基本概念、流程、特点。把我们思维进化到更高的维度。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.limoncc.com/images/cc.png">
+<meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
+<meta property="og:updated_time" content="2023-03-27T12:26:56.637Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="狄利克雷-多项式模型(Dirichlet-Multionmial Model)">
+<meta name="twitter:description" content="本文总结了狄利克雷-多项式模型的部分，我们将再一次熟悉贝叶斯方法的基本概念、流程、特点。把我们思维进化到更高的维度。">
+<meta name="twitter:image" content="https://www.limoncc.com/images/cc.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <title> 狄利克雷-多项式模型(Dirichlet-Multionmial Model) | 柠檬CC </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-73837972-3', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d225b8f8559eb2eb6a8bd8792e01ebb9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=60130136";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">柠檬CC</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">小白爱吃柠檬O(∩_∩)O</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-poetry">
+          <a href="/poetry" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-leaf"></i> <br />
+            
+            诗集
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                狄利克雷-多项式模型(Dirichlet-Multionmial Model)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-08T09:17:07+08:00" content="2017-03-08">
+              2017-03-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/post/5afe722cdba3caacf42894f5bfd847d4/" class="leancloud_visitors" data-flag-title="狄利克雷-多项式模型(Dirichlet-Multionmial Model)">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作者: <a href="https://www.limoncc.com">引线小白</a>-本文永久链接：<a href="https://www.limoncc.com/post/5afe722cdba3caacf42894f5bfd847d4/">https://www.limoncc.com/post/5afe722cdba3caacf42894f5bfd847d4/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+<blockquote>
+<p><strong>简介</strong>: 本文总结了狄利克雷-多项式模型的部分和我自己的一些体会，我们将再一次熟悉贝叶斯方法的基本概念、流程、特点。把我们思维进化到更高的维度。<br><strong>摘要</strong>：本文意在狄利克雷-多项式模型的问题。若有错误，请大家指正。<br><strong>关键词</strong>: <code>狄利克雷-多项式模型</code>,<code>分类分布</code>,<code>狄利克雷分布</code></p>
+</blockquote>
+<h4 id="一、狄利克雷-多项式模型-dirichlet-multionmial-model"><a href="#一、狄利克雷-多项式模型-dirichlet-multionmial-model" class="headerlink" title="一、狄利克雷-多项式模型(dirichlet-multionmial model)"></a>一、狄利克雷-多项式模型(dirichlet-multionmial model)</h4><p>分类分布(Categorical distribution) 或者又叫1-C分布(multinoulli distribution)</p>
+<p>$$\begin{align}<br>\bm{x}\sim \mathrm{Cat}(\bm{x}\mid\bm{\mu})<br>\end{align}$$<br>其中 $\displaystyle \bm{x}\in\{0,1\}^c\,,\sum_{j=1}^{c}x_j=\bm{I}^\text{T}\bm{x}=1\\<br>\displaystyle \mu_j\in[0,1]\,\sum_{j=1}^{c}\mu_j=\bm{I}^\text{T}\bm{\mu}=1$</p>
+<p>在这里有必要解释一下符号问题。首先分类分布是对0-1分布的推广，这句话可能不好理解。我们可以这样思考，0-1分布是抛硬币。而分类分布类似于掷骰子。为了让符号统一我们使用小写 $\displaystyle c$表示有C个分类，例如 $\displaystyle c=6$可以类比于掷骰子。这样很多问题就好理解了。<br>变量 $\displaystyle \bm{x}=\begin{bmatrix} x_1\\\ \vdots \\x_j\\\vdots\\x_c \end{bmatrix}$ 实例或者一个观测 $\displaystyle \bm{x}_i=\begin{bmatrix} x_{i1}\\\ \vdots \\x_{ij}\\\vdots\\x_{ic} \end{bmatrix}$ 例子： $\displaystyle  \bm{x}_s=\begin{bmatrix} 0\ \\\vdots \\1\\\vdots\\0 \end{bmatrix} $</p>
+<h5 id="1、分类分布-multinoulli-distribution-概率质量函数："><a href="#1、分类分布-multinoulli-distribution-概率质量函数：" class="headerlink" title="1、分类分布(multinoulli distribution)概率质量函数："></a>1、分类分布(multinoulli distribution)概率质量函数：</h5><p>$$\begin{align}<br>\mathrm{PMF：} \mathrm{Cat}(\bm{x}\mid\bm{\mu})=\prod_{i=1}^{c}\mu_i^{x_i}<br>\end{align}$$</p>
+<p>其中： $\displaystyle \bm{x}=[x_1,x_2,…,x_c]^\text{T}\,,\bm{\mu}=[\mu_1,\mu_2,…,\mu_c]^\text{T}\,,\bm{x}\in\{0,1\}^c\,,\sum_{j=1}^{c}x_j=\bm{I}^\text{T}\bm{x}=1\,,\sum_{i=1}^{c}\mu_i=\bm{I}^\text{T}\bm{\mu}=1$这个表示方法也称为 $\displaystyle 1\,of\,c$编码方法。这个方法方便计算。</p>
+<p>其他表示方法：<br>$\displaystyle \mathrm{Cat}(x\mid\bm{\mu})=\prod_{j=1}^{c}\mu_j^{\mathbb{I}(x=j)},x\in\{1,…,c\}$,<br>这个示性函数表示方法，有重要应用,降低表示维度，节约了有限的数学符号。</p>
+<h5 id="2、均值与方差"><a href="#2、均值与方差" class="headerlink" title="2、均值与方差"></a>2、均值与方差</h5><p>我们知道向量函数微分结果： $\displaystyle \bm{f}(\bm{x})<br>=\mathrm{e}^{\bm{A}\bm{x}} $ 有 $\displaystyle \frac{\partial\bm{f}}{\partial \bm{x}^\text{T}}<br>=\mathrm{diag}[\mathrm{e}^{\bm{A}\bm{x}}]\bm{A}$。且有： $\displaystyle f(\bm{x})=\bm{\mu}^\text{T}\mathrm{e}^{\bm{A}\bm{x}}$，易得：<br>$$\begin{align}<br> &amp;\frac{\partial{f}}{\partial{\bm{x}}}<br> =\mathrm{diag}\left[\mathrm{e}^{\bm{A}\bm{x}}\right]\bm{A}\bm{\mu}\\<br> &amp;\frac{\partial^2{f}}{\partial{\bm{x}}^2}<br> =\bm{A}^\text{T}\mathrm{diag}[\mathrm{e}^{\bm{A}\bm{x}}]\mathrm{diag}[\bm{\mu}]\bm{A}<br>\end{align}$$</p>
+<p>我们又知道特征函数： $\displaystyle \varphi_\bm{x}(\bm{t})<br>=\mathrm{E}[\mathrm{e}^{\mathrm{i}\bm{t}^\text{T}\bm{x}}]=\sum_{\bm{I}^\text{T}\bm{x}=1}p_j\mathrm{e}^{\mathrm{i}t x_j}=\sum_{j=1}^{c}\mu_i\mathrm{e}^{\mathrm{i}t x_j}<br>=\bm{\mu}^\text{T}\mathrm{e}^{\mathrm{i}\bm{X}\bm{t}}$。<br>于是可分析得到分类分布 $\displaystyle \bm{x}\sim \mathrm{Cat}(<br>\bm{x}\mid \bm{\mu})$的期望与方差(协方差矩阵)：</p>
+<p>$\displaystyle \mathrm{E}[\bm{x}]<br>=(-\mathrm{i})^1\left.\frac{\partial{\varphi(\bm{t})}}{\partial{\bm{t}}}\right| _{\bm{t}=\bm{0}}<br>=\mathrm{diag}\left[\mathrm{e}^{\mathrm{i}\bm{X}\bm{t}}\right]\bm{X}\bm{\mu}<br>=\bm{\mu}$</p>
+<p>$\displaystyle \mathrm{cov}[\bm{x}]<br>=(-\mathrm{i})^2\left.\frac{\partial^2{\varphi(\bm{t})}}{\partial{\bm{t}}^2}\right| _{\bm{t}=\bm{0}}-\mathrm{E}[\bm{x}]\mathrm{E}^\text{T}[\bm{x}]$<br>$\displaystyle =\left.\bm{X}^\text{T}\mathrm{diag}[\mathrm{e}^{\mathrm{i}\bm{X}\bm{t}}]\mathrm{diag}[\bm{\mu}]\bm{X}\right| _{\bm{t}=\bm{0}}-\bm{\mu}\bm{\mu}^\text{T}\\<br>=\mathrm{diag}[\bm{\mu}]-\bm{\mu}\bm{\mu}^\text{T}$</p>
+<p>其中： $\displaystyle \bm{X}=\bm{I}_{c\times c}$是 $\displaystyle c\times c$维的单位矩阵。也就说遍历了 $\displaystyle \bm{x}$所有可能取值组成的矩阵。为了表示简洁，我们在其中选用了$\displaystyle c\times c$维的单位矩阵。</p>
+<h5 id="3、似然函数-likelihood"><a href="#3、似然函数-likelihood" class="headerlink" title="3、似然函数(likelihood)"></a>3、似然函数(likelihood)</h5><p>有数据集： $\displaystyle \mathcal{D}=\{\bm{x}_i\}_{i=1}^{n}$于是有似然函数<br>$$\begin{align}<br>\mathrm{L}(\bm{\mu})=p(\mathcal{D}\mid\bm{\mu})<br>&amp;=\prod_{i=1}^{n}\prod_{j=1}^{c}\mu_j^{x_j}<br>=\prod_{j=1}^{c}\mu_j^{\sum_{i=1}^{n}x_{ij}}<br>=\prod_{j=1}^{c}\mu_j^{k_j}<br>\end{align}$$</p>
+<p>其中： $\displaystyle k_j=\sum_{i=1}^{N}x_{ij}$表示第 $\displaystyle j$个分类在 $\displaystyle n$次观测中发生了 $\displaystyle k_j$次。同时我们知道 $\displaystyle \sum_{j=1}^{c}\mu_j=\bm{I}^\text{T}\bm{\mu}=1,\,\sum_{j=1}^{c}k_j=\bm{I}^\text{T}\bm{k}=n$</p>
+<h5 id="4、对数似然函数"><a href="#4、对数似然函数" class="headerlink" title="4、对数似然函数"></a>4、对数似然函数</h5><p>$$\begin{align}<br>\ell(\bm{\mu},\lambda)<br>&amp;\propto\ln\prod_{j=1}^{c}\mu_j^{k_j}+\lambda(\sum_{j=1}^{c}\mu_j-1)\\<br>&amp;=\bm{k}^\text{T}\ln\bm{\mu}+\lambda[\bm{I}^\text{T}\bm{\mu}-1]<br>\end{align}$$</p>
+<h5 id="5、求极大似然估计"><a href="#5、求极大似然估计" class="headerlink" title="5、求极大似然估计"></a>5、求极大似然估计</h5><p>$$\begin{cases}\displaystyle<br>\frac{\partial{\ell}}{\partial{\bm{\mu}}}<br>&amp;=\frac{\bm{k}}{\bm{\mu}}+\lambda\bm{I}=\bm{0}\\\\\displaystyle<br>\frac{\partial{\ell}}{\partial{\lambda}}<br>&amp;=\bm{I}^\text{T}\bm{\mu}-1=0<br>\end{cases}$$<br>分析可得 $\displaystyle \bm{\mu}_{MLE}=-\frac{\bm{k}}{\lambda} $ 代入 $\displaystyle \bm{I}^\text{T}\bm{\mu}-1=0$得： $\displaystyle \frac{\bm{I}^\text{T}\bm{k}}{\lambda}=-1$由于 $\displaystyle \bm{I}^\text{T}\bm{k}=n$可得：<br>$$\begin{align}<br>\lambda=-n<br>\end{align}$$</p>
+<p>$$\begin{align}<br>\bm{\mu}_{MLE}=\frac{\bm{k}}{n}<br>\end{align}$$</p>
+<p>其中 $\displaystyle \mu_j^{MLE}=\frac{k_j}{n},\,k_j=\sum_{i=1}^{n}x_{ij}$。</p>
+<h5 id="6、多项式分布"><a href="#6、多项式分布" class="headerlink" title="6、多项式分布"></a>6、多项式分布</h5><p>我们定义 $\displaystyle k_j=\sum_{i=1}^{N}x_{ij}$是分类 $\displaystyle j$在 $\displaystyle n$次观测中发生的次数。同时令 $\displaystyle \bm{k}=[k_1,…,k_j,…,k_c]^\text{T}$ 则有：<br>$$\begin{align}<br>\mathrm{Mu}(\bm{k}\mid \bm{\mu},n)=\frac{n!}{k_1!k_2!…k_c!}\prod_{j=1}^{c}\mu_j^{k_j}<br>\end{align}$$</p>
+<p>其中 $\displaystyle \sum_{j=1}^{c}k_j=n\,,\sum_{j=1}^{c}\mu_j=1$</p>
+<p>我们有特征函数：<br>$\displaystyle \varphi_\bm{k}(\bm{t})<br>=\mathrm{E}[\mathrm{e}^{\mathrm{i}\bm{t}^\text{T}\bm{k}}]=\sum_{\bm{I}^\text{T}\bm{k}=n}p_i\mathrm{e}^{\mathrm{i}t k_j}<br>=\sum_{\bm{I}^\text{T}\bm{k}=n}\frac{n!}{k_1!k_2!…k_c!}\prod_{j=1}^{c}\left(\mu_j\mathrm{e}^{\mathrm{i}t}\right)^{k_j}<br>=\left(\bm{\mu}^\text{T}\mathrm{e}^{\mathrm{i}\bm{t}}\right)^n$。<br>于是可得多项式分布的均值与协方差矩阵</p>
+<p>$\displaystyle \mathrm{E}[\bm{k}]<br>=(-\mathrm{i})^1\left.\frac{\partial{\varphi(\bm{t})}}{\partial{\bm{t}}}\right| _{\bm{t}=\bm{0}}<br>=-(\mathrm{i})^2n\left(\bm{\mu}^\text{T}\mathrm{e}^{\mathrm{i}\bm{t}}\right)^{n-1}\mathrm{diag}\left[\mathrm{e}^{\mathrm{i}\bm{t}}\right]\bm{\mu}<br>=n\bm{\mu}$</p>
+<p>$\displaystyle \mathrm{cov}[\bm{k}]<br>=(-\mathrm{i})^2\left.\frac{\partial^2{\varphi(\bm{t})}}{\partial{\bm{t}}^2}\right| _{\bm{t}=\bm{0}}-\mathrm{E}[\bm{k}]\mathrm{E}^\text{T}[\bm{k}]$<br>$=\left.n\left(\bm{\mu}^\text{T}\mathrm{e}^{\mathrm{i}\bm{t}}\right)^{n-1}\mathrm{diag}\left[\mathrm{e}^{\mathrm{i}\bm{t}}\right]\mathrm{diag}[\bm{\mu}]\right| _{\bm{t}=\bm{0}}+\left.n(n-1)\left(\bm{\mu}^\text{T}\mathrm{e}^{\mathrm{i}\bm{t}}\right)^{n-2}\mathrm{diag}\left[\mathrm{e}^{\mathrm{i}\bm{t}}\right]\bm{\mu}\left[\mathrm{diag}\left[\mathrm{e}^{\mathrm{i}\bm{t}}\right]\bm{\mu}\right]^\text{T}\right| _{\bm{t}=\bm{0}}<br>-n^2\bm{\mu}\bm{\mu}^\text{T}$<br>$<br>=n\mathrm{diag}[\bm{\mu}]+n(n-1)\bm{\mu}\bm{\mu}^\text{T}-n^2\bm{\mu}\bm{\mu}^\text{T}\\<br>=n\left[\mathrm{diag}[\bm{\mu}]-\bm{\mu}\bm{\mu}^\text{T}\right]<br>$</p>
+<h5 id="7、共轭先验分布"><a href="#7、共轭先验分布" class="headerlink" title="7、共轭先验分布"></a>7、共轭先验分布</h5><p>把 $\displaystyle \bm{\mu}$作为变量。观察似然函数，我们知道<br>$$\begin{align}<br>p(\bm{\mu})\propto p(\mathcal{D}\mid\bm{\mu})= \prod_{j=1}^{c}\mu_j^{k_j}<br>\end{align}$$</p>
+<p>我们知道狄利克雷分布 $\displaystyle \bm{\mu}\sim\mathrm{Dir}(\bm{\mu}\mid \bm{a})=\frac{\Gamma(a_0)}{\Gamma(a_1)\Gamma(a_2)…\Gamma(a_c)}\prod_{j=1}^{c}\mu_j^{a_j-1}$。而这正是我们需要的共轭先验，即后验与先验有相同的函数形式：<br>$$\begin{align}<br>\mathrm{Dir}(\bm{\mu}\mid \bm{a})=\frac{1}{\mathrm{B}(\bm{a})}\prod_{j=1}^{c}\mu_j^{a_j-1}<br>\end{align}$$</p>
+<p>其中： $\displaystyle  \mu_j\in[0,1]\,\sum_{j=1}^{c}\mu_j=\bm{I}^\text{T}\bm{\mu}=1\,,a_0=\bm{I}^\text{T}\bm{a}=a_1+…+a_c,\,a_j&gt;0$</p>
+<p>利用 $\displaystyle \Gamma,\,\mathrm{B}$函数性质容易知道：<br>$\displaystyle \mathrm{E}(\bm{\mu})=\frac{\bm{a}}{\bm{I}^\text{T}\bm{a}}=\frac{\bm{a}}{a_0}$</p>
+<p>$\displaystyle \mathrm{cov}(\bm{\mu})=\frac{a_0\mathrm{diag}[\bm{a}]-\bm{a}\bm{a}^\text{T}}{a_0^2(a_0+1)}$</p>
+<p>$\displaystyle \mathrm{mode}[\bm{\mu}]=\mathop{\mathrm{argmax}}_{\bm{\mu}}\,\mathrm{Dir}(\bm{\mu}\mid \bm{a})<br>=\frac{\bm{a}-\bm{1}}{a_0-c}$</p>
+<p>为了方便使用，我们把它写成离散形式：<br>$\displaystyle \mathrm{E}(\mu_j)=\frac{a_j}{a_0}$</p>
+<p>$\displaystyle \mathrm{var}(\mu_j)=\frac{(a_0-a_j)a_j}{a_0^2(a_0+1)}$</p>
+<p>$\displaystyle \mathrm{cov}(\mu_i,\mu_j)=\frac{-a_ia_j}{a_0^2(a_0+1)}$</p>
+<p>$\displaystyle \mathrm{mode}[\mu_j]<br>=\mathop{\mathrm{argmax}}_{\mu_j}\,\mathrm{Dir}(\bm{\mu}\mid \bm{a})<br>=\frac{a_i-1}{a_0-c}$</p>
+<h5 id="8、后验分布"><a href="#8、后验分布" class="headerlink" title="8、后验分布"></a>8、后验分布</h5><p>我们用似然函数乘以狄利克雷先验得到后验分布：<br>$$\begin{align}<br>p(\bm{\mu}\mid\mathcal{D})<br>\propto\mathrm{Mu}(\bm{k}\mid \bm{\mu},n)\mathrm{Dir}(\bm{\mu}\mid \bm{a})\end{align}$$ 归一化得：<br>$$\begin{align}<br>p(\bm{\mu}\mid\mathcal{D})=\mathrm{Dir}(\bm{\mu}\mid \bm{k}+\bm{a})<br>\end{align}$$</p>
+<h6 id="1、在线学习"><a href="#1、在线学习" class="headerlink" title="1、在线学习"></a>1、在线学习</h6><p>我们发现狄利克雷分布也具有再生性质，和在线性学习性质，我们假设，陆续观测到两个的数据集  $\displaystyle \mathcal{D}_1\,\mathrm{D}_2$。<br>1、当我们观察到  $\displaystyle \mathcal{D}_1$时，有<br>$$ p(\bm{\mu}\mid\mathcal{D}_1)<br>=\mathrm{Dir}(\bm{\mu}\mid \bm{k}_1+\bm{a}) $$<br>2、当我们观察到 $\displaystyle \mathcal{D}_2$时，有<br>$$p(\bm{\mu}\mid\mathcal{D}_1,\mathcal{D}_2)\propto p(\mathcal{D}_2\mid\bm{\mu}) p(\bm{\mu}\mid\mathcal{D}_1) $$<br>易得：</p>
+<p>$$\begin{align}<br>p(\bm{\mu}\mid\mathcal{D}_1,\mathcal{D}_2)<br>=\mathrm{Dir}(\bm{\mu}\mid \bm{k}_2+\bm{k}_1+\bm{a})<br>\end{align}$$</p>
+<h6 id="2、后验分析"><a href="#2、后验分析" class="headerlink" title="2、后验分析"></a>2、后验分析</h6><p>最大后验估计<br>$$\begin{align}<br>\bm{\mu}_{MAP}<br>=\mathrm{mode}[\bm{\mu}]=<br>\mathop{\mathrm{argmax}}_{\bm{\mu}}\,\mathrm{Dir}(\bm{\mu}\mid \bm{k}+\bm{a})<br>=\frac{\bm{k}+\bm{a}-\bm{1}}{n+a_0-c}<br>\end{align}$$</p>
+<p>极大似然估计：<br>$$\begin{align}<br>\bm{\mu}_{MLE}=\frac{\bm{k}}{n}<br>\end{align}$$</p>
+<p>后验均值:<br>$$\begin{align}<br>\mathrm{E}(\bm{\mu}\mid\mathcal{D})=\frac{\bm{k}+\bm{a}}{n+a_0}<br>\end{align}$$</p>
+<p><font face="微软雅黑" size="2" color="red">后验均值是先验均值和最大似然估计的凸组合</font>。知道 $\displaystyle \bm{\mu}=\frac{\bm{a}}{a_0}$<br>$$\begin{align}<br>\mathrm{E}(\bm{\mu}\mid\mathcal{D})=\frac{\bm{k}+\bm{a}}{n+a_0}<br>=\frac{a_0}{n+a_0}\bm{\mu}_0+\frac{n}{n+a_0}\bm{\mu}_{MLE}<br>\end{align}$$<br>我们发现 $\displaystyle a_0$可以理解为先验对于后验的等价样本大小。 $\displaystyle \frac{a_0}{n+a_0}$是先验对于后验的等价样本大小比率。</p>
+<p>同理可知<font face="微软雅黑" size="2" color="red">最大后验估计是先验众数和最大似然估计的凸组合</font>，而且更加倾向于最大似然估计，知道 $\displaystyle  \mathrm{mode}[\bm{\mu}_0]=\frac{\bm{a}-\bm{1}}{a_0-c}$<br>$$\begin{align}<br>\bm{\mu}_{MAP}<br>=\frac{\bm{k}+\bm{a}-\bm{1}}{n+a_0-c}<br>=\frac{a_0-c}{n+a_0-c}\mathrm{mode}[\bm{\mu}_0]+\frac{n}{n+a_0-c}\bm{\mu}_{MLE}<br>\end{align}$$</p>
+<h6 id="3、-拉格朗日乘数法"><a href="#3、-拉格朗日乘数法" class="headerlink" title="3、 拉格朗日乘数法"></a>3、 拉格朗日乘数法</h6><p>首先为了让符号有意义我们定义向量点除运算 $\displaystyle \frac{1}{\bm{a}}=1./\bm{a}=[1/a_1,…,1/a_n]^\text{T}$下面我们用拉格朗日乘数法在推理一遍，我们知道 $\displaystyle  \bm{I}^\text{T}\bm{\mu}=1 $，于是有：<br>$$\begin{align}<br>\ell(\bm{\mu},\lambda)<br>=\ln \prod_{j}^{c}\mu_j^{k_j+a_j-1}+\lambda(\bm{I}^\text{T}\bm{\mu}-1)<br>=[\bm{k}+\bm{a}-\bm{1}]^\text{T}\ln\bm{\mu}+\lambda(\bm{I}^\text{T}\bm{\mu}-1)<br>\end{align}$$<br>求解得：<br>$$\begin{cases}\displaystyle<br>\frac{\partial{\ell}}{\partial{\bm{\mu}}}=\frac{\bm{k}+\bm{a}-\bm{1}}{\bm{\mu}}+\lambda\bm{I}=\bm{0}\\\displaystyle<br>\frac{\partial{\ell}}{\partial{\lambda}}=\bm{I}^\text{T}\bm{\mu}-1=0<br>\end{cases}$$</p>
+<p>知道： $\displaystyle \bm{\mu}_{MAP}=-\frac{\bm{k}+\bm{a}-\bm{1}}{\lambda}$ 代入 $\displaystyle \bm{I}^\text{T}\bm{\mu}=1$得： $\displaystyle \lambda=n+a_0-c$<br>$$\bm{\mu}_{MAP}=\frac{\bm{k}+\bm{a}-\bm{1}}{n+a_0-c}  $$</p>
+<p>写成离散形式有<br>$$\begin{align}<br>\mu_j^{MAP}=\frac{k_j+a_j-1}{n+a_0-c}<br>\end{align}$$</p>
+<h6 id="4、后验协方差矩阵"><a href="#4、后验协方差矩阵" class="headerlink" title="4、后验协方差矩阵"></a>4、后验协方差矩阵</h6><p>$$\begin{align}<br>\mathrm{cov}(\bm{\mu})=\frac{(n+a_0)\mathrm{diag}[\bm{k}+\bm{a}]-[\bm{k}+\bm{a}][\bm{k}+\bm{a}]^\text{T}}{(n+a_0)^2(n+a_0+1)}<br>\end{align}$$<br>当 N足够大时：</p>
+<p>$$\mathrm{cov}(\bm{\mu})\approx \frac{(n)\mathrm{diag}[\bm{k}]-\bm{k}\bm{k}^\text{T}}{nnn}=\left[\frac{\mu_i^{MLE}(1-\mu_i^{MLE})^{\mathbb{I}(i=j)}{\mu_j^{MLE}}^{\mathbb{I}(i\neq j)}}{n}\right]_{c\times c} $$</p>
+<p>它随着我们数据的增加以 $\displaystyle \frac{1}{n}$的速度下降</p>
+<h6 id="5、后验预测分布"><a href="#5、后验预测分布" class="headerlink" title="5、后验预测分布"></a>5、后验预测分布</h6><p>开始分析之前，我们回忆一下B函数：<br>$\displaystyle \mathrm{B}(\bm{a})=\int_{\bm{x}\in [0,1]^c}x_i^{a_i-1}\mathrm{d}\bm{x}\,,a_i&gt;0\,and\,\sum_{i-1}^{n}x_i=1$且有： $\displaystyle \mathrm{B}(\bm{a})=\frac{\prod_{i=1}^{n}\Gamma(a_1)\cdots \Gamma(a_n)}{\Gamma(a_0)}$。同时为了简化符号，我们令后验分布 $\displaystyle p(\bm{\mu}\mid\mathcal{D})=\mathrm{Dir}(\bm{\mu}\mid \bm{a})$<br>现在我们令下一次观测 $\displaystyle \bm{x}_{n+1}=\tilde{\bm{x}}$。我们现在想知道 $\displaystyle \tilde{\bm{x}}$各种情况下概率，以辅助决策。考虑到 $\displaystyle   \tilde{\bm{x}}\in\{0,1\}^c \,,\bm{\mu}\in[0,1]^c=\mathcal{U}$。我们有：<br>$$\begin{align}<br>p(\tilde{\bm{x}}\mid \mathcal{D})<br>&amp;=\int_{\mathcal{U}}p(\tilde{\bm{x}}\mid \bm{\mu})p(\bm{\mu}\mid\mathcal{D})\mathrm{d}\bm{\mu}\\<br>&amp;=\int_{\mathcal{U}}\mathrm{Cat}(\bm{x}\mid\bm{\mu})\mathrm{Dir}(\bm{\mu}\mid \bm{a})\mathrm{d}\bm{\mu}\\<br>&amp;=\int_{\mathcal{U}}\prod_{j=1}^{c}\mu_j^{\tilde{x}_j}\frac{\Gamma(a_0)}{\displaystyle \prod_{j=1}^{c}\Gamma(a_j)}\prod_{j=1}^{c}\mu_j^{a_j-1}\mathrm{d}\bm{\mu}=\frac{\Gamma(a_0)}{\displaystyle \prod_{j=1}^{c}\Gamma(a_j)}\int_{\mathcal{U}}\prod_{j=1}^{c}\mu_j^{a_j+\tilde{x}_j-1}\mathrm{d}\bm{\mu}\\<br>&amp;=\frac{\Gamma(a_0)}{\displaystyle \prod_{j=1}^{c}\Gamma(a_j)}\frac{\displaystyle \prod_{j=1}^{c}\Gamma(a_j+\tilde{x}_j)}{\Gamma\left(\bm{I}^\text{T}[\bm{a}+\bm{x}]\right)}=\frac{\Gamma(a_0)}{\displaystyle \prod_{j=1}^{c}\Gamma(a_j)}\frac{\displaystyle \prod_{j=1}^{c}\Gamma(a_j+\tilde{x}_j)}{\Gamma(a_0+1)}\\<br>&amp;=\frac{\Gamma(a_0)}{\displaystyle \prod_{j=1}^{c}\Gamma(a_j)}\frac{\displaystyle \prod_{j=1}^{c}a_j^{\tilde{x}_j}\prod_{j=1}^{c}\Gamma(a_j)}{a_0^{\tilde{x}_j}\Gamma(a_0)}=\prod_{j=1}^{c}\frac{a_j}{a_0}^{\tilde{x}_j}=\prod_{j=1}^{c}\mathrm{E}^{\tilde{x}_j}(\bm{\mu}\mid\mathcal{D})\\<br>&amp;=\mathrm{Cat}\left(\tilde{\bm{x}}\mid\mathrm{E}[\bm{\mu}\mid\mathcal{D}]\right)<br>\end{align}$$</p>
+<p>所以可以看到，后验预测分布等价于 <font face="微软雅黑" size="2" color="red">$\displaystyle plug-in\,\mathrm{E}[\mu\mid\mathcal{D}]$</font>。我们也可以分析出类似贝塔-伯努利模型的结论。</p>
+<h6 id="6、多试验后验预测"><a href="#6、多试验后验预测" class="headerlink" title="6、多试验后验预测"></a>6、多试验后验预测</h6><p>考虑这个问题，我们又观察到了 $\displaystyle m$个数据，那么分类 $\displaystyle j$发生 $\displaystyle s_j$次的概率。写成向量形式 $\displaystyle \bm{s}$。于是有：<br>$$\begin{align}<br>p(\bm{s}\mid \mathcal{D},m)<br>&amp;=\int_{\mathcal{U}}\mathrm{Mu}(\bm{s}\mid \bm{\mu},m)\mathrm{Dir}(\bm{\mu}\mid \bm{a})\mathrm{d}\bm{\mu}\\<br>&amp;=\int_{\mathcal{U}}\frac{m!}{s_1!…s_c!}\prod_{j=1}^{c}\mu_j^{s_j}\frac{1}{\mathrm{B}(\bm{a})}\prod_{j=1}^{c}\mu_j^{a_j-1}\mathrm{d}\bm{\mu}\\<br>&amp;=\frac{m!}{s_1!…s_c!}\frac{\mathrm{B}(\bm{s}+\bm{a})}{\mathrm{B}(\bm{a})}<br>\end{align}$$</p>
+<p>我们称 $\displaystyle \mathrm{Dm}(\bm{s}\mid \mathcal{D},m)=\frac{m!}{s_1!…s_c!}\frac{\mathrm{B}(\bm{s}+\bm{a})}{\mathrm{B}(\bm{a})}$为狄利克雷-多项式分布(Dirichlet-multionmial distribution)。后验预测分布的均值与协方差矩阵问题</p>
+<p>后验预测分布均值：<br>$$\begin{align}<br> \mathrm{E}[s_j\mid \mathcal{D},m]<br> &amp;=\sum_{\bm{I}^\text{T}\bm{s}=1}s_j\int_{\mathcal{U}}\mathrm{Mu}(\bm{s}\mid \bm{\mu},m)\mathrm{Dir}(\bm{\mu}\mid \bm{a})\mathrm{d}\bm{\mu}\\<br> &amp;=\int_{\mathcal{U}}\sum_{\bm{I}^\text{T}\bm{s}=1}s_j\mathrm{Mu}(\bm{s}\mid \bm{\mu},m)\mathrm{Dir}(\bm{\mu}\mid \bm{a})\mathrm{d}\bm{\mu}\\<br> &amp;=\int_{\mathcal{U}}\mathrm{E}(s_j)\mathrm{Dir}(\bm{\mu}\mid \bm{a})\mathrm{d}\bm{\mu}=\int_{\mathcal{U}}m\mu_j\mathrm{Dir}(\bm{\mu}\mid \bm{a})\mathrm{d}\bm{\mu}\\<br> &amp;=m\frac{\Gamma(a_j+1)\Gamma(a_0)}{\Gamma(a_j)\Gamma(a_0+1)}=m\frac{a_j}{a_0}<br>\end{align}$$</p>
+<p>$\displaystyle \mathrm{E}[\bm{s}\mid \mathcal{D},m]=m\frac{\bm{a}}{a_0}$</p>
+<p>后验预测分布方差：<br>$$\begin{align}<br> \mathrm{var}[s_j\mid \mathcal{D},m]<br>&amp;=\sum_{\bm{I}^\text{T}\bm{s}=1}s^2_j\int_{\mathcal{U}}\mathrm{Mu}(\bm{s}\mid \bm{\mu},m)\mathrm{Dir}(\bm{\mu}\mid \bm{a})\mathrm{d}\bm{\mu}-\mathrm{E}^2[s_j]\\<br>&amp;=\int_{\mathcal{U}}\sum_{\bm{I}^\text{T}\bm{s}=1}s^2_j\mathrm{Mu}(\bm{s}\mid \bm{\mu},m)\mathrm{Dir}(\bm{\mu}\mid \bm{a})\mathrm{d}\bm{\mu}-\mathrm{E}^2[s_j]\\<br>&amp;=\int_{\mathcal{U}}\mathrm{E}(s_j^2)\mathrm{Dir}(\bm{\mu}\mid \bm{a})\mathrm{d}\bm{\mu}-\mathrm{E}^2[s_j]\\<br>&amp;=\int_{\mathcal{U}}[m\mu_j+m(m-1)\mu_j^2]\mathrm{Dir}(\bm{\mu}\mid \bm{a})\mathrm{d}\bm{\mu}-\mathrm{E}^2[s_j]\\<br>&amp;=m\frac{a_j}{a_0}+m(m-1)\frac{\Gamma(a_j+2)\Gamma(a_0)}{\Gamma(a_j)\Gamma(a_0+2)}-m^2\frac{a_j^2}{a_0^2}\\<br>&amp;=m\frac{a_j}{a_0}+m(m-1)\frac{(a_j+1)a_j}{a_0(a_0+2)}-m^2\frac{a_j^2}{a_0^2}\\<br>&amp;=\frac{ma_j(a_0-a_j)}{a_0^2}\frac{a_0+m}{a_0+1}<br>\end{align}$$</p>
+<p>后验预测分布协方差：<br>$$\begin{align}<br> \mathrm{cov}[s_i,s_j\mid \mathcal{D},m]<br>&amp;=\sum_{\bm{I}^\text{T}\bm{s}=1}s_is_j\int_{\mathcal{U}}\mathrm{Mu}(\bm{s}\mid \bm{\mu},m)\mathrm{Dir}(\bm{\mu}\mid \bm{a})\mathrm{d}\bm{\mu}-\mathrm{E}[s_i]\mathrm{E}[s_j]\\<br>&amp;=\int_{\mathcal{U}}\sum_{\bm{I}^\text{T}\bm{s}=1}s_is_j\mathrm{Mu}(\bm{s}\mid \bm{\mu},m)\mathrm{Dir}(\bm{\mu}\mid \bm{a})\mathrm{d}\bm{\mu}-\mathrm{E}[s_i]\mathrm{E}[s_j]\\<br>&amp;=\int_{\mathcal{U}}\mathrm{cov}(s_i,s_j)\mathrm{Dir}(\bm{\mu}\mid \bm{a})\mathrm{d}\bm{\mu}-\mathrm{E}[s_i]\mathrm{E}[s_j]\\<br>&amp;=\int_{\mathcal{U}}[-m\mu_i\mu_j]\mathrm{Dir}(\bm{\mu}\mid \bm{a})\mathrm{d}\bm{\mu}-\frac{m^2a_ia_j}{a_0^2}\\<br>&amp;=-m\frac{\Gamma(a_i+1)\Gamma(a_j+1)\Gamma(a_0)}{\Gamma(a_i)\Gamma(a_j)\Gamma(a_0+2)}-\frac{m^2a_ia_j}{a_0^2}\\<br>&amp;=-m\frac{a_ia_j}{(a_0+1)a_0}-\frac{m^2a_ia_j}{a_0^2}\\<br>&amp;=\frac{-ma_ia_j}{a_0^2}\frac{a_0+m}{a_0+1}\\<br>\end{align}$$</p>
+<p>后验预测分布协方差矩阵：<br>$\displaystyle  \mathrm{cov}[\bm{s}\mid \mathcal{D},m]=m(m+a_0)\frac{a_0\mathrm{diag}[\bm{a}]-\bm{a}\bm{a}^\text{T}}{a_0^2(a_0+1)}$</p>
+<p>对于 <font face="微软雅黑" size="2" color="red">$plug−in\,\bm{\mu}_{MAP}$</font>插值 $\displaystyle \mathrm{Mu}(\bm{s}\mid \bm{\mu}_{MAP},m)$，我们知道 $\displaystyle \bm{\mu}_{MAP}=\frac{\bm{a}-\bm{1}}{a_0-c}$其协方差矩阵为：<br>$\displaystyle \mathrm{cov}[\bm{s}\mid \bm{\mu}_{MAP},m]<br>=m\left[\mathrm{diag}[\bm{\mu}_{MAP}]-\bm{\mu}_{MAP}\bm{\mu}_{MAP}^\text{T}\right]$</p>
+<p>$\displaystyle \mathrm{var}[s_j\mid \bm{\mu}_{MAP},m]<br>=\frac{m(a_j-1)(a_0-a_j+1-c)}{(a_0-c)^2}$</p>
+<p>$\displaystyle \mathrm{cov}[s_i,s_j\mid \bm{\mu}_{MAP},m]<br>=\frac{-m(a_i-1)(a_j-1)}{(a_0-1)^2}$<br>比较大小容易证明：<br>$$\begin{align}<br>\mathrm{cov}[\bm{s}\mid \mathcal{D},m]\geqslant\mathrm{cov}[\bm{s}\mid \bm{\mu}_{MAP},m]<br>\end{align}$$<br>所以 </p>
+<p><font face="微软雅黑" size="2" color="red" align="center">贝叶斯预测的概率密度更宽、拥有长尾，从而避免了过拟合和黑天鹅悖论。</font></p>
+<h6 id="7、数据集后验预测与边缘似然函数"><a href="#7、数据集后验预测与边缘似然函数" class="headerlink" title="7、数据集后验预测与边缘似然函数"></a>7、数据集后验预测与边缘似然函数</h6><p>有数据集 $\displaystyle \mathcal{D}_t,\mathcal{D}_{t+1}$，这有<br>$$\begin{align}<br> p(\mathcal{D}_t\mid \bm{a})<br> &amp;=\int_\mathcal{U}p(\mathcal{D}_t\mid\bm{\mu})p(\bm{\mu}\mid \bm{a})\mathrm{d}\bm{\mu}\\<br>&amp;=\int_\mathcal{U}\prod_{j=1}^{c}\mu_j^{k_j^t}\frac{1}{\mathrm{B}(\bm{a})}\prod_{j=1}^{c}\mu_j^{a_j-1}\mathrm{d}\bm{\mu}\\<br>&amp;=\frac{\mathrm{B}(\bm{k}_t+\bm{a})}{\mathrm{B}(\bm{a})}<br>\end{align}$$</p>
+<p>$$\begin{align}<br> p(\mathcal{D}_{t+1}\,\mathcal{D}_t\mid \bm{a})<br> &amp;=\int_\mathcal{U}p(\mathcal{D}_{t+1}\mid\bm{\mu})p(\bm{\mu}\mid\mathcal{D}_t,\bm{a})\mathrm{d}\bm{\mu}\\<br>&amp;=\int_\mathcal{U}\prod_{j=1}^{c}\mu_j^{k_j^{t+1}}\frac{1}{\mathrm{B}(\bm{k}_t+\bm{a})}\prod_{j=1}^{c}\mu_j^{k_j+a_j-1}\mathrm{d}\bm{\mu}\\<br>&amp;=\frac{\mathrm{B}(\bm{k}_{t+1}+\bm{k}_t+\bm{a})}{\mathrm{B}(\bm{k}_t+\bm{a})}<br>\end{align}$$</p>
+<p>所以有：<br>$$\begin{align}<br> p(\mathcal{D}_{t+1}\mid\mathcal{D}_t,\bm{a})=\frac{p(\mathcal{D}_{t+1}\,\mathcal{D}_t\mid\bm{a})}{ p(\mathcal{D}_t\mid\bm{a})}=\frac{\mathrm{B}(\bm{k}_{t+1}+\bm{k}_t+\bm{a})}{\mathrm{B}(\bm{a})}<br>\end{align}$$</p>
+<h5 id="9、评述"><a href="#9、评述" class="headerlink" title="9、评述"></a>9、评述</h5><p>通过狄利克雷-多项式模型，我们从离散二维拓展到了离散多维。</p>
+<p>1、上帝给 $\displaystyle x$选择了一个分布：$\displaystyle  x\sim \mathrm{Cat}(x\mid\bm{\mu})=\prod_{j=1}^{c}\mu_j^{\mathbb{I}(x=j)}, x\in\{1,..,c\},\bm{\mu}\in[0,1]^c $ 这个分布由 $\displaystyle \bm{\mu}$确定。</p>
+<p>2、犹豫种种原因，人类也知晓了 $\displaystyle x$的分布类型，但是不知道 $\displaystyle \bm{\mu}$。于是人类搞了个假设空间 $\displaystyle \mathcal{H}=\{\bm{\mu}_i\}$，为了找到上帝的那个 $\displaystyle \hat{\bm{\mu}}$，于是人类的征程开始了。</p>
+<p>3、人类的智者，选择了用概率来解决这个难题。并且动用了自己的经验和感觉，人类假设 $\displaystyle \bm{\mu}\sim\mathrm{Dir}(\bm{\mu}\mid \bm{a})=\frac{1}{\mathrm{B}(\bm{a})}\prod_{j=1}^{c}\mu_j^{a_j-1}$。另外我们还可以结合，不断知晓的信息流 $\displaystyle \mathcal{D}_t,\mathcal{D}_{t+1}…\mathcal{D}_{\infty}$，来给假设空间的每个 $\displaystyle \bm{\mu}$更新概率。于是这个表达式横空出世 $\displaystyle p(\bm{\mu}\mid \mathcal{D}_{t+1},\mathcal{D}_t)\propto p(\mathcal{D}_{t+1}\mid\bm{\mu})p(\bm{\mu}\mid \mathcal{D}_{t})$。于是我们得到了：</p>
+<p>$$p(\bm{\mu}\mid\mathcal{D}_t)=\mathrm{Dir}(\bm{\mu}\mid \bm{k}_t+\bm{a})$$这样我们就把假设空间的 $\displaystyle \bm{\mu}$都给了个概率。这样我们就有关于 $\displaystyle \bm{\mu}$决策的信息。</p>
+<p>4、上帝微微一笑，  人类继续开始征程：令 $\tilde{x}$为一随机变量，代表 n次观测后的值，于是得到：<br>$$p(\tilde{x}\mid \mathcal{D})=\int_{\mathcal{U}}p(\tilde{x}\mid \bm{\mu})p(\bm{\mu}\mid\mathcal{D})\mathrm{d}\bm{\mu}=\mathrm{Cat}\left(\tilde{x}\mid\mathrm{E}[\bm{\mu}\mid\mathcal{D}]\right)$$于是基于对假设空间再次赋概，我们对上帝有了新的认识</p>
+<p>5、上帝开始感觉人类是个聪明的物种，甚为满意！ 我们又观察到了 m个数据，那么发生 $\tilde{\bm{x}}$的次数是$\bm{s}$次的概率<br>$$\begin{align}<br>p(\bm{s}\mid \mathcal{D},m)<br>&amp;=\int_{\mathcal{U}}\mathrm{Mu}(\bm{s}\mid \bm{\mu},m)\mathrm{Dir}(\bm{\mu}\mid \bm{a})\mathrm{d}\bm{\mu}\\<br>&amp;=\frac{n!}{s_1!…s_c!}\frac{\mathrm{B}(\bm{s}+\bm{a})}{\mathrm{B}(\bm{a})}<br>\end{align}$$这样我们对 $\displaystyle \bm{s}$的可能值也赋概了。这个式子称之为狄利克雷-多项式分布。我们对上帝又有了新的认识</p>
+<p>6、至此，由于 $\displaystyle p(\bm{\mu}\mid\mathcal{D}_t,\mathcal{D}_{t+1})=\mathrm{Dir}(\bm{\mu}\mid \bm{k}_{t+1}+\bm{k}_t+\bm{a})$。当 $\displaystyle \lim_{t\to\infty}\mathcal{D}_t$人类基本可以看到上帝裸体了。因为<br>$$\mathrm{cov}(\bm{\mu})\approx \frac{(n)\mathrm{diag}[\bm{k}]-\bm{k}\bm{k}^\text{T}}{nnn}=\left[\frac{\mu_i^{MLE}(1-\mu_i^{MLE})^{\mathbb{I}(i=j)}{\mu_j^{MLE}}^{\mathbb{I}(i\neq j)}}{n}\right]_{c\times c} $$</p>
+<p>它随着我们数据的增加以 $\displaystyle \frac{1}{n}$的速度下降，我们发现人类的认识 $\displaystyle \hat{\bm{\mu}}$会越来越逼近上帝的那个 $\displaystyle \bm{\mu}$概率。也就是说<br>$$\begin{align}<br>p(\hat{\bm{\mu}}\to \bm{\mu})\to1<br>\end{align}$$</p>
+<p><hr></p>
+<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="https://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="https://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="https://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="https://www.limoncc.com">[ https://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%"><a href="https://www.limoncc.com/post/5afe722cdba3caacf42894f5bfd847d4/">https://www.limoncc.com/post/5afe722cdba3caacf42894f5bfd847d4/</a></td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/机器学习/" rel="tag">#机器学习</a>
+          
+            <a href="/tags/人工智能/" rel="tag">#人工智能</a>
+          
+            <a href="/tags/分类分布/" rel="tag">#分类分布</a>
+          
+            <a href="/tags/狄利克雷-多项式模型/" rel="tag">#狄利克雷-多项式模型</a>
+          
+            <a href="/tags/狄利克雷分布/" rel="tag">#狄利克雷分布</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/013798c6e4da1d7b0e91e91dd5294d91/" rel="next" title="贝塔-伯努利模型(Beta-Binomial Model)">
+                <i class="fa fa-chevron-left"></i> 贝塔-伯努利模型(Beta-Binomial Model)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/c7d551950374c4114400ca0e635169ba/" rel="prev" title="广义线性模型">
+                广义线性模型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+<!--           </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div> -->
+        <div id="vcomments"></div>
+        <script>new Valine({
+          el: "#vcomments",
+      appId: "BVjuNRCpkVSkz82jFmadIvY8-gzGzoHsz",
+    appKey: "bRjXPp55dop7RTC2xgunGdiP"})
+  </script>'
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="引线小白" />
+          <p class="site-author-name" itemprop="name">引线小白</p>
+          <p class="site-description motion-element" itemprop="description">小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">27</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="" target="_blank" title="Design">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Design
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.behance.net/limoncc" target="_blank" title="Behance">
+                  
+                    <i class="fa fa-fw fa-behance"></i>
+                  
+                  Behance
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.pinterest.com/aegeanfan/" target="_blank" title="Pinterest">
+                  
+                    <i class="fa fa-fw fa-pinterest"></i>
+                  
+                  Pinterest
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/limoncc" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://weibo.com/3483157951" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://www.zhihu.com/people/limoncc" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              设计不止，折腾不息。
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://chuangzaoshi.com" title="创造狮" target="_blank">创造狮</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、狄利克雷-多项式模型-dirichlet-multionmial-model"><span class="nav-number">1.</span> <span class="nav-text">一、狄利克雷-多项式模型(dirichlet-multionmial model)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、分类分布-multinoulli-distribution-概率质量函数："><span class="nav-number">1.1.</span> <span class="nav-text">1、分类分布(multinoulli distribution)概率质量函数：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、均值与方差"><span class="nav-number">1.2.</span> <span class="nav-text">2、均值与方差</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、似然函数-likelihood"><span class="nav-number">1.3.</span> <span class="nav-text">3、似然函数(likelihood)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、对数似然函数"><span class="nav-number">1.4.</span> <span class="nav-text">4、对数似然函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5、求极大似然估计"><span class="nav-number">1.5.</span> <span class="nav-text">5、求极大似然估计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6、多项式分布"><span class="nav-number">1.6.</span> <span class="nav-text">6、多项式分布</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7、共轭先验分布"><span class="nav-number">1.7.</span> <span class="nav-text">7、共轭先验分布</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8、后验分布"><span class="nav-number">1.8.</span> <span class="nav-text">8、后验分布</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1、在线学习"><span class="nav-number">1.8.1.</span> <span class="nav-text">1、在线学习</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2、后验分析"><span class="nav-number">1.8.2.</span> <span class="nav-text">2、后验分析</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3、-拉格朗日乘数法"><span class="nav-number">1.8.3.</span> <span class="nav-text">3、 拉格朗日乘数法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4、后验协方差矩阵"><span class="nav-number">1.8.4.</span> <span class="nav-text">4、后验协方差矩阵</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#5、后验预测分布"><span class="nav-number">1.8.5.</span> <span class="nav-text">5、后验预测分布</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#6、多试验后验预测"><span class="nav-number">1.8.6.</span> <span class="nav-text">6、多试验后验预测</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#7、数据集后验预测与边缘似然函数"><span class="nav-number">1.8.7.</span> <span class="nav-text">7、数据集后验预测与边缘似然函数</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9、评述"><span class="nav-number">1.9.</span> <span class="nav-text">9、评述</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">引线小白&nbsp &nbsp |&nbsp &nbsp  一个理想主义者，再造自我，以期未来。</span>
+</div>
+
+<div class="powered-by">
+  由 <a rel="external nofollow" class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a rel="external nofollow" class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>&nbsp &nbsp| &nbsp &nbsp Hosted by  <a href="https://github.com" style="font-weight: bold">Github Pages</a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+<!--   
+   
+  
+
+  
+
+ -->
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+<!--   <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+     showMathMenu: false,
+     showMathMenuMSIE: false,
+     tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+          processEscapes: true
+        },
+        TeX: {
+          equationNumbers: {autoNumber: 'AMS'},
+          Macros: {bm: "\\boldsymbol"}
+        },
+        'HTML-CSS': {
+          imageFont: null
+        }
+    });
+  </script> -->
+<!--     MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    }); -->
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+    processEscapes: true,
+    tags: 'ams',
+    macros: {
+                                            bm: "\\boldsymbol",
+                                            oiint: "{\\iint\\kern{-20mu}{\\unicode{x2B2D}}}",
+                                            oiiint: "{\\iiint\\kern{-24.5mu}\\large{\\unicode{x2B2D}}}"
+                                },
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+  <script type="text/x-mathjax-config">
+MathJax.texReset();
+MathJax.typeset();
+  </script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_SVG-full"></script> -->
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Es7wAnqi0QiGhMLoyl7mkrQo-gzGzoHsz", "BxPXaoPFp3PzWqBTSe6VUuQS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</body>
+</html>

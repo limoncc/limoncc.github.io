@@ -301,7 +301,7 @@
       
         
       
-      嗯..! 目前共计 28 篇日志。 继续努力。
+      嗯..! 目前共计 27 篇日志。 继续努力。
     </span>
 
     
@@ -325,7 +325,7 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/机器学习/2017-03-12-条件随机场模型/" itemprop="url">
+            <a class="post-title-link" href="/post/875b887a5e7e39e56eea929a72336d4e/" itemprop="url">
               
                 <span itemprop="name">条件随机场模型</span>
               
@@ -362,7 +362,7 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/机器学习/2017-03-11-隐马尔可夫模型/" itemprop="url">
+            <a class="post-title-link" href="/post/9b154bbdc2a51d2ea34ec070684b5132/" itemprop="url">
               
                 <span itemprop="name">隐马尔可夫模型</span>
               
@@ -399,7 +399,7 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/机器学习/2017-03-10-概率图基础/" itemprop="url">
+            <a class="post-title-link" href="/post/b9646fbf6c8d542fdb68ac01ad3c1c5a/" itemprop="url">
               
                 <span itemprop="name">概率图基础</span>
               
@@ -436,7 +436,7 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/机器学习/2017-03-09-广义线性模型/" itemprop="url">
+            <a class="post-title-link" href="/post/c7d551950374c4114400ca0e635169ba/" itemprop="url">
               
                 <span itemprop="name">广义线性模型</span>
               
@@ -473,7 +473,7 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/机器学习/2017-03-08-狄利克雷-多项式模型/" itemprop="url">
+            <a class="post-title-link" href="/post/5afe722cdba3caacf42894f5bfd847d4/" itemprop="url">
               
                 <span itemprop="name">狄利克雷-多项式模型(Dirichlet-Multionmial Model)</span>
               
@@ -510,7 +510,7 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/机器学习/2017-03-07-机器学习笔记03/" itemprop="url">
+            <a class="post-title-link" href="/post/013798c6e4da1d7b0e91e91dd5294d91/" itemprop="url">
               
                 <span itemprop="name">贝塔-伯努利模型(Beta-Binomial Model)</span>
               
@@ -547,7 +547,7 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/机器学习/2017-03-06-机器学习笔记02/" itemprop="url">
+            <a class="post-title-link" href="/post/e9c2d3bda7c379c2b051cb34e04f2c3c/" itemprop="url">
               
                 <span itemprop="name">贝叶斯统计学概论</span>
               
@@ -618,7 +618,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">27</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -742,7 +742,7 @@
         <div class="copyright" >
   
   &copy;  2016 - 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -976,7 +976,7 @@
   </script>
 
   
-  <script type="text/x-mathjax-config">
+<!--   <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
      showMathMenu: false,
      showMathMenuMSIE: false,
@@ -993,17 +993,38 @@
           imageFont: null
         }
     });
-  </script>
-
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
+  </script> -->
+<!--     MathJax.Hub.Queue(function() {
       var all = MathJax.Hub.getAllJax(), i;
       for (i=0; i < all.length; i += 1) {
         all[i].SourceElement().parentNode.className += ' has-jax';
       }
-    });
+    }); -->
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+    processEscapes: true,
+    tags: 'ams',
+    macros: {
+                                            bm: "\\boldsymbol",
+                                            oiint: "{\\iint\\kern{-20mu}{\\unicode{x2B2D}}}",
+                                            oiiint: "{\\iiint\\kern{-24.5mu}\\large{\\unicode{x2B2D}}}"
+                                },
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+  <script type="text/x-mathjax-config">
+MathJax.texReset();
+MathJax.typeset();
   </script>
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_SVG-full"></script> -->
 
 
   

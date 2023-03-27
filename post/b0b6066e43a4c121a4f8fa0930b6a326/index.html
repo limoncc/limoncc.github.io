@@ -1,0 +1,1097 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="机器学习,笔记,机器学习框架" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="感知机是人类历史上第一个真正优秀的人工神经网络。我们需要了解它。">
+<meta name="keywords" content="机器学习,笔记,机器学习框架">
+<meta property="og:type" content="article">
+<meta property="og:title" content="感知机">
+<meta property="og:url" content="http://www.limoncc.com/post/b0b6066e43a4c121a4f8fa0930b6a326/index.html">
+<meta property="og:site_name" content="柠檬CC">
+<meta property="og:description" content="感知机是人类历史上第一个真正优秀的人工神经网络。我们需要了解它。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.limoncc.com/图片/神经网络.png">
+<meta property="og:image" content="http://www.limoncc.com/图片/神经网络模型.png">
+<meta property="og:image" content="https://www.limoncc.com/images/cc.png">
+<meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
+<meta property="og:updated_time" content="2023-03-27T12:28:38.696Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="感知机">
+<meta name="twitter:description" content="感知机是人类历史上第一个真正优秀的人工神经网络。我们需要了解它。">
+<meta name="twitter:image" content="http://www.limoncc.com/图片/神经网络.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <title> 感知机 | 柠檬CC </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-73837972-3', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d225b8f8559eb2eb6a8bd8792e01ebb9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=60130136";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">柠檬CC</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">小白爱吃柠檬O(∩_∩)O</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-poetry">
+          <a href="/poetry" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-leaf"></i> <br />
+            
+            诗集
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                感知机
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-04-05T22:49:06+08:00" content="2017-04-05">
+              2017-04-05
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/post/b0b6066e43a4c121a4f8fa0930b6a326/" class="leancloud_visitors" data-flag-title="感知机">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作者: <a href="https://www.limoncc.com">引线小白</a>-本文永久链接：<a href="https://www.limoncc.com/post/b0b6066e43a4c121a4f8fa0930b6a326/">https://www.limoncc.com/post/b0b6066e43a4c121a4f8fa0930b6a326/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+<h4 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h4><p>神经网络是由<font face="微软雅黑" size="2" color="blue">简单处理单元</font>构成的<font face="微软雅黑" size="2" color="red">大规模并行分布式</font>处理器。</p>
+<div align="center"><img src="http://www.limoncc.com/图片/神经网络.png" width="450"><br>神经元</div>
+
+<p>$$\begin{align}<br>o_j(t)=f\{[\sum_{i=1}^{n}w_{ij}x_i(t-\tau_{ij})]-T_j\}<br>\end{align}$$</p>
+<h4 id="单神经元—感知机模型（Perceptron）"><a href="#单神经元—感知机模型（Perceptron）" class="headerlink" title="单神经元—感知机模型（Perceptron）"></a>单神经元—感知机模型（Perceptron）</h4><h5 id="模型的建立"><a href="#模型的建立" class="headerlink" title="模型的建立"></a>模型的建立</h5><p>1943年生理学家W.S.McCulloch和W.A.Pitts提出了形式神经元数学模型，史称M-P模型。开创了神经科学理论研究的新时代！</p>
+<p>1949年心理学家Donald Olding Hebb在《行为构成》（Organization of Behavior）中提出了Hebb算法。而且首次提出了连接主义(connectionism)：大脑活动是靠脑细胞的组合连接实现的。</p>
+<p>1958年美国Frank Rosenblatt提出了感知机（Perceptron）这应该是世界上第一个真正优秀的人工神经网络</p>
+<h5 id="概念与符号"><a href="#概念与符号" class="headerlink" title="概念与符号"></a>概念与符号</h5><p>下面我们将说明这个模型，<br>1、 $\displaystyle \boldsymbol{x}=[x_1,…,x_k]^\text{T}$为特征向量， 或者叫输入向量<br>2、 $\displaystyle \boldsymbol{w}=[w_1,…,w_k]^\text{T}$为权值向量，也可以叫突触权值向量 ，模仿神经元的突触。<br>3、 $\displaystyle w_0$为阈值。 $\displaystyle o=f$<br>4、为简洁记令 $\displaystyle x_0=1$,于是有增广特征向量 $\displaystyle \boldsymbol{x}:=[x_0,x_1,…,x_k]^\text{T}$。<br>5、增广权值向量$\displaystyle \boldsymbol{w}:=[w_0,w_1,…,w_k]^\text{T}$。<br>6、定义输出 $\displaystyle o$，<br>7、激活函数：硬限函数 $\displaystyle  \mathrm{hardlims}(x)=\begin{cases} 1, &amp;x\geqslant0 \\\ -1, &amp;x&lt;0\end{cases}$。于是有：<br>$$\begin{align}<br>o=\mathrm{hardlims}\left(\boldsymbol{w}^\text{T}\boldsymbol{x}\right)<br>\end{align}$$</p>
+<div align="center"><img src="http://www.limoncc.com/图片/神经网络模型.png" width="450"><br>神经元</div>
+
+
+<h5 id="感知机学习与训练"><a href="#感知机学习与训练" class="headerlink" title="感知机学习与训练"></a>感知机学习与训练</h5><h6 id="感知机学习算法：误差修正学习算法"><a href="#感知机学习算法：误差修正学习算法" class="headerlink" title="感知机学习算法：误差修正学习算法"></a>感知机学习算法：误差修正学习算法</h6><p>对于二分类增广数据集 $\displaystyle \{\boldsymbol{x}_i,y_i\}_{i=1}^{n}$，注意我们用的都是增广数据，$\displaystyle \boldsymbol{x}:=[1,x_1,…,x_k]^\text{T}$，$\displaystyle \boldsymbol{w}:=[w_0,w_1,…,w_k]^\text{T}$，同时 $\displaystyle y=+1\text{ or }-1$，表示 $\displaystyle c_1 \text{ or } c_2$类。 学习误差$\displaystyle y_t-o_t$于是有：</p>
+<hr>
+<p>算法：误差修正学习算法1</p>
+<hr>
+<font face="Times" new="" roman="" size="3" color="#0066CC">$1\displaystyle \boldsymbol{w}_0=\boldsymbol{0}$<br>$2\displaystyle \text{while }\boldsymbol{w}=\text{converged}$ :<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\boldsymbol{w}_{t+1}=\boldsymbol{w}_t+\eta_t(y_t-o_t)\boldsymbol{x}_t<br>\end{array}\\<br>$<br>3 #end while</font>
+
+<hr>
+<p>如果我们定义 $\displaystyle \boldsymbol{z}=y\times\boldsymbol{x}$，这样取得新的数据集 $\displaystyle \{\boldsymbol{z}_i,y_i\}_{i=1}^{n}$，一般称之为二分类规范增广数据集。在这个数据集下，线性可分意味着：存在一个 $\displaystyle \boldsymbol{w}$使得对于任意的 $\displaystyle \boldsymbol{z}_i$，$\displaystyle \boldsymbol{w}\boldsymbol{z}_i&gt;0$成立。</p>
+<hr>
+<p>算法：误差修正学习算法2</p>
+<hr>
+<font face="Times" new="" roman="" size="3" color="#0066CC">$1\displaystyle \boldsymbol{w}_0=\boldsymbol{0}$<br>$2\displaystyle \text{while }\boldsymbol{w}=\text{converged}$ :<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\boldsymbol{z}_t=y_t\times\boldsymbol{x}_t\\<br>\boldsymbol{w}_{t+1}=\boldsymbol{w}_t+2\eta_t\mathbb{I}(\boldsymbol{w}_t^\text{T} \boldsymbol{z}\leqslant 0)\boldsymbol{z}_t<br>\end{array}\\<br>$<br>3 #end while</font>
+
+<hr>
+<h6 id="感知机学习算法：梯度下降算法"><a href="#感知机学习算法：梯度下降算法" class="headerlink" title="感知机学习算法：梯度下降算法"></a>感知机学习算法：梯度下降算法</h6><p>分析之前，令 $\displaystyle \boldsymbol{z}=y\times\boldsymbol{x}$，这样我们把属于 $\displaystyle c_2$的特征变成了 $\displaystyle -\boldsymbol{x}$。定义目标函数： $\displaystyle J(\boldsymbol{w})=k \left(|\boldsymbol{w}^\text{T}\boldsymbol{z}|-\boldsymbol{w}^\text{T}\boldsymbol{z}\right),k&gt;0<br>$ 通常令 $\displaystyle k=1$易知： $\displaystyle \min J(\boldsymbol{w})=0$时， $\displaystyle \boldsymbol{w}^\text{T}\boldsymbol{z}\geqslant 0$，于是分类正确。问题转化为：<br>$$\begin{align}<br>\min_{\boldsymbol{w}}J(\boldsymbol{w})<br>\end{align}$$<br>我们使用梯度下降算法：<br>$$\begin{align}<br>\boldsymbol{w}_{t+1}=\boldsymbol{w}_t-\alpha_t\nabla_t<br>\end{align}$$</p>
+<p>我们知道： $\displaystyle \nabla_t<br>=\frac{\partial J}{\partial\boldsymbol{w}_t}<br>=k[\boldsymbol{z}_t\times\mathrm{sgn}\left(\boldsymbol{w}_t^\text{T}\boldsymbol{z}_t\right)-\boldsymbol{z}_t]$  代入3式得：<br>$$\begin{align}<br> \boldsymbol{w}_{t+1}=\boldsymbol{w}_t-\alpha_tk\left[\mathrm{sgn}\left(\boldsymbol{w}_t^\text{T}\boldsymbol{z}_t\right)-1\right]\boldsymbol{z}_t<br> \end{align}$$<br>当 $\displaystyle k=1$时，就是误差修正学习算法。</p>
+<hr>
+<p>算法：梯度下降算法（Gradient Descent）</p>
+<hr>
+<font face="Times" new="" roman="" size="3" color="#0066CC">$1\displaystyle \boldsymbol{w}_0=\boldsymbol{0}$<br>$2\displaystyle \text{while }\boldsymbol{w}=\text{converged}$ :<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\boldsymbol{z}_t=y_t\times\boldsymbol{x}_t\\<br>\boldsymbol{w}_{t+1}=\boldsymbol{w}_t-\alpha_tk\left[\mathrm{sgn}\left(\boldsymbol{w}_t^\text{T}\boldsymbol{z}_t\right)-1\right]\boldsymbol{z}_t<br>\end{array}\\<br>$<br>3 #end while</font>
+
+<hr>
+<h6 id="感知机学习算法：最小均方误差算法"><a href="#感知机学习算法：最小均方误差算法" class="headerlink" title="感知机学习算法：最小均方误差算法"></a>感知机学习算法：最小均方误差算法</h6><p>取任意正数 $\displaystyle \nu_i$，有 $\displaystyle \boldsymbol{\nu}=[\nu_1,…,\nu_k]^\text{T}$。定义误差： $\displaystyle \boldsymbol{\epsilon}=\boldsymbol{X}\boldsymbol{w}-\boldsymbol{\nu}$<br> $$\begin{align}<br> \mathrm{MES}(\boldsymbol{w})<br> =\boldsymbol{\epsilon}^\text{T}\boldsymbol{\epsilon}<br> =\left[\boldsymbol{X}\boldsymbol{w}-\boldsymbol{\nu}\right]^\text{T}\left[\boldsymbol{X}\boldsymbol{w}-\boldsymbol{\nu}\right]<br> \end{align}$$<br>容易知道问题化为<br>$$\begin{align}<br>\min_{\boldsymbol{w}} \mathrm{MES}(\boldsymbol{w})<br>\end{align}$$<br>知道这就最小二乘解： $\displaystyle \hat{\boldsymbol{w}}<br>=\left[\boldsymbol{X}^\text{T}\boldsymbol{X}\right]^{-1}\boldsymbol{X}^\text{T}\boldsymbol{\nu}=\boldsymbol{X}^\dagger \boldsymbol{\nu}<br>$。求解伪逆的计算量大。我们使用梯度下降方法，知道<br>$$\begin{align}<br>\nabla\mathrm{MES}(\boldsymbol{w})=2\boldsymbol{X}^\text{T}\left[\boldsymbol{X}\boldsymbol{w}-\boldsymbol{\nu}\right]<br>\end{align}$$</p>
+<hr>
+<p>算法：最小均方误差算法（Least Mean-Square Error）</p>
+<hr>
+<font face="Times" new="" roman="" size="3" color="#0066CC">$1\displaystyle \boldsymbol{w}_0=\boldsymbol{X}^\text{T}\boldsymbol{\nu},\boldsymbol{\nu}&gt;0$<br>$2\displaystyle \alpha_0=\alpha$<br>$3\displaystyle \text{while }\boldsymbol{w}=\text{converged}$ :<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\alpha_t=\alpha\div t\\<br>\boldsymbol{w}_{t+1}=\boldsymbol{w}_t-2\alpha_t\boldsymbol{X}^\text{T}\left[\boldsymbol{X}\boldsymbol{w}_t-\boldsymbol{\nu}\right]\\<br>\end{array}\\<br>$<br>4 # end while<br>$5\displaystyle \text{ if }\,\boldsymbol{\epsilon}_{end}=\boldsymbol{X}\boldsymbol{w}_{end}-\boldsymbol{\nu}\geqslant 0$ :<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\text{print(‘线性可分’)}\\<br>\end{array}<br>$<br>$\displaystyle \,\,\,\,\,\text{else }$ :<br> $\displaystyle<br>\quad\begin{array}{|lc}<br>\text{print(‘线性不可分’)}\\<br>\end{array}<br>$<br>6 # end if</font>
+
+<hr>
+<h5 id="感知器收敛定律"><a href="#感知器收敛定律" class="headerlink" title="感知器收敛定律"></a>感知器收敛定律</h5><font face="微软雅黑" size="2" color="red">如果样本集合线性可分，那么感知器存在收敛解。</font><br>证明：<br>1、我们使用规范增广数据集 $\displaystyle \{\boldsymbol{z}_i,y_i\}_{i=1}^{n}  $<br><br>2、假定解向量 $\displaystyle \hat{\boldsymbol{w}}$，则对任意的 $\displaystyle \boldsymbol{z}$有 $\displaystyle \hat{\boldsymbol{w}}^\text{T}\boldsymbol{z}&gt;0$。我们注意到对于 $\displaystyle \delta&gt;0$ ，$\displaystyle \delta\cdot\hat{\boldsymbol{w}}$也是解向量。<br><br>3、我们令 $\displaystyle \boldsymbol{z}_t$是所有错分样本， 有<br>$$\begin{align}<br>\boldsymbol{w}_t\boldsymbol{z}_t\leqslant 0<br>\end{align}$$误差修正学习算法中令 $\displaystyle \eta_t=\frac{1}{2}$于是有：<br>$$\begin{align}<br>\boldsymbol{w}_{t+1}=\boldsymbol{w}_t+\boldsymbol{z}_t<br>\end{align}$$<br>另外我们还令规范增广特征向量最大长度，与解向量最小内积<br>$$\begin{align}<br>\beta=\max_t ||\,\boldsymbol{z}_t||<br>\end{align}$$<br>$$\begin{align}<br>\alpha=\min_t \hat{\boldsymbol{w}}^\text{T}\boldsymbol{z}_t&gt;0<br>\end{align}$$<br>4、现在我们把解向量 $\displaystyle \delta\hat{\boldsymbol{w}}$考虑进来于是：<br>$$\begin{align}<br>&amp;\boldsymbol{w}_{t+1}=\boldsymbol{w}_t+\boldsymbol{z}_t\\<br>&amp;\boldsymbol{w}_{t+1}-\delta\cdot\hat{\boldsymbol{w}}=\boldsymbol{w}_t-\delta\cdot\hat{\boldsymbol{w}}+\boldsymbol{z}_t\\<br>&amp;||\boldsymbol{w}_{t+1}-\delta\cdot\hat{\boldsymbol{w}}||^2=||\boldsymbol{w}_t-\delta\cdot\hat{\boldsymbol{w}}+\boldsymbol{z}_t||^2<br>\end{align}$$<br>5、范数公式 $\displaystyle ||\boldsymbol{x}+\boldsymbol{y}||^2=||\boldsymbol{x}||^2+ 2&lt;\boldsymbol{x},\boldsymbol{y}&gt;+||\boldsymbol{y||^2},\,&lt;\boldsymbol{x},\boldsymbol{y}&gt;=\boldsymbol{x}^\text{T}\boldsymbol{y}$于是我们有：<br>$$\begin{align}<br>&amp;||\boldsymbol{w}_{t+1}-\delta\cdot\hat{\boldsymbol{w}}||^2<br>=||\boldsymbol{w}_t-\delta\cdot\hat{\boldsymbol{w}}||^2+2 \boldsymbol{w}_t^\text{T}\boldsymbol{z}_t-2\delta\cdot\hat{\boldsymbol{w}}^\text{T}\boldsymbol{z}_t+||\boldsymbol{z}_t||^2<br>\end{align}$$<br>6、根据上面的1、2、3的分析，有：<br>$$\begin{align}<br>&amp;||\boldsymbol{w}_{t+1}-\delta\cdot\hat{\boldsymbol{w}}||^2<br>\leqslant ||\boldsymbol{w}_t-\delta\cdot\hat{\boldsymbol{w}}||^2-2\delta\cdot\alpha+\beta^2<br>\end{align}$$<br>7、为了简洁令： $\displaystyle \delta=\frac{\beta^2}{\alpha}$于是有：<br>$$\begin{align}<br>&amp;||\boldsymbol{w}_{t+1}-\delta\cdot\hat{\boldsymbol{w}}||^2<br>\leqslant ||\boldsymbol{w}_t-\delta\cdot\hat{\boldsymbol{w}}||^2-\beta^2<br>\end{align}$$<br>8、考虑上式 $\displaystyle t=\{0,…,m\}$。并累加得：<br>$$\begin{align}<br>&amp;0\leqslant||\boldsymbol{w}_{m+1}-\delta\cdot\hat{\boldsymbol{w}}||^2<br>\leqslant ||\boldsymbol{w}_0-\delta\cdot\hat{\boldsymbol{w}}||^2-m\cdot\beta^2<br>\end{align}$$<br>9、可以看到随着 $\displaystyle m$的不断增加，范数 $\displaystyle ||\boldsymbol{w}_{m+1}-\delta\cdot\hat{\boldsymbol{w}}||^2\to 0$，于是：<br>$$\begin{align}<br>m_{max}<br>= \frac{||\boldsymbol{w}_0-\delta\cdot\hat{\boldsymbol{w}}||^2}{\beta^2}<br>\end{align}$$<br>10、如果我们令 $\displaystyle \boldsymbol{w}_0=\boldsymbol{0}$,有：<br>$$\begin{align}<br>m_{max}<br>=\frac{\delta^2}{\beta^2}||\,\hat{\boldsymbol{w}}||=\frac{\beta^2}{\alpha^2}||\,\hat{\boldsymbol{w}}||<br>\end{align}$$<br>这时感知机的解收敛于： $\displaystyle  \frac{\beta^2}{\alpha}\cdot\hat{\boldsymbol{w}}$。史称感知机固定增量收敛定律。<br><br>#### 评述<br>1、 历史说明：<font face="微软雅黑" size="2" color="red">分类是科学之始</font>，为解决分类问题，人类殚精竭虑。其中模仿神经元的感知器就是其中之一。<br>2、上帝给世界分了两类 $\displaystyle c_1$和 $\displaystyle c_2$。人类观测到了 $\displaystyle \{\boldsymbol{x}_i,y_i\}_{i=1}^{n}$。为了解决问题，人类思考了最简单的方法：劈下一刀，不就两半了。于是有了对称硬限函数。<br>3、有个负号还是很麻烦，于是定义了 $\displaystyle \boldsymbol{z}=y\times \boldsymbol{x}$ 就有了新的数据集$\displaystyle  \{\boldsymbol{z}_i,y_i\}_{i=1}^{n}$ <font face="微软雅黑" size="2" color="red">劈下一刀，变成了的折一下，然后裁一刀的问题</font>：<br>$$\begin{align}<br> \forall \boldsymbol{z}_i,\boldsymbol{w}^\text{T}\boldsymbol{z}_i&gt;0<br>\end{align}$$<br>4、满足上式的问题，我们叫线性可分。并且根据学习规则和对问题认识，人类很块发现了<font face="微软雅黑" size="2" color="red">感知机固定增量收敛定律</font>。<br>5、但是好景不长，人类的智者很快发现 <font face="微软雅黑" size="2" color="red">线性不过是人类的YY，非线性才是上帝的YY。</font>人类继续着征程： <font face="微软雅黑" size="2" color="blue">我们的征途是星辰大海！</font>
+
+
+
+<p><hr></p>
+<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="https://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="https://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="https://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="https://www.limoncc.com">[ https://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%"><a href="https://www.limoncc.com/post/b0b6066e43a4c121a4f8fa0930b6a326/">https://www.limoncc.com/post/b0b6066e43a4c121a4f8fa0930b6a326/</a></td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/机器学习/" rel="tag">#机器学习</a>
+          
+            <a href="/tags/人工智能/" rel="tag">#人工智能</a>
+          
+            <a href="/tags/神经网络/" rel="tag">#神经网络</a>
+          
+            <a href="/tags/感知机/" rel="tag">#感知机</a>
+          
+            <a href="/tags/人工神经网络/" rel="tag">#人工神经网络</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/875b887a5e7e39e56eea929a72336d4e/" rel="next" title="条件随机场模型">
+                <i class="fa fa-chevron-left"></i> 条件随机场模型
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/b1417de51d2c97b0ef371b6561a65f4b/" rel="prev" title="分类分布大意">
+                分类分布大意 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+<!--           </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div> -->
+        <div id="vcomments"></div>
+        <script>new Valine({
+          el: "#vcomments",
+      appId: "BVjuNRCpkVSkz82jFmadIvY8-gzGzoHsz",
+    appKey: "bRjXPp55dop7RTC2xgunGdiP"})
+  </script>'
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="引线小白" />
+          <p class="site-author-name" itemprop="name">引线小白</p>
+          <p class="site-description motion-element" itemprop="description">小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">27</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="" target="_blank" title="Design">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Design
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.behance.net/limoncc" target="_blank" title="Behance">
+                  
+                    <i class="fa fa-fw fa-behance"></i>
+                  
+                  Behance
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.pinterest.com/aegeanfan/" target="_blank" title="Pinterest">
+                  
+                    <i class="fa fa-fw fa-pinterest"></i>
+                  
+                  Pinterest
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/limoncc" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://weibo.com/3483157951" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://www.zhihu.com/people/limoncc" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              设计不止，折腾不息。
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://chuangzaoshi.com" title="创造狮" target="_blank">创造狮</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#神经网络"><span class="nav-number">1.</span> <span class="nav-text">神经网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单神经元—感知机模型（Perceptron）"><span class="nav-number">2.</span> <span class="nav-text">单神经元—感知机模型（Perceptron）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#模型的建立"><span class="nav-number">2.1.</span> <span class="nav-text">模型的建立</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#概念与符号"><span class="nav-number">2.2.</span> <span class="nav-text">概念与符号</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#感知机学习与训练"><span class="nav-number">2.3.</span> <span class="nav-text">感知机学习与训练</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#感知机学习算法：误差修正学习算法"><span class="nav-number">2.3.1.</span> <span class="nav-text">感知机学习算法：误差修正学习算法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#感知机学习算法：梯度下降算法"><span class="nav-number">2.3.2.</span> <span class="nav-text">感知机学习算法：梯度下降算法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#感知机学习算法：最小均方误差算法"><span class="nav-number">2.3.3.</span> <span class="nav-text">感知机学习算法：最小均方误差算法</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#感知器收敛定律"><span class="nav-number">2.4.</span> <span class="nav-text">感知器收敛定律</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">引线小白&nbsp &nbsp |&nbsp &nbsp  一个理想主义者，再造自我，以期未来。</span>
+</div>
+
+<div class="powered-by">
+  由 <a rel="external nofollow" class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a rel="external nofollow" class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>&nbsp &nbsp| &nbsp &nbsp Hosted by  <a href="https://github.com" style="font-weight: bold">Github Pages</a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+<!--   
+   
+  
+
+  
+
+ -->
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+<!--   <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+     showMathMenu: false,
+     showMathMenuMSIE: false,
+     tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+          processEscapes: true
+        },
+        TeX: {
+          equationNumbers: {autoNumber: 'AMS'},
+          Macros: {bm: "\\boldsymbol"}
+        },
+        'HTML-CSS': {
+          imageFont: null
+        }
+    });
+  </script> -->
+<!--     MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    }); -->
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+    processEscapes: true,
+    tags: 'ams',
+    macros: {
+                                            bm: "\\boldsymbol",
+                                            oiint: "{\\iint\\kern{-20mu}{\\unicode{x2B2D}}}",
+                                            oiiint: "{\\iiint\\kern{-24.5mu}\\large{\\unicode{x2B2D}}}"
+                                },
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+  <script type="text/x-mathjax-config">
+MathJax.texReset();
+MathJax.typeset();
+  </script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_SVG-full"></script> -->
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Es7wAnqi0QiGhMLoyl7mkrQo-gzGzoHsz", "BxPXaoPFp3PzWqBTSe6VUuQS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</body>
+</html>
