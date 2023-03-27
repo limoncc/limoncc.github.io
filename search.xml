@@ -46,10 +46,10 @@
       </categories>
       <tags>
         <tag>机器学习</tag>
-        <tag>人工智能</tag>
         <tag>神经网络</tag>
         <tag>感知机</tag>
         <tag>人工神经网络</tag>
+        <tag>人工智能</tag>
       </tags>
   </entry>
   <entry>
@@ -111,8 +111,8 @@
       </categories>
       <tags>
         <tag>机器学习</tag>
-        <tag>人工智能</tag>
         <tag>分类分布</tag>
+        <tag>人工智能</tag>
         <tag>狄利克雷-多项式模型</tag>
         <tag>狄利克雷分布</tag>
       </tags>
@@ -127,8 +127,8 @@
       <tags>
         <tag>大数据</tag>
         <tag>机器学习</tag>
-        <tag>人工智能</tag>
         <tag>神经网络</tag>
+        <tag>人工智能</tag>
         <tag>大数据分析</tag>
         <tag>贝塔-伯努利模型</tag>
       </tags>
@@ -143,8 +143,8 @@
       <tags>
         <tag>大数据</tag>
         <tag>机器学习</tag>
-        <tag>人工智能</tag>
         <tag>神经网络</tag>
+        <tag>人工智能</tag>
         <tag>大数据分析</tag>
       </tags>
   </entry>
@@ -156,8 +156,8 @@
         <category>统计学</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>统计学</tag>
+        <tag>机器学习</tag>
         <tag>矩阵高斯分布</tag>
       </tags>
   </entry>
@@ -194,8 +194,8 @@
       <tags>
         <tag>大数据</tag>
         <tag>机器学习</tag>
-        <tag>人工智能</tag>
         <tag>神经网络</tag>
+        <tag>人工智能</tag>
         <tag>大数据分析</tag>
       </tags>
   </entry>
@@ -236,8 +236,8 @@
       </categories>
       <tags>
         <tag>机器学习</tag>
-        <tag>人工智能</tag>
         <tag>神经网络</tag>
+        <tag>人工智能</tag>
         <tag>大数据分析</tag>
       </tags>
   </entry>
