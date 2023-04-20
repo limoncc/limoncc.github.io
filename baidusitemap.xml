@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://www.limoncc.com/post/c7d551950374c4114400ca0e635169ba/</loc>
+    <lastmod>2023-04-20T02:00:04.848Z</lastmod>
+    <data>
+        <display>
+        <title>广义线性模型</title>
+        <pubTime>2017-03-09T12:36:43.000Z</pubTime>
+        
+        <tag>机器学习</tag>
+         
+        <tag>广义线性模型</tag>
+         
+         
+           
+             
+              <breadCrumb title="机器学习" url="http://www.limoncc.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.limoncc.com/post/ae12247dac6e96d2796b3e6769150a6c/</loc>
     <lastmod>2023-03-27T12:32:09.125Z</lastmod>
     <data>
@@ -281,9 +303,9 @@
         <title>矩阵高斯分布</title>
         <pubTime>2017-01-11T03:45:17.000Z</pubTime>
         
-        <tag>统计学</tag>
-         
         <tag>机器学习</tag>
+         
+        <tag>统计学</tag>
          
         <tag>矩阵高斯分布</tag>
          
@@ -432,28 +454,6 @@
 
     
   <url>
-    <loc>http://www.limoncc.com/post/c7d551950374c4114400ca0e635169ba/</loc>
-    <lastmod>2023-03-27T12:28:51.375Z</lastmod>
-    <data>
-        <display>
-        <title>广义线性模型</title>
-        <pubTime>2017-03-09T12:36:43.000Z</pubTime>
-        
-        <tag>机器学习</tag>
-         
-        <tag>广义线性模型</tag>
-         
-         
-           
-             
-              <breadCrumb title="机器学习" url="http://www.limoncc.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://www.limoncc.com/post/b0b6066e43a4c121a4f8fa0930b6a326/</loc>
     <lastmod>2023-03-27T12:28:38.696Z</lastmod>
     <data>
@@ -465,11 +465,11 @@
          
         <tag>神经网络</tag>
          
+        <tag>人工智能</tag>
+         
         <tag>感知机</tag>
          
         <tag>人工神经网络</tag>
-         
-        <tag>人工智能</tag>
          
          
            

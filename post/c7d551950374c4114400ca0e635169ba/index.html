@@ -95,7 +95,7 @@
 <meta property="og:image" content="http://www.limoncc.com/图片/广义线性模型.png">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2023-03-27T12:28:51.375Z">
+<meta property="og:updated_time" content="2023-04-20T02:00:04.848Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="广义线性模型">
 <meta name="twitter:description" content="本文意在理清广义线性模型的问题。若有错误，请大家指正。">
@@ -425,7 +425,7 @@
 <p>例如伯努利分布我们有 $\displaystyle \bm{T}=\bigg[\sum_{i=1}^n \mathbb{I}(\bm{x}_i)\bigg]$和单变量高斯分布 $\displaystyle \bm{T}=\big[\sum_{i=1}^nx_i,\sum_{i=1}^nx_i^2\big]$(我们也需要知道样本大小 $\displaystyle n$)</p>
 <p>现在我们给定 $\displaystyle \mathrm{idd}$数据集 $\displaystyle \mathcal{D}=\{\bm{x}_i\}_{i=1}^n$，用标准指数家族模型来计算 $\displaystyle \textit{MLE} $。对数似然函数：<br>$$\begin{align}<br>\ell(\bm{\eta})=\ln p \big(\mathcal{D}\mid \bm{\eta}\big)<br>=\bigg[\sum_{i=1}^n\ln h(\bm{x}_i)\bigg]+\bigg[\bm{\eta}^\text{T}(\bm{w})\bm{T}(\mathcal{D})-nA \big(\bm{\eta}\big)\bigg]<br>\end{align}$$</p>
 <p>因为 $\displaystyle  -A \big(\bm{\eta}\big)$关于 $\displaystyle \bm{\eta}$是凹的， $\displaystyle \bm{\eta}^\text{T}(\bm{w})\bm{T}(\mathcal{D})$关于 $\displaystyle \bm{\eta}$是线性的。故对数似然是凹的，因此有唯一的全局最大值。为了得到这个最大值，利用关于对数分配函数导数是充分统计量期望的结论有：<br>$$\begin{align}<br>\frac{\partial \ell}{\partial \bm{\eta}}=\bm{T}(\mathcal{D})-n \mathrm{E}\big[\bm{T}(\bm{x})\big]=\bm{0}<br>\end{align}$$有：$$\begin{align}<br>\mathrm{E}\big[\bm{T}(\bm{x})\big]=\frac{1}{n}\bm{T}\big(\mathcal{D}\big)<br>\end{align}$$</p>
-<p>充分统计量的经验平均值必须等于模型充分统计量的理论期望，即 $\displaystyle \hat{\bm{\eta}}$必须满足上式。这叫做时刻匹配 $\displaystyle \textit{(moment matching)} $。例如在伯努利分布中，我们有 $\displaystyle T(\mathcal{D})=\sum_{i=1}^n \mathbb{I}\big(x_i=1\big)$有：<br>$$\begin{align}<br>\mathrm{E}\big[\bm{T}(\bm{x})\big]=\hat{\mu}=\frac{1}{n}\sum_{i=1}^n \mathbb{I}\big(x_i=1\big)<br>\end{align}$$</p>
+<p>充分统计量的经验平均值必须等于模型充分统计量的理论期望，即 $\displaystyle \hat{\bm{\eta}}$必须满足上式。这叫做矩匹配 $\displaystyle \textit{(moment matching)} $。例如在伯努利分布中，我们有 $\displaystyle T(\mathcal{D})=\sum_{i=1}^n \mathbb{I}\big(x_i=1\big)$有：<br>$$\begin{align}<br>\mathrm{E}\big[\bm{T}(\bm{x})\big]=\hat{\mu}=\frac{1}{n}\sum_{i=1}^n \mathbb{I}\big(x_i=1\big)<br>\end{align}$$</p>
 <h5 id="2-5、指数族的贝叶斯"><a href="#2-5、指数族的贝叶斯" class="headerlink" title="2.5、指数族的贝叶斯"></a>2.5、指数族的贝叶斯</h5><p>我们已经看到，如果先验概率是共轭的，那么精确贝叶斯分析是相当简单的。非正式这意味着先验 $\displaystyle p \big(\bm{\eta}\mid \bm{\tau}\big)$与似然函数 $\displaystyle p \big(\mathcal{D}\mid \bm{\eta}\big)$有相同形式。为了这个有意义，我们要求似然函数的充分统计量是有限，所以我们可以写 $\displaystyle p \big(\mathcal{D}\mid \bm{\eta}\big)=p \big(\bm{T}(\mathcal{D})\mid \bm{\eta}\big)$。这表明，唯一有共轭先验的分布族是指数族。稍后我们将推导先验和后验。</p>
 <h6 id="2-5-1、似然函数"><a href="#2-5-1、似然函数" class="headerlink" title="2.5.1、似然函数"></a>2.5.1、似然函数</h6><p>我们多角度地写出指数族似然函数：<br>$$\begin{align}<br>p \big(\mathcal{D}\mid \bm{w}\big)<br>&amp;=\frac{1}{Z^n(\bm{w})}\bigg[\prod_{i=1}^n h(\bm{x}_i)\bigg]\exp \bigg[\bm{\eta}^\text{T}(\bm{w})\bm{T}(\mathcal{D})\bigg]\\\\<br>&amp;\propto\exp \bigg[\bm{\eta}^\text{T}(\bm{w})\bm{T}(\mathcal{D})-nA \big(\bm{\eta}\big)\bigg]\\\\<br>&amp;\propto\exp \bigg[n\bm{\eta}^\text{T}\bar{\bm{T}}-nA \big(\bm{\eta}\big)\bigg]<br>\end{align}$$</p>
 <p>其中 $\displaystyle \bar{\bm{T}}=\frac{1}{n}\bm{T}(\mathcal{D})$</p>
