@@ -47,9 +47,9 @@
       <tags>
         <tag>机器学习</tag>
         <tag>神经网络</tag>
-        <tag>人工智能</tag>
         <tag>感知机</tag>
         <tag>人工神经网络</tag>
+        <tag>人工智能</tag>
       </tags>
   </entry>
   <entry>
@@ -156,8 +156,8 @@
         <category>统计学</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>统计学</tag>
+        <tag>机器学习</tag>
         <tag>矩阵高斯分布</tag>
       </tags>
   </entry>
