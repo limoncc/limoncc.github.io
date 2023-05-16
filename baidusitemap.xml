@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://www.limoncc.com/post/1c60669bbe56769f/</loc>
-    <lastmod>2023-05-16T09:41:56.025Z</lastmod>
+    <lastmod>2023-05-16T09:43:17.294Z</lastmod>
     <data>
         <display>
         <title>扩散模型研究一：去噪扩散概率模型DDPM</title>
@@ -22,21 +22,6 @@
              
               <breadCrumb title="机器学习" url="http://www.limoncc.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.limoncc.com/post/undefined/</loc>
-    <lastmod>2023-05-16T09:40:14.731Z</lastmod>
-    <data>
-        <display>
-        <title></title>
-        <pubTime>2023-05-16T09:40:14.731Z</pubTime>
-        
-         
-           
         </display>
     </data>
     </url>
