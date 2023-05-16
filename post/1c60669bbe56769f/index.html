@@ -94,7 +94,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2023-05-16T09:37:35.755Z">
+<meta property="og:updated_time" content="2023-05-16T09:41:56.025Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="扩散模型研究一：去噪扩散概率模型DDPM">
 <meta name="twitter:description" content="扩散模型大放异彩，从原理上搞清楚运作机制非常关键。本文意在理清扩散模型的问题。若有错误，请大家指正。">
@@ -398,8 +398,7 @@
 <p>$$\begin{align}<br>f(\bm{\theta})<br>&amp;=-\int q(\mathcal{D}_T^\bm{z}\mid \bm{x}) \log\frac{p(\bm{x},\mathcal{D}_T^\bm{z})}{q(\mathcal{D}_T^\bm{z}\mid \bm{x})}d \mathcal{D}_T^\bm{z}\\<br>&amp;=-\int q(\mathcal{D}_T^\bm{z}\mid \bm{x})\log \frac{p(\bm{x}\mid \bm{z}_1)p(\bm{z}_T)\prod_{t=2}^{T}p(\bm{z}_{t-1}\mid \bm{z}_t)}{q(\bm{z}_1\mid \bm{x})\prod_{t=2}^{T}q(\bm{z}_t\mid \bm{z}_{t-1})}d \mathcal{D}_T^\bm{z}\\<br>&amp;=-\mathbb{E}_{q(\mathcal{D}_{T}^\bm{z}\mid \bm{x})}\bigg[\log \frac{p(\bm{x}\mid \bm{z}_1)p(\bm{z}_T)\prod_{t=2}^{T}p(\bm{z}_{t-1}\mid \bm{z}_t)}{q(\bm{z}_1\mid \bm{x})\prod_{t=2}^{T}q(\bm{z}_t\mid \bm{z}_{t-1})}\bigg]<br>\end{align}$$</p>
 <p>考虑到<br>$$\begin{align}<br>q(\bm{z}_t\mid \bm{z}_{t-1})<br>=q(\bm{z}_t\mid \bm{z}_{t-1},\bm{x})<br>=\frac{q(\bm{z}_{t-1}\mid \bm{z}_t,\bm{x})q(\bm{z}_t\mid \bm{x})}{q(\bm{z}_{t-1}\mid \bm{x})}<br>\end{align}$$</p>
 <p>于是有<br>$$\begin{align}<br>f(\bm{\theta})<br>&amp;=-\mathbb{E}_{q(\mathcal{D}_{T}^\bm{z}\mid \bm{x})}\bigg[\log \frac{p(\bm{x}\mid \bm{z}_1)p(\bm{z}_T)\prod_{t=2}^{T}p(\bm{z}_{t-1}\mid \bm{z}_t)}{q(\bm{z}_1\mid \bm{x})\prod_{t=2}^{T}q(\bm{z}_t\mid \bm{z}_{t-1})}\bigg]\\<br>&amp;=-\mathbb{E}_{q(\mathcal{D}_{T}^\bm{z}\mid \bm{x})}\bigg[\log \frac{p(\bm{x}\mid \bm{z}_1)p(\bm{z}_T)\prod_{t=2}^{T}p(\bm{z}_{t-1}\mid \bm{z}_t)q(\bm{z}_{t-1}\mid \bm{x})}{q(\bm{z}_1\mid \bm{x})\prod_{t=2}^{T}q(\bm{z}_{t-1}\mid \bm{z}_t,\bm{x})q(\bm{z}_t\mid \bm{x})}\bigg]\\<br>&amp;=-\mathbb{E}_{q(\mathcal{D}_{T}^\bm{z}\mid \bm{x})}\bigg[\log p(\bm{x}\mid \bm{z}_1)<br>+\log \frac{p(\bm{z}_T)\cancel{\prod_{t=2}^{T}q(\bm{z}_{t-1}\mid \bm{x})}}{q(\bm{z}_T\mid \bm{x})\cancel{\prod_{t=1}^{T-1}q(\bm{z}_t\mid \bm{x})}}<br>+\sum_{t=2}^{T}\log \frac{p(\bm{z}_{t-1}\mid \bm{z}_t)}{q(\bm{z}_{t-1}\mid \bm{z}_t,\bm{x})}\bigg]\\<br>&amp;=-\mathbb{E}_{q(\mathcal{D}_{T}^\bm{z}\mid \bm{x})}\bigg[\log p(\bm{x}\mid \bm{z}_1)<br>+\log \frac{p(\bm{z}_T)}{q(\bm{z}_T\mid \bm{x})}<br>+\sum_{t=2}^{T}\log \frac{p(\bm{z}_{t-1}\mid \bm{z}_t)}{q(\bm{z}_{t-1}\mid \bm{z}_t,\bm{x})}\bigg]\\<br>&amp;=\underbrace {\mathbb{KL}\big[q(\bm{z}_T\mid \bm{x})||p(\bm{z}_T))\big]}_{\mathcal{L}_{T}}<br>+\underbrace{\sum_{t=2}^T\mathbb{KL}\big[q(\bm{z}_{t-1}\mid \bm{z}_{t},\bm{x})||p(\bm{z}_{t-1}\mid \bm{z}_{t})\big]}_{\mathcal{L}_{1:T-1}}<br>+\underbrace{\mathbb{E}_{q(\mathcal{D}_{T}^\bm{z}\mid \bm{x})}\big[\log p(\bm{x}\mid \bm{z}_1)\big]}_{\mathcal{L}_0}<br>\end{align}$$</p>
-<p>所以有损失函数，注意  $q(\bm{x})=p(\bm{x)$ 都是 $\bm{x}$的真实分布，模型并未做出约束假设</p>
-<p>$$\begin{align}<br>\mathcal{L}<br>= \mathbb{E}_{x\sim p(\bm{x})}\bigg[\mathbb{KL}\big[q(\bm{z}_T\mid \bm{x})||p(\bm{z}_T))\big]<br>+\sum_{t=2}^T\mathbb{KL}\big[q(\bm{z}_{t-1}\mid \bm{z}_{t},\bm{x})||p(\bm{z}_{t-1}\mid \bm{z}_{t})\big]<br>+\mathbb{E}_{q(\mathcal{D}_{T}^\bm{z}\mid \bm{x})}\big[\log p(\bm{x}\mid \bm{z}_1)\big]<br>\bigg]<br>\end{align}$$</p>
+<p>所以有损失函数<br>$$\begin{align}<br>\mathcal{L}<br>= \mathbb{E}_{x\sim p(\bm{x})}\bigg[\mathbb{KL}\big[q(\bm{z}_T\mid \bm{x})||p(\bm{z}_T))\big]<br>+\sum_{t=2}^T\mathbb{KL}\big[q(\bm{z}_{t-1}\mid \bm{z}_{t},\bm{x})||p(\bm{z}_{t-1}\mid \bm{z}_{t})\big]<br>+\mathbb{E}_{q(\mathcal{D}_{T}^\bm{z}\mid \bm{x})}\big[\log p(\bm{x}\mid \bm{z}_1)\big]<br>\bigg]<br>\end{align}$$<br>注意 $\displaystyle q(\bm{x}=p(\bm{x})$都是 $\bm{x}$的真实分布,模型并未做出约束假设</p>
 <h4 id="三、模型构建的细节"><a href="#三、模型构建的细节" class="headerlink" title="三、模型构建的细节"></a>三、模型构建的细节</h4><h5 id="3-1、编码模型的实现"><a href="#3-1、编码模型的实现" class="headerlink" title="3.1、编码模型的实现"></a>3.1、编码模型的实现</h5><p>我们首先来考察一个损失函数 $\displaystyle \mathcal{L}_T$。所谓编码其实就是一个破坏的过程。我们希望通过往正常图片中逐步的加入噪声，来得到噪声。<br>$$\begin{align}<br>\bm{z}_t=\alpha_t\bm{z}_{t-1}+\beta_t\bm{\epsilon}_t<br>\end{align}$$其中 $\displaystyle \bm{\epsilon}\sim  \mathcal{N}(\bm{0},\bm{I})$, $\displaystyle \bm{z}_t\in \{\bm{x}\}\cup\{\bm{z}_t\}_{t=1}^T=\{\bm{z}_t\}_{t=0}^T$<br>最终得到噪声<br>$$\begin{align}<br>p(\bm{z}_T)\sim \mathcal{N}(\bm{0},\bm{I})<br>\end{align}$$</p>
 <p>这样有：</p>
 <p>$$\begin{align}<br>q(\bm{z}_t\mid \bm{x})<br>=\int q(\mathcal{D}_t^\bm{z}\mid \bm{x})d\mathcal{D}_{-t}<br>= \mathcal{N}(\alpha_t\bm{z}_{t-1},\beta_t^2\bm{I})<br>\end{align}$$<br>对于 $\displaystyle q(\bm{z}_T\mid \bm{x})$, 我们展开到 $\displaystyle \bm{x}$就有</p>
@@ -475,6 +474,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/post/undefined/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -547,7 +550,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">29</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
