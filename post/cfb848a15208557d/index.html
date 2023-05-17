@@ -94,7 +94,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2023-05-17T03:11:42.348Z">
+<meta property="og:updated_time" content="2023-05-17T03:12:34.118Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="EM算法和混合模型二：混合模型案例">
 <meta name="twitter:description" content="EM算法是解决隐变量问题问题一个强有力方法，本文列举了一些具体模型的应用。本文意在理清混合模型的EM算法的问题。若有错误，请大家指正。">
@@ -409,7 +409,7 @@
 <p><hr style="height:1px;border:none;border-top:1px dashed #0066CC;"></p>
 <p></p><p>算法：伯努利混合模型EM算法</p><p></p>
 <p><hr style="height:1px;border:none;border-top:1px dashed #0066CC;"><br></p>
-<p><font face="Times" new="" roman="" size="3" color="#0066CC"><br>  end while</font></p>
+<p><font face="Times" new="" roman="" size="3" color="#0066CC">1 $\displaystyle \bm{\pi}_0=\bm{a}$<br>2 $\displaystyle \bm{U}_o=\bm{A}$<br>3 $\displaystyle \text{while }\mathrm{E}_{q^t}\big[\ell\big(\mathcal{D}^+\mid \bm{\pi}_{t+1},\bm{U}_{t+1}\big)=\text{converged}$ :<br>$\displaystyle<br>\quad\begin{array}{|lc}<br>\text{ E step}\\<br>\text{—————-}\\<br>\text{for i in range(1,N+1):}\\<br>\quad\text{for k in range(1,K+1):}\\<br>\quad\quad\mathrm{E}\big[z_{ik}^t\big]=\frac{\displaystyle\pi_k^tp\big(\bm{x}_i\mid \bm{\mu}_k^t\big)}{\displaystyle\sum_{k=1}^K\pi_k^tp\big(\bm{x}_i\mid \bm{\mu}_k^t\big)}\\<br>\quad\text{ end for k}\\<br>\text{ end for i}\\<br>\text{ M step}\\<br>\text{—————-}\\<br>\bm{U}_{t+1}=\frac{\mathrm{E}^\text{T}\big[\bm{Z}_t\big]\bm{X}}{\mathrm{E}^\text{T}\big[\bm{Z}_t\big]\bm{I}}\\<br>\bm{\pi}_{t+1}=\frac{\mathrm{E}^\text{T}\big[\bm{Z}_t\big]\bm{I}}{N}\\<br>\end{array}\\$<br>4 $\displaystyle  \bm{\pi}_{end}$<br>5 $\displaystyle  \bm{U}_{end}$<br>  end while</font></p>
 <hr style="height:1px;border:none;border-top:1px dashed #0066CC;">
 
 
