@@ -4,6 +4,30 @@
 
     
   <url>
+    <loc>http://www.limoncc.com/post/1c60669bbe56769f/</loc>
+    <lastmod>2023-05-17T09:25:56.778Z</lastmod>
+    <data>
+        <display>
+        <title>扩散模型研究一：去噪扩散概率模型DDPM</title>
+        <pubTime>2023-05-16T09:04:26.000Z</pubTime>
+        
+        <tag>生成模型</tag>
+         
+        <tag>去噪扩散概率模型</tag>
+         
+        <tag>DDPM</tag>
+         
+         
+           
+             
+              <breadCrumb title="机器学习" url="http://www.limoncc.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.limoncc.com/post/387bda4e04291667/</loc>
     <lastmod>2023-05-17T06:13:48.488Z</lastmod>
     <data>
@@ -70,30 +94,6 @@
         <tag>混合模型</tag>
          
         <tag>隐变量模型</tag>
-         
-         
-           
-             
-              <breadCrumb title="机器学习" url="http://www.limoncc.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.limoncc.com/post/1c60669bbe56769f/</loc>
-    <lastmod>2023-05-16T09:43:17.294Z</lastmod>
-    <data>
-        <display>
-        <title>扩散模型研究一：去噪扩散概率模型DDPM</title>
-        <pubTime>2023-05-16T09:04:26.000Z</pubTime>
-        
-        <tag>生成模型</tag>
-         
-        <tag>去噪扩散概率模型</tag>
-         
-        <tag>DDPM</tag>
          
          
            
