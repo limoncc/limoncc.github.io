@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="引线小白, limoncc, 柠檬CC, 设计, 数据分析, 数据挖掘, 大数据, 数学, 机器学习" />
+  <meta name="keywords" content="EM算法,混合模型,隐变量模型" />
 
 
 
@@ -84,16 +84,21 @@
 
 
 
-<meta name="description" content="小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="柠檬CC">
-<meta property="og:url" content="http://www.limoncc.com/tags/数学分析/index.html">
+<meta name="description" content="EM算法是解决隐变量问题问题一个强有力方法。本文意在理清EM算法的问题。若有错误，请大家指正。">
+<meta name="keywords" content="EM算法,混合模型,隐变量模型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EM算法和混合模型一：EM算法">
+<meta property="og:url" content="http://www.limoncc.com/post/baeffd0a1d876b77/index.html">
 <meta property="og:site_name" content="柠檬CC">
-<meta property="og:description" content="小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。">
+<meta property="og:description" content="EM算法是解决隐变量问题问题一个强有力方法。本文意在理清EM算法的问题。若有错误，请大家指正。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.limoncc.com/images/cc.png">
+<meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
+<meta property="og:updated_time" content="2023-05-17T02:57:16.254Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="柠檬CC">
-<meta name="twitter:description" content="小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。">
+<meta name="twitter:title" content="EM算法和混合模型一：EM算法">
+<meta name="twitter:description" content="EM算法是解决隐变量问题问题一个强有力方法。本文意在理清EM算法的问题。若有错误，请大家指正。">
+<meta name="twitter:image" content="https://www.limoncc.com/images/cc.png">
 
 
 
@@ -112,7 +117,7 @@
 </script>
 
   <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
-  <title> 标签: 数学分析 | 柠檬CC </title>
+  <title> EM算法和混合模型一：EM算法 | 柠檬CC </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -161,7 +166,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -292,102 +297,161 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        数学分析
-        <small>标签</small>
-      </h2>
-    </div>
-
+  <div id="posts" class="posts-expand">
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/14200aef4e9c3ca0ec1cd56bf3b3a039/" itemprop="url">
-              
-                <span itemprop="name">多元高斯分布的熵</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-01-10T09:09:15+08:00"
-              content="2017-01-10" >
-          01-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/f86d15ef1be4f2b424d4ad1ccc917c3d/" itemprop="url">
-              
-                <span itemprop="name">伽马函数</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-01-07T15:40:09+08:00"
-              content="2017-01-07" >
-          01-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/e16e96fd600d84099331bdee7ae39758/" itemprop="url">
-              
-                <span itemprop="name">数学分析笔记-数的建立</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-12-23T21:57:59+08:00"
-              content="2016-12-23" >
-          12-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-  </div>
 
   
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                EM算法和混合模型一：EM算法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-13T18:04:26+08:00" content="2017-03-13">
+              2017-03-13
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/post/baeffd0a1d876b77/" class="leancloud_visitors" data-flag-title="EM算法和混合模型一：EM算法">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作者: <a href="https://www.limoncc.com">引线小白</a>-本文永久链接：<a href="https://www.limoncc.com/post/baeffd0a1d876b77/">https://www.limoncc.com/post/baeffd0a1d876b77/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+<h5 id="一、EM算法"><a href="#一、EM算法" class="headerlink" title="一、EM算法"></a>一、EM算法</h5><h6 id="1-1、问题表述"><a href="#1-1、问题表述" class="headerlink" title="1.1、问题表述"></a>1.1、问题表述</h6><p>考虑独立同分布数据集 $\displaystyle \mathcal{D}^\bm{x}=\{\bm{x}_i\}_{i=1}^N$，我们加入隐含变量 $\displaystyle \bm{z}\in \mathcal{C}$。这样我们有完整数据集(complete data)：$\displaystyle \mathcal{D}^{+}=\{\bm{x}_i,\bm{z}_i\}_{i=1}^N$。 $\displaystyle \mathcal{D}^{+}$依然是独立同分布的，同时我们把 $\displaystyle \mathcal{D}^\bm{x}$称为不完整数据集(incomplete data)。于是我们有：<br>$$\begin{align}<br>\ell \big(\mathcal{D}^\bm{x}\mid \bm{\theta}\big)=\sum_{i=1}^N\ln p\big(\bm{x}\mid \bm{\theta}\big)=\sum_{i=1}^N\ln \bigg[\int_{\mathcal{C}} p\big(\bm{x},\bm{z}\mid \bm{\theta}\big)\mathrm{d}\bm{z}\bigg]<br>\end{align}$$我们用数据集表示：<br>$$\begin{align}<br>\ell \big(\mathcal{D}^\bm{x}\mid \bm{\theta}\big)=\ln p\big(\mathcal{D}^\bm{x}\mid \bm{\theta}\big)=\ln \bigg[\int_{\mathcal{C}^N} p\big(\mathcal{D}^\bm{x},\mathcal{D}^\bm{z}\mid \bm{\theta}\big)\mathrm{d}\mathcal{D}^\bm{z}\bigg]<br>\end{align}$$对于离散情况，我们把积分换成求和即可。</p>
+<p><hr></p>
+<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="https://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="https://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="https://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="https://www.limoncc.com">[ https://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%"><a href="https://www.limoncc.com/post/baeffd0a1d876b77/">https://www.limoncc.com/post/baeffd0a1d876b77/</a></td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/EM算法/" rel="tag">#EM算法</a>
+          
+            <a href="/tags/混合模型/" rel="tag">#混合模型</a>
+          
+            <a href="/tags/隐变量模型/" rel="tag">#隐变量模型</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/875b887a5e7e39e56eea929a72336d4e/" rel="next" title="条件随机场模型">
+                <i class="fa fa-chevron-left"></i> 条件随机场模型
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/b0b6066e43a4c121a4f8fa0930b6a326/" rel="prev" title="感知机">
+                感知机 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
 <!--           </div>
@@ -395,6 +459,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div> -->
         <div id="vcomments"></div>
@@ -420,8 +488,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -542,6 +619,17 @@
       </section>
 
       
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#一、EM算法"><span class="nav-number">1.</span> <span class="nav-text">一、EM算法</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-1、问题表述"><span class="nav-number">1.1.</span> <span class="nav-text">1.1、问题表述</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
 
     </div>
   </aside>
@@ -637,6 +725,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
