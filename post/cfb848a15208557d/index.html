@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="引线小白, limoncc, 柠檬CC, 设计, 数据分析, 数据挖掘, 大数据, 数学, 机器学习" />
+  <meta name="keywords" content="EM算法,混合模型,隐变量模型,应用案例" />
 
 
 
@@ -84,16 +84,21 @@
 
 
 
-<meta name="description" content="小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="柠檬CC">
-<meta property="og:url" content="http://www.limoncc.com/archives/2017/index.html">
+<meta name="description" content="EM算法是解决隐变量问题问题一个强有力方法，本文列举了一些具体模型的应用。本文意在理清混合模型的EM算法的问题。若有错误，请大家指正。">
+<meta name="keywords" content="EM算法,混合模型,隐变量模型,应用案例">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EM算法和混合模型二：混合模型案例">
+<meta property="og:url" content="http://www.limoncc.com/post/cfb848a15208557d/index.html">
 <meta property="og:site_name" content="柠檬CC">
-<meta property="og:description" content="小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。">
+<meta property="og:description" content="EM算法是解决隐变量问题问题一个强有力方法，本文列举了一些具体模型的应用。本文意在理清混合模型的EM算法的问题。若有错误，请大家指正。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.limoncc.com/images/cc.png">
+<meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
+<meta property="og:updated_time" content="2023-05-17T03:03:00.834Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="柠檬CC">
-<meta name="twitter:description" content="小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。">
+<meta name="twitter:title" content="EM算法和混合模型二：混合模型案例">
+<meta name="twitter:description" content="EM算法是解决隐变量问题问题一个强有力方法，本文列举了一些具体模型的应用。本文意在理清混合模型的EM算法的问题。若有错误，请大家指正。">
+<meta name="twitter:image" content="https://www.limoncc.com/images/cc.png">
 
 
 
@@ -112,7 +117,7 @@
 </script>
 
   <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
-  <title> 归档 | 柠檬CC </title>
+  <title> EM算法和混合模型二：混合模型案例 | 柠檬CC </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -161,7 +166,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  page-archive  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -292,403 +297,173 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
-
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 30 篇日志。 继续努力。
-    </span>
-
+  <div id="posts" class="posts-expand">
     
-
-      
-      
-      
-
-      
-        
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
-        </div>
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/b1417de51d2c97b0ef371b6561a65f4b/" itemprop="url">
-              
-                <span itemprop="name">分类分布大意</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-06T10:22:47+08:00"
-              content="2017-05-06" >
-          05-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/b0b6066e43a4c121a4f8fa0930b6a326/" itemprop="url">
-              
-                <span itemprop="name">感知机</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-05T22:49:06+08:00"
-              content="2017-04-05" >
-          04-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/cfb848a15208557d/" itemprop="url">
-              
-                <span itemprop="name">EM算法和混合模型二：混合模型案例</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-14T17:04:26+08:00"
-              content="2017-03-14" >
-          03-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/baeffd0a1d876b77/" itemprop="url">
-              
-                <span itemprop="name">EM算法和混合模型一：EM算法</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-13T18:04:26+08:00"
-              content="2017-03-13" >
-          03-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/875b887a5e7e39e56eea929a72336d4e/" itemprop="url">
-              
-                <span itemprop="name">条件随机场模型</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-12T20:37:57+08:00"
-              content="2017-03-12" >
-          03-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/9b154bbdc2a51d2ea34ec070684b5132/" itemprop="url">
-              
-                <span itemprop="name">隐马尔可夫模型</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-11T21:37:57+08:00"
-              content="2017-03-11" >
-          03-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/b9646fbf6c8d542fdb68ac01ad3c1c5a/" itemprop="url">
-              
-                <span itemprop="name">概率图基础</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-10T21:37:57+08:00"
-              content="2017-03-10" >
-          03-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/c7d551950374c4114400ca0e635169ba/" itemprop="url">
-              
-                <span itemprop="name">广义线性模型</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-09T20:36:43+08:00"
-              content="2017-03-09" >
-          03-09
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/5afe722cdba3caacf42894f5bfd847d4/" itemprop="url">
-              
-                <span itemprop="name">狄利克雷-多项式模型(Dirichlet-Multionmial Model)</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-08T09:17:07+08:00"
-              content="2017-03-08" >
-          03-08
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/013798c6e4da1d7b0e91e91dd5294d91/" itemprop="url">
-              
-                <span itemprop="name">贝塔-伯努利模型(Beta-Binomial Model)</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-07T21:54:02+08:00"
-              content="2017-03-07" >
-          03-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-  </section>
 
   
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/2017/page/2/">2</a><a class="extend next" rel="next" href="/archives/2017/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                EM算法和混合模型二：混合模型案例
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-14T17:04:26+08:00" content="2017-03-14">
+              2017-03-14
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/post/cfb848a15208557d/" class="leancloud_visitors" data-flag-title="EM算法和混合模型二：混合模型案例">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
 
 
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作者: <a href="https://www.limoncc.com">引线小白</a>-本文永久链接：<a href="https://www.limoncc.com/post/cfb848a15208557d/">https://www.limoncc.com/post/cfb848a15208557d/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+<p>文本接上篇：<a href="https://www.limoncc.com/post/baeffd0a1d876b77">EM算法和混合模型一：EM算法</a>，来谈谈EM算法具体应用：混合模型。</p>
+<h5 id="二、一般混合模型问题"><a href="#二、一般混合模型问题" class="headerlink" title="二、一般混合模型问题"></a>二、一般混合模型问题</h5><h6 id="2-1、问题描述"><a href="#2-1、问题描述" class="headerlink" title="2.1、问题描述"></a>2.1、问题描述</h6><p>考虑一随机变量的离散混合情况。这句话意思是说：观测到的随机变量可能是由离散可数个分布中的一个产生的： </p>
+<p>$$\begin{align}<br>\bm{x}\sim \sum_{k=1}^K \pi_k \times p\big(\bm{x}\mid \bm{\theta}_k\big)<br>\end{align}$$<br>例如：<br>$$\begin{align}<br>p(x)=0.35\times\mathcal{N}\big(x\mid 5,25\big)+0.25\times\mathcal{N}\big(x\mid 15,9\big)+0.4\times\mathcal{N}\big(x\mid -10,25\big)<br>\end{align}$$</p>
+<h6 id="2-2、引入隐变量-Latent-variables"><a href="#2-2、引入隐变量-Latent-variables" class="headerlink" title="2.2、引入隐变量(Latent variables)"></a>2.2、引入隐变量(Latent variables)</h6><p>考虑一般混合模型的数据集 $\displaystyle \mathcal{D}^\bm{x}=\{\bm{x}_i\}_{i=1}^N$，我们加入隐含变量 $\displaystyle \bm{z}\in\{0,1\}^K=\mathcal{C}$、$\displaystyle \bm{I}^\text{T}\bm{z}=1$、 $\displaystyle N_k=\sum_{i=1}^{N}z_{ik}$、 $\displaystyle \bm{N}_k=[N_1,…,N_k,…,N_K]^\text{T}$。这是我们在分类分布 $\displaystyle \mathrm{Cat}$中，惯用的方法： $\displaystyle \textit{1 of K}$编码方法。这样我们有完整数据集：$\displaystyle \mathcal{D}^{+}=\{\bm{x}_i,\bm{z}_i\}_{i=1}^N$，同时我们把 $\displaystyle \mathcal{D}^\bm{x}$称为不完整数据集。</p>
+<h6 id="2-3、隐变量先验分布与-displaystyle-bm-x-的条件分布"><a href="#2-3、隐变量先验分布与-displaystyle-bm-x-的条件分布" class="headerlink" title="2.3、隐变量先验分布与 $\displaystyle \bm{x}$的条件分布"></a>2.3、隐变量先验分布与 $\displaystyle \bm{x}$的条件分布</h6><p>显然：<br>$$\begin{align}<br>p\big(\bm{z}\mid \bm{\pi}\big)<br>=\mathrm{Cat}\big(\bm{z}\mid \bm{\pi}\big)<br>=\prod_{k=1}^K\pi_k^{z_k}<br>\end{align}$$这个分布我们称之为 $\displaystyle \bm{z}$的先验分布，同时我们还有 $\displaystyle \bm{x}$的条件概率分布：<br>$$\begin{align}<br>p \big(\bm{x}\mid \bm{z},\bm{\theta}\big)=\prod_{k=1}^Kp\big(\bm{x}\mid \bm{\theta}_k\big)^{z_k}<br>\end{align}$$</p>
+<h6 id="2-4、隐变量与观测变量的联合分布导出观测变量分布"><a href="#2-4、隐变量与观测变量的联合分布导出观测变量分布" class="headerlink" title="2.4、隐变量与观测变量的联合分布导出观测变量分布"></a>2.4、隐变量与观测变量的联合分布导出观测变量分布</h6><p>注意到：  $\displaystyle \bm{z}\in\{0,1\}^K=\mathcal{C}$。这时的混合模型为：<br>$$\begin{align}<br>p(\bm{x}\mid \bm{\theta},\bm{\pi})<br>&amp;=\sum_{\bm{z}\in \mathcal{C}}p\big(\bm{x},\bm{z}\mid\bm{\theta},\bm{\pi}\big)<br>=\sum_{\bm{z}\in \mathcal{C}}p\big(\bm{z}\mid \bm{\pi}\big)p\big(\bm{x}\mid \bm{z},\bm{\theta}\big)\\<br>&amp;=\sum_{\bm{z}\in \mathcal{C}}\bigg[\mathrm{Cat}\big(\bm{z}\mid \bm{\pi}\big)\times\prod_{k=1}^Kp\big(\bm{x}\mid \bm{\theta}_k\big)^{z_k}\bigg]\\<br>\end{align}$$$$\begin{align}<br>&amp;=\sum_{\bm{z}\in \mathcal{C}}\bigg[\prod_{k=1}^K\pi_k^{z_k}\times\prod_{k=1}^Kp\big(\bm{x}\mid \bm{\theta}_k\big)^{z_k}\bigg]\\<br>&amp;=\sum_{\bm{z}\in \mathcal{C}}\bigg[\prod_{k=1}^K\big[\pi_k^{z_k}p\big(\bm{x}\mid \bm{\theta}_k\big)^{z_k}\big]\bigg]\\<br>&amp;=\sum_{k=1}^K\pi_kp\big(\bm{x}\mid \bm{\theta}_k\big)<br>\end{align}$$这是隐变量的经典变换技巧，请务必熟悉 $\displaystyle D、K、N$与 $\displaystyle d、k、i$的下标翻译。</p>
+<p>上述推导中，我们有 <font face="微软雅黑" size="2" color="red">隐变量与观测变量的联合分布</font>：<br>$$\begin{align}<br>p\big(\bm{x},\bm{z}\mid\bm{\theta},\bm{\pi}\big)=p\big(\bm{z}\mid \bm{\pi}\big)p\big(\bm{x}\mid \bm{z},\bm{\theta}\big)=\prod_{k=1}^K\big[\pi_k^{z_k}p\big(\bm{x}\mid \bm{\theta}_k\big)^{z_k}\big]<br>\end{align}$$</p>
+<h6 id="2-5、隐变量后验概率分布与期望"><a href="#2-5、隐变量后验概率分布与期望" class="headerlink" title="2.5、隐变量后验概率分布与期望"></a>2.5、隐变量后验概率分布与期望</h6><p>现在我们来考察后验概率分布 $\displaystyle p\big(\bm{z}\mid \bm{x},\bm{\mu},\bm{\pi}\big)=\frac{p\big(\bm{x},\bm{z}\mid \bm{\mu},\bm{\pi}\big)}{p\big(\bm{x}\mid \bm{\mu},\bm{\pi}\big)}=\frac{p\big(\bm{x},\bm{z}\mid \bm{\mu},\bm{\pi}\big)}{\displaystyle\sum_{\bm{z}\in\mathcal{C}}p\big(\bm{x},\bm{z}\mid \bm{\mu},\bm{\pi}\big)}$</p>
+<p>$$\begin{align}<br>q\big(\bm{z}\mid \bm{x},\bm{\mu},\bm{\pi}\big)=\frac{\displaystyle\prod_{k=1}^K\big[\pi_k^{z_k}p\big(\bm{x}\mid \bm{\mu}_k\big)^{z_k}\big]}{\displaystyle\sum_{k=1}^K\pi_kp\big(\bm{x}\mid \bm{\mu}_k\big)}<br>\end{align}$$</p>
+<p>注意到 $\displaystyle z_{ik}\in\{0,1\}$,下式<br>$\displaystyle<br>\mathrm{E}[z_{ik}]<br>=\sum_{z_{ik}}\big[\bm{I}^\text{T}\bm{z}_i\times q\big(\bm{z}_i\mid \bm{x},\bm{\theta},\bm{\pi}\big)\big]<br>=\frac{\displaystyle\sum_{\bm{z}}z_{ik}\prod_{k=1}^K\big[\pi_k^{z_{ik}}p\big(\bm{x}_i\mid \bm{\theta}_k\big)^{z_{ik}}\big]}{\displaystyle\sum_{k=1}^K\pi_kp\big(\bm{x}_i\mid \bm{\theta}_k\big)}<br>=\frac{\displaystyle\pi_kp\big(\bm{x}_i\mid \bm{\theta}_k\big)}{\displaystyle\sum_{k=1}^K\pi_kp\big(\bm{x}_i\mid \bm{\theta}_k\big)}<br>$</p>
+<h6 id="2-6、完全数据集对数似然函数期望"><a href="#2-6、完全数据集对数似然函数期望" class="headerlink" title="2.6、完全数据集对数似然函数期望"></a>2.6、完全数据集对数似然函数期望</h6><p>我们将反复使用独立分布数据集的可分解性质。这就是为什么我们可以移动期望符号 $\displaystyle  \mathrm{E}$的原因。<br>$$\begin{align}<br>\mathrm{E}\big[<br>\ell \big(\mathcal{D}^+\mid \bm{\theta},\bm{\pi}\big)\big]<br>&amp;=\mathrm{E}\bigg[\sum_{i=1}^N\ln p\big(\bm{x}_i,\bm{z}_i\mid \bm{\theta},\bm{\pi}\big)\bigg]\\<br>&amp;=\sum_{i=1}^N \bigg[\mathrm{E}\big[\ln p\big(\bm{x}_i,\bm{z}_i\mid \bm{\theta},\bm{\pi}\big)\big]\bigg]\\<br>&amp;=\sum_{i=1}^N \left[\mathrm{E}\bigg[\ln p \big(\bm{z}_i\mid \bm{\pi}\big)+\ln p \big(\bm{x}_i\mid \bm{z}_i,\bm{\theta}\big)\bigg]\right]\\<br>\end{align}$$将模型代入，于是有：$$\begin{align}<br>\mathrm{E}\big[<br>\ell \big(\mathcal{D}^+\mid \bm{\theta},\bm{\pi}\big)\big]<br>&amp;=\sum_{i=1}^N\sum_{k=1}^K \mathrm{E}\left[z_{ik}\bigg[\ln \pi_k+\ln p\big(\bm{x}_i\mid\bm{\theta}_k\big)\bigg]\right]\\<br>&amp;=\sum_{i=1}^N\sum_{k=1}^K \bigg[\mathrm{E}\big[z_{ik}\big]\big[\ln \pi_k+\ln p\big(\bm{x}_i\mid\bm{\theta}_k\big)\big]\bigg]\\<br>&amp;=\sum_{i=1}^N\sum_{k=1}^K \bigg[\mathrm{E}\big[z_{ik}\big]\ln \pi_k\bigg]+\sum_{i=1}^N\sum_{k=1}^K \bigg[\mathrm{E}\big[z_{ik}\big]\ln p\big(\bm{x}_i\mid\bm{\theta}_k\big)\bigg]\\<br>&amp;=\bm{I}^\text{T}\mathrm{E}\big[\bm{Z}\big]\ln\bm{\pi}+\sum_{i=1}^N\sum_{k=1}^K \bigg[\mathrm{E}\big[z_{ik}\big]\ln p\big(\bm{x}_i\mid\bm{\theta}_k\big)\bigg]\\<br>\end{align}$$</p>
+<h6 id="2-7、混合模型EM算法中隐变量的参数估计"><a href="#2-7、混合模型EM算法中隐变量的参数估计" class="headerlink" title="2.7、混合模型EM算法中隐变量的参数估计"></a>2.7、混合模型EM算法中隐变量的参数估计</h6><p> 令 $\displaystyle \mathrm{E}_{\mathcal{D}^+}=\mathrm{E}\big[<br>\ell \big(\mathcal{D}^+\mid \bm{\theta},\bm{\pi}\big)\big]$,于是我们有：<br>$$\begin{align}<br>\mathrm{E}_{\mathcal{D}^+}=\bm{I}^\text{T}\mathrm{E}\big[\bm{Z}\big]\ln\bm{\pi}+\sum_{i=1}^N\sum_{k=1}^K \bigg[\mathrm{E}\big[z_{ik}\big]\ln p\big(\bm{x}_i\mid\bm{\theta}_k\big)\bigg]<br>\end{align}$$现在考虑 $\displaystyle \bm{\pi}$，知道 $\displaystyle \bm{I}^\text{T}\bm{\pi}=1$<br>$$\begin{align}<br>\mathrm{E}_{\mathcal{D}^+}<br>&amp;\propto \bm{I}^\text{T}\mathrm{E}\big[\bm{Z}\big]\ln \bm{\pi}+\lambda\big[\bm{I}^\text{T}\bm{\pi}-1\big]<br>\end{align}$$于是有</p>
+<p>$$\begin{cases}<br>\displaystyle\frac{\partial \mathrm{E}_{\mathcal{D}^+}}{\partial  \bm{\pi}}&amp;\displaystyle=\frac{\mathrm{E}^\text{T}\big[\bm{Z}\big]\bm{I}}{\bm{\pi}}+\lambda\bm{I}=\bm{0}\\<br>\\<br>\displaystyle\frac{\partial \mathrm{E}_{\mathcal{D}^+}}{\partial  \lambda}&amp;\displaystyle=\bm{I}^\text{T}\bm{\pi}-1=0<br>\end{cases}$$<br>分析可得 $\displaystyle \bm{\pi}_{EM}=-\frac{\mathrm{E}^\text{T}\big[\bm{Z}\big]\bm{I}}{\lambda} $ 代入 $\displaystyle \bm{I}^\text{T}\bm{\pi}-1=0$得： $\displaystyle \frac{\bm{I}^\text{T}\mathrm{E}^\text{T}\big[\bm{Z}\big]\bm{I}}{\lambda}=-1$由于 $\displaystyle \bm{I}^\text{T}\mathrm{E}^\text{T}\big[\bm{Z}\big]\bm{I}=N$，同时令 $\displaystyle \bm{N}_k=\mathrm{E}^\text{T}\big[\bm{Z}\big]\bm{I}$可得：<br>$$\begin{align}<br>\begin{cases}<br>\displaystyle\lambda=-N\\<br>\\<br>\displaystyle\bm{\pi}_{EM}=\frac{\mathrm{E}^\text{T}\big[\bm{Z}\big]\bm{I}}{N}=\frac{\bm{N}_k}{N}<br>\end{cases}<br>\end{align}$$<br>其中： 我们有 $\displaystyle \sum_{k=1}^K\mathrm{E}\big[z_{ik}\big]=1$，于是$\displaystyle  \bm{I}^\text{T}\mathrm{E}^\text{T}\big[\bm{Z}\big]\bm{I}=\bm{I^\text{T}I}=N$，在混合模型中 $\displaystyle\bm{\pi}_{EM}=\frac{\mathrm{E}^\text{T}\big[\bm{Z}\big]\bm{I}}{N}=\frac{\bm{N}_k}{N}$的结论是通用的。</p>
+<p><hr></p>
+<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="https://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="https://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="https://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="https://www.limoncc.com">[ https://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%"><a href="https://www.limoncc.com/post/cfb848a15208557d/">https://www.limoncc.com/post/cfb848a15208557d/</a></td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/EM算法/" rel="tag">#EM算法</a>
+          
+            <a href="/tags/混合模型/" rel="tag">#混合模型</a>
+          
+            <a href="/tags/隐变量模型/" rel="tag">#隐变量模型</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/baeffd0a1d876b77/" rel="next" title="EM算法和混合模型一：EM算法">
+                <i class="fa fa-chevron-left"></i> EM算法和混合模型一：EM算法
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/b0b6066e43a4c121a4f8fa0930b6a326/" rel="prev" title="感知机">
+                感知机 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
 <!--           </div>
@@ -696,6 +471,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div> -->
         <div id="vcomments"></div>
@@ -721,8 +500,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -843,6 +631,17 @@
       </section>
 
       
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#二、一般混合模型问题"><span class="nav-number">1.</span> <span class="nav-text">二、一般混合模型问题</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2-1、问题描述"><span class="nav-number">1.1.</span> <span class="nav-text">2.1、问题描述</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-2、引入隐变量-Latent-variables"><span class="nav-number">1.2.</span> <span class="nav-text">2.2、引入隐变量(Latent variables)</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-3、隐变量先验分布与-displaystyle-bm-x-的条件分布"><span class="nav-number">1.3.</span> <span class="nav-text">2.3、隐变量先验分布与 $\displaystyle \bm{x}$的条件分布</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-4、隐变量与观测变量的联合分布导出观测变量分布"><span class="nav-number">1.4.</span> <span class="nav-text">2.4、隐变量与观测变量的联合分布导出观测变量分布</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-5、隐变量后验概率分布与期望"><span class="nav-number">1.5.</span> <span class="nav-text">2.5、隐变量后验概率分布与期望</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-6、完全数据集对数似然函数期望"><span class="nav-number">1.6.</span> <span class="nav-text">2.6、完全数据集对数似然函数期望</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-7、混合模型EM算法中隐变量的参数估计"><span class="nav-number">1.7.</span> <span class="nav-text">2.7、混合模型EM算法中隐变量的参数估计</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
 
     </div>
   </aside>
@@ -938,11 +737,9 @@
   
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
 
 
   
