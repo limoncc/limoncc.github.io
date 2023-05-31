@@ -97,7 +97,7 @@
 <meta property="og:image" content="http://www.limoncc.com/图片/RWKV模型架构.jpg">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2023-05-31T08:17:02.197Z">
+<meta property="og:updated_time" content="2023-05-31T08:20:08.753Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解RWKV模型一_大语言模型研究">
 <meta name="twitter:description" content="本文主要介绍了RWKV模型是实现细节和基础架构。若有错误，请大家指正。RWKV模型是一种RNN范式下的大语言模型实现范式。效果是相当不错，关键它的训练和推理要求资源低。非常值得研究。">
@@ -406,8 +406,7 @@
 <h4 id="三、时间混合机制"><a href="#三、时间混合机制" class="headerlink" title="三、时间混合机制"></a>三、时间混合机制</h4><h5 id="3-1、基本框架"><a href="#3-1、基本框架" class="headerlink" title="3.1、基本框架"></a>3.1、基本框架</h5><h5 id="3-2、上溢与代码实现"><a href="#3-2、上溢与代码实现" class="headerlink" title="3.2、上溢与代码实现"></a>3.2、上溢与代码实现</h5><p>RWKV模型V4的代码实现和原理公式是不一样的。融入了一个溢出的技巧，这导致原理公式的脱节代码实现。因为这不太容易看出是等价的。下面文本提供一个证明。这个证明笔者最早发布在<a href="https://www.zhihu.com/question/602564718/answer/3042941964" target="_blank" rel="noopener">(如何评价最新的RWKV论文 (arXiv 2305.13048)？)</a>的知乎问答中。</p>
 <div align="center"><img src="/图片/RWKV模型.jpg" width="800"><br>RWKV模型V4</div>
 
-
-<p>下面我们来分析一下如何避免 $\displaystyle  \exp[k_t]$向上溢出的技巧。为了简化分析我们近看一个词元(token)的一个维度(通道)计算。要防止 $\displaystyle\displaystyle  \exp[k_t]$上溢出，显然这个时候 $\displaystyle k_t$是一大数。这个时候，我们给他减去一个一样大的数 $\displaystyle q$就可以了。注意 $\displaystyle q=k_t+\delta$。 只要确保 $\displaystyle \displaystyle  \exp[\delta] $不会溢出即可，这样有：</p>
+<p>RWKV模型V4的代码实现和原理公式的等价性证明：下面我们来分析一下如何避免 $\displaystyle  \exp[k_t]$向上溢出的技巧。为了简化分析我们近看一个词元(token)的一个维度(通道)计算。要防止 $\displaystyle\displaystyle  \exp[k_t]$上溢出，显然这个时候 $\displaystyle k_t$是一大数。这个时候，我们给他减去一个一样大的数 $\displaystyle q$就可以了。注意 $\displaystyle q=k_t+\delta$。 只要确保 $\displaystyle \displaystyle  \exp[\delta] $不会溢出即可，这样有：</p>
 <p>$$\begin{align}<br>o_{t}=\sigma(r_t) \cdot\frac{\sum_{\tau=1}^{t-1} \exp\big[-{w(t-1-\tau)+k_\tau-q}\big]\cdot v_\tau+ \exp\big[u+k_t-q\big]\cdot v_t}{\sum_{\tau=1}^{t-1} \exp\big[-{w(t-1-\tau)+k_\tau-q}\big]+ \exp\big[u+k_t-q\big]}<br>\end{align}$$<br>为了便于分析，我们单独考察分子</p>
 <p>$$\begin{align}<br>a_t^{out}&amp;=\sum_{\tau=1}^{t-1} \exp\big[-{w(t-1-\tau)+k_\tau-q}\big]\cdot v_\tau+\exp\big[u+k_t-q\big]\cdot v_t\\<br>&amp;=\exp[-w]\sum_{\tau=1}^{t-2} \exp\big[-{w(t-2-\tau)+k_\tau-q}\big]\cdot v_\tau+\exp\big[k_{t-1}-q\big]\cdot v_{t-1}+\exp\big[u+k_t-q\big]\cdot v_t\\<br>&amp;=\exp[-q]\bigg[\exp[-w]\cdot a_{t-2}+\exp\big[k_{t-1}\big]\cdot v_{t-1}\bigg]+ \exp\big[u+k_t-q\big]\cdot v_t<br>\end{align}$$</p>
 <p>为了规避 $\displaystyle  \exp[k_{t-1}] $溢出，我们也需要一个 $\displaystyle \exp[-\rho_{t-1}]$ 这样有</p>
