@@ -97,7 +97,7 @@
 <meta property="og:image" content="http://www.limoncc.com/图片/RWKV模型架构.jpg">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2023-05-31T08:20:08.753Z">
+<meta property="og:updated_time" content="2023-06-01T05:37:05.927Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解RWKV模型一_大语言模型研究">
 <meta name="twitter:description" content="本文主要介绍了RWKV模型是实现细节和基础架构。若有错误，请大家指正。RWKV模型是一种RNN范式下的大语言模型实现范式。效果是相当不错，关键它的训练和推理要求资源低。非常值得研究。">
@@ -412,7 +412,7 @@
 <p>为了规避 $\displaystyle  \exp[k_{t-1}] $溢出，我们也需要一个 $\displaystyle \exp[-\rho_{t-1}]$ 这样有</p>
 <p>$$\begin{align}<br>a_t^{out}&amp;=\exp\big[\rho_{t-1}-q\big]\big[\exp[-w-\rho_{t-1}]\cdot a_{t-2}+\exp\big[k_{t-1}-\rho_{t-1}\big]\cdot v_{t-1}\big]+\exp\big[u+k_t-q\big]\cdot v_t<br>\end{align}$$<br>同时 $\displaystyle \exp[-w-\rho_{t-1}]$也有溢出风险，于是我们可以添加一个 $\displaystyle  \exp[\rho_{t-2}] $这样有<br>$$\begin{align}<br>a_t^{out}&amp;=\exp\big[\rho_{t-1}-q\big]\big[\exp[\rho_{t-2}-w-\rho_{t-1}]\cdot \exp[-\rho_{t-2}] a_{t-2}+\exp\big[k_{t-1}-\rho_{t-1}\big]\cdot v_{t-1}\big]+\exp\big[u+k_t-q\big]\cdot v_t<br>\end{align}$$</p>
 <p>我们令 $\displaystyle \tilde{a}_{t-2}=\exp[-\rho_{t-2}] a_{t-2}$，这样发现</p>
-<p>$$\begin{align}<br>\tilde{a}_{t-1}&amp;=\exp[-\rho_{t-1}] a_{t-1}\\<br>&amp;=\exp[-\rho_{t-1}] \big(\exp[-w]a_{t-2}+\exp[k_{t-1}]\cdot v_{t-1}\big)\\<br>&amp;=\exp[-w-\rho_{t-1}]a_{t-2}+\exp[k_{t-1}-\rho_{t-1}]\cdot v_{t-1}\\<br>&amp;=\exp[] \big(\exp[-w]\exp[\rho_{t-2}]\tilde{a}_{t-2}+\exp[k_{t-1}]\cdot v_{t-1}\big)\\<br>&amp;=\exp[\rho_{t-2}-w-\rho_{t-1}]\tilde{a}_{t-2}+\exp[k_{t-1}-\rho_{t-1}]\cdot v_{t-1}<br>\end{align}$$</p>
+<p>$$\begin{align}<br>\tilde{a}_{t-1}&amp;=\exp[-\rho_{t-1}] a_{t-1}\\<br>&amp;=\exp[-\rho_{t-1}] \big(\exp[-w]a_{t-2}+\exp[k_{t-1}]\cdot v_{t-1}\big)\\<br>&amp;=\exp[-w-\rho_{t-1}]a_{t-2}+\exp[k_{t-1}-\rho_{t-1}]\cdot v_{t-1}\\<br>&amp;=\exp[-\rho_{t-1}] \big(\exp[-w]\exp[\rho_{t-2}]\tilde{a}_{t-2}+\exp[k_{t-1}]\cdot v_{t-1}\big)\\<br>&amp;=\exp[\rho_{t-2}-w-\rho_{t-1}]\tilde{a}_{t-2}+\exp[k_{t-1}-\rho_{t-1}]\cdot v_{t-1}<br>\end{align}$$</p>
 <p>这样就有<br>$$\begin{align}<br>a_t^{out}=\exp\big[\rho_{t-1}-q\big]\tilde{a}_{t-1}+\exp\big[u+k_t-q\big]\cdot v_t<br>\end{align}$$</p>
 <p>$$\begin{align}<br>\tilde{a}_{t}=\exp[\rho_{t-1}-w-\rho_{t}]\tilde{a}_{t-1}+\exp[k_{t}-\rho_{t}]\cdot v_{t}<br>\end{align}$$</p>
 <p>下面我们开始最后征程，给 $\displaystyle q$和 $\displaystyle \rho_t$给一个恰当具体的值。事实上我们有, 对于 $\displaystyle \tilde{a}_t=\exp[-\rho_t] a_t$<br>$$\begin{align}<br>a_1&amp;=\exp[k_1]v_1\\<br>b_1&amp;=\exp[k_1]<br>\end{align}$$<br>我们可以令 $\displaystyle \rho_1=k_1$</p>
