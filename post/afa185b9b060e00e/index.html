@@ -1,0 +1,1136 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="rust,rust语言,生命周期,所有权,借用与引用" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="rust发展形势迅猛，在前端，后端，系统，嵌入式各个层面都有大爆发，迅速应用这门语言非常重要，但是rust的入门难度有点高，本文试图通过戏说的方式来极大降低门槛。若有错误，请大家指正。">
+<meta name="keywords" content="rust,rust语言,生命周期,所有权,借用与引用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="戏说rust一_入门篇">
+<meta property="og:url" content="http://www.limoncc.com/post/afa185b9b060e00e/index.html">
+<meta property="og:site_name" content="柠檬CC">
+<meta property="og:description" content="rust发展形势迅猛，在前端，后端，系统，嵌入式各个层面都有大爆发，迅速应用这门语言非常重要，但是rust的入门难度有点高，本文试图通过戏说的方式来极大降低门槛。若有错误，请大家指正。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.limoncc.com/images/cc.png">
+<meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
+<meta property="og:updated_time" content="2023-06-08T13:27:25.274Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="戏说rust一_入门篇">
+<meta name="twitter:description" content="rust发展形势迅猛，在前端，后端，系统，嵌入式各个层面都有大爆发，迅速应用这门语言非常重要，但是rust的入门难度有点高，本文试图通过戏说的方式来极大降低门槛。若有错误，请大家指正。">
+<meta name="twitter:image" content="https://www.limoncc.com/images/cc.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <title> 戏说rust一_入门篇 | 柠檬CC </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-73837972-3', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d225b8f8559eb2eb6a8bd8792e01ebb9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=60130136";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">柠檬CC</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">小白爱吃柠檬O(∩_∩)O</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-poetry">
+          <a href="/poetry" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-leaf"></i> <br />
+            
+            诗集
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                戏说rust一_入门篇
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2022-09-08T21:22:08+08:00" content="2022-09-08">
+              2022-09-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/工程实践/" itemprop="url" rel="index">
+                    <span itemprop="name">工程实践</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/post/afa185b9b060e00e/" class="leancloud_visitors" data-flag-title="戏说rust一_入门篇">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作者: <a href="https://www.limoncc.com">引线小白</a>-本文永久链接：<a href="https://www.limoncc.com/post/afa185b9b060e00e/">https://www.limoncc.com/post/afa185b9b060e00e/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+<h4 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h4><p>rust大部分教程，包括网上各类文章，和实体书籍都写的极不通俗。可能是为了严谨，大家不敢放开了讲。也可能是各路大神学的太多，太深入了忘记了通俗。本文将用戏说的手法，带领大家快速入门，极大降低入门难度。</p>
+<p>阅读本系列的前置条件：</p>
+<blockquote>
+</blockquote>
+<p>1、会编程，懂编程的基本概念即可。不需要懂什么c++，也不需要懂什么其他复杂概念，懂的先忘记，个人认为：<strong>原生式学习比迁移式学习要好</strong>。<br>2、<strong>rust环境已经准备好了</strong>，笔者最讨厌的就是准备各种开发环境了。闹心，还不讨好。。。所以本文不讲这个。<br>3、本文<strong>只注重建立基本框架</strong>。至于框架的基本内容会给出指引，具体还是去查文档。</p>
+<h4 id="二、初见rust"><a href="#二、初见rust" class="headerlink" title="二、初见rust"></a>二、初见rust</h4><p>人生若只如初见，这句话对于rust而言，第一眼就是<strong>难受感觉</strong>。我们来看一下 <strong>hello word</strong></p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> hello: &amp;<span class="built_in">str</span> = <span class="string">"hello world"</span>;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;hello&#125;"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>竟然如此难受，我们就解读一下，让它看上去不那么难受，改善一下初见的感觉，增进好感。</p>
+<h5 id="2-1、第一难受的地方fn-main"><a href="#2-1、第一难受的地方fn-main" class="headerlink" title="2.1、第一难受的地方fn main() {}"></a>2.1、第一难受的地方<code>fn main() {}</code></h5><p><strong>第一难受的地方</strong>：<code>fn main() {}</code>是静态语言的标配。所谓静态语言你可以理解为<strong>必须为变量表注类型</strong>。而main函数通常是这类语言编译的入口(因为要编译，语句太多，到底从哪行开始？大家约定从main函数开始)。对和python、js这类不同，rust需要编译成二进制文件，从而不依赖运行环境。</p>
+<p>这里好人做到底，照顾基础薄弱的同学，fn是function缩写, 是关键字。也就说一个rust程序必须要有一个main函数来作为解析编译的入口。另外记住rust的风格，或者足够rusty：少即是多，能用2个字符表示函数的意思，rust绝对不会使用更多的字符。</p>
+<h5 id="2-2、第二难受的地方let-hello-amp-str-“hello-world”"><a href="#2-2、第二难受的地方let-hello-amp-str-“hello-world”" class="headerlink" title="2.2、第二难受的地方let hello: &amp;str = “hello world”;"></a>2.2、第二难受的地方<code>let hello: &amp;str = “hello world”;</code></h5><p><strong>第二难受的地方</strong>：<code>let hello: &amp;str = “hello world”;</code> 稍微懂点编程，应该知道这是个赋值语句。嗯哈，需要指出<strong>赋值语句</strong>这个说法不准确，rust管这个操作叫做<strong>变量绑定</strong>。我们稍后会解释，这里暂且搁置。这句最难受的莫过于<strong>&amp;str</strong>，如果说是字符串那为啥不是<strong>str</strong>。加一个<strong>&amp;</strong>看着难受不说，也觉得奇奇怪怪，语法丑陋就是了。</p>
+<p>言归正传，<strong>&amp;</strong>在rust里面表示<strong>引用</strong>(<em>reference</em>)，聪明的读者马上就说了，那<code>let hello: &amp;str = “hello world”;</code>这句话就是</p>
+<blockquote>
+<p><strong>变量hello绑定一个”hello world”的引用字符串</strong></p>
+</blockquote>
+<p>对也不对，rust管<strong>&amp;str</strong>叫做引用字符串切片，引用字符串是<strong>&amp;String</strong>。具体它们有什么区别，我们暂且不表。看下面一段程序<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> hello: <span class="built_in">String</span> = <span class="string">"世界，你好哇"</span>.to_string();</span><br><span class="line">    <span class="comment">// let hello = String::from("世界，你好哇");</span></span><br><span class="line">    <span class="keyword">let</span> ref_hello: &amp;<span class="built_in">String</span> = &amp;hello;</span><br><span class="line">    <span class="comment">// 一个中文一般占用3的char，所以长度是18</span></span><br><span class="line">    <span class="keyword">let</span> ref_hello_slice: &amp;<span class="built_in">str</span> = &amp;hello[<span class="number">0</span>..<span class="number">18</span>]; </span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"\</span></span><br><span class="line"><span class="string">        hello:&#123;hello&#125;\n\</span></span><br><span class="line"><span class="string">        ref_hello:&#123;ref_hello&#125;\n\</span></span><br><span class="line"><span class="string">        ref_hello_slice:&#123;ref_hello_slice&#125;\</span></span><br><span class="line"><span class="string">        "</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// hello:世界，你好哇</span></span><br><span class="line"><span class="comment">// ref_hello:世界，你好哇</span></span><br><span class="line"><span class="comment">// ref_hello_slice:世界，你好哇</span></span><br></pre></td></tr></table></figure></p>
+<p>对于<code>let hello: String = “世界，你好哇”.to_string()</code>顾名思义就好了, 于是<code>let hello: &amp;str = “hello world”;</code>这句话就是</p>
+<blockquote>
+<p><strong>变量hello绑定一个”hello world”的引用字符串切片</strong></p>
+</blockquote>
+<p>好了, 我们大致解释了一下第二个奇怪的地方。当然这也引发的很多问题，为啥rust里面整个字符串好像有点复杂。首先我们要承认人类的语言是复杂的，把它存储在计算机中也是复杂的。我们到底怎么在内存中存储内容？对于这个问题，rust作为系统级的语言提出了很精彩的解决方案。</p>
+<h5 id="2-3、第三难受的地方println-“-hello-”"><a href="#2-3、第三难受的地方println-“-hello-”" class="headerlink" title="2.3、第三难受的地方println!(“{hello}”)"></a>2.3、第三难受的地方<code>println!(“{hello}”)</code></h5><p><strong>第三难受的地方</strong>：<code>println!(“{hello}”)</code>。靠为什么又出现了一个奇怪的 <strong>!</strong> 。rust语法太丑，奇奇怪怪。这个 <strong>!</strong> 在rust中叫做<strong>宏</strong>，啥，听不懂… 又是一些奇奇怪怪的东西。</p>
+<p>我们先来看个例子，打印一个字符串的前5个字符的大写, 但是报错了：<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">show</span></span>(text:<span class="built_in">String</span>,top_num:<span class="built_in">i8</span> = <span class="number">5</span>)&#123;</span><br><span class="line">        <span class="keyword">let</span> text_split:<span class="built_in">Vec</span>&lt;_&gt; = text.split(<span class="string">""</span>).collect();</span><br><span class="line">        <span class="keyword">let</span> top_text = &amp;text_split[<span class="number">1</span>..top_num+<span class="number">1</span>].concat().to_uppercase();</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">"&#123;top_text:?&#125;"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    show(<span class="string">"hello world"</span>.to_string())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">error: expected parameter name, found `=`</span><br><span class="line">--&gt; src/main.rs:<span class="number">4</span>:<span class="number">36</span></span><br><span class="line">|</span><br><span class="line"><span class="number">4</span> |     <span class="function"><span class="keyword">fn</span> <span class="title">show</span></span>(text:<span class="built_in">String</span>,top_num:<span class="built_in">i8</span> = <span class="number">5</span>)&#123;</span><br><span class="line">  |                                    ^ expected parameter name</span><br></pre></td></tr></table></figure>
+<p>  对没错，rust不支持默认参数，我们可以通过所谓的宏来实现<br>  <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">  <span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">show</span></span>(text: <span class="built_in">String</span>, top_num: <span class="built_in">usize</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> text_split: <span class="built_in">Vec</span>&lt;_&gt; = text.split(<span class="string">""</span>).collect();</span><br><span class="line">        <span class="keyword">let</span> top_text = &amp;text_split[<span class="number">1</span>..top_num + <span class="number">1</span>].concat().to_uppercase();</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">"&#123;top_text:?&#125;"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">macro_rules!</span> show &#123;</span><br><span class="line">        ($a: expr) =&gt; &#123;</span><br><span class="line">            show($a, <span class="number">5</span>)</span><br><span class="line">        &#125;;</span><br><span class="line">        ($a: expr,$b:expr)=&gt;&#123;</span><br><span class="line">            show($a, $b)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    show!(<span class="string">"hello world"</span>.to_string());</span><br><span class="line">    show!(<span class="string">"hello world"</span>.to_string(),<span class="number">5</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// "HELLO"</span></span><br><span class="line"><span class="comment">// "HELLO"</span></span><br></pre></td></tr></table></figure></p>
+<p>暂且不理会这些奇奇怪怪的语法，所谓宏，就是做了一点额外的操作，所以<code>println!(“{hello}”)</code>就调用了宏，可以通过查看源码发现这一点：<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#[macro_export]</span></span><br><span class="line"><span class="meta">#[stable(feature = <span class="meta-string">"rust1"</span>, since = <span class="meta-string">"1.0.0"</span>)]</span></span><br><span class="line"><span class="meta">#[cfg_attr(not(test), rustc_diagnostic_item = <span class="meta-string">"println_macro"</span>)]</span></span><br><span class="line"><span class="meta">#[allow_internal_unstable(print_internals, format_args_nl)]</span></span><br><span class="line"><span class="built_in">macro_rules!</span> println &#123;</span><br><span class="line">    () =&gt; &#123;</span><br><span class="line">        $crate::<span class="built_in">print!</span>(<span class="string">"\n"</span>)</span><br><span class="line">    &#125;;</span><br><span class="line">    ($($arg:tt)*) =&gt; &#123;&#123;</span><br><span class="line">        $crate::io::_print($crate::format_args_nl!($($arg)*));</span><br><span class="line">    &#125;&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>先请忽略这其中奇奇怪怪的点，我们当前的目的只是形式化地弄懂hello world。目前看来，要把rust的hello word将清楚就涉及很多概念与语法。</p>
+<h5 id="2-4、总结一下"><a href="#2-4、总结一下" class="headerlink" title="2.4、总结一下"></a>2.4、总结一下</h5><p>要形式化地粗浅地看懂rust的hello word。你需要知道如下概念：</p>
+<blockquote>
+</blockquote>
+<p>1、静态语言都有一个main函数入口<br>2、<strong>&amp;</strong>在rust里面表示<strong>引用</strong>(<em>reference</em>)，我们有字符串类型<strong>String</strong>，也有引用字符串切片类型<strong>&amp;str</strong>，还有引用字符串类型是<strong>&amp;String</strong>。你基本可以理解为<strong>引用</strong>(<strong>&amp;</strong>)是rust里面一个很重要的操作。<br>3、<strong>!</strong> 在rust里面表示调用了宏(<strong>macro</strong>)，所谓宏，就是做了一点额外的操作。</p>
+<h4 id="三、从一个脑洞开始了解rust的核心"><a href="#三、从一个脑洞开始了解rust的核心" class="headerlink" title="三、从一个脑洞开始了解rust的核心"></a>三、从一个脑洞开始了解rust的核心</h4><p>在克服了初见难受感觉后，我们来复盘一下，赋值在rust里面叫<strong>变量绑定</strong>。为啥好好的赋值不叫，非要整些幺蛾子。<strong>一切皆因资源有限</strong>。在现代计算机体系里面，<strong>内存是非常宝贵的计算资源</strong>。内存不是无限，而我们的世界是无限的。<strong>如何用有限资源模拟无限世界这需要技术与艺术</strong>。</p>
+<h5 id="3-1、一个脑洞：自由内存的自由联合"><a href="#3-1、一个脑洞：自由内存的自由联合" class="headerlink" title="3.1、一个脑洞：自由内存的自由联合"></a>3.1、一个脑洞：自由内存的自由联合</h5><p>在开始脑洞前，我们需要了解两个基本概念</p>
+<blockquote>
+</blockquote>
+<p><strong>栈</strong>：栈按照顺序存储值并以相反顺序取出值，这也被称作后进先出。想象一下一叠盘子：当增加更多盘子时，把它们放在盘子堆的顶部，当需要盘子时，再从顶部拿走。不能从中间也不能从底部增加或拿走盘子！增加数据叫做进栈，移出数据则叫做出栈。因为上述的实现方式，栈中的所有数据都必须占用已知且固定大小的内存空间，假设数据大小是未知的，那么在取出数据时，你将无法取到你想要的数据。</p>
+<blockquote>
+</blockquote>
+<p><strong>堆</strong>：与栈不同，对于大小未知或者可能变化的数据，我们需要将它存储在堆上。<br>当向堆上放入数据时，需要请求一定大小的内存空间。操作系统在堆的某处找到一块足够大的空位，把它标记为已使用，并返回一个表示该位置地址的指针, 该过程被称为在堆上分配内存，有时简称为 “分配”(allocating)。接着，该指针会被推入栈中，因为指针的大小是已知且固定的，在后续使用过程中，你将通过栈中的指针，来获取数据在堆上的实际内存位置，进而访问该数据。由上可知，堆是一种缺乏组织的数据结构。想象一下去餐馆就座吃饭: 进入餐馆，告知服务员有几个人，然后服务员找到一个够大的空桌子（堆上分配的内存空间）并领你们过去。如果有人来迟了，他们也可以通过桌号（栈上的指针）来找到你们坐在哪。</p>
+<p>用有限资源模拟无限世界，这有点像经济学里面的<strong>稀缺资源配置问题</strong>。回忆一下经济学是如何解决这个问题，第一条就是要<strong>产权清晰</strong>。第二条就是<strong>自由市场</strong>：有明晰产权的商品可以自由交易。这样我们就能达到所谓的帕累托最优。</p>
+<p>如何才能实现理想社会，马克思说要重建个人所有制，实现自由人的自由联合。这也就是共产主义。换句话说rust要<strong>重建内存所有制，实现自由内存的自由联合，来实现编程世界的目标</strong>。基于此，rust不仅实现了<strong>内存产权清晰</strong>，也实现了<strong>内存的自由市场交易</strong></p>
+<p>坐稳了，我们要开始了，我们将叙述所有权和几种交易方式</p>
+<h5 id="3-2、rust重建内存所有制"><a href="#3-2、rust重建内存所有制" class="headerlink" title="3.2、rust重建内存所有制"></a>3.2、rust重建内存所有制</h5><h6 id="3-2-1、-基本规则"><a href="#3-2-1、-基本规则" class="headerlink" title="3.2.1、 基本规则"></a>3.2.1、 基本规则</h6><blockquote>
+</blockquote>
+<p>每一个被使用的内存有一个所有者<br>同一个内存同时只能有一个所有者<br>所有者离开，则内存自由</p>
+<h6 id="3-2-2、-堆内存交易"><a href="#3-2-2、-堆内存交易" class="headerlink" title="3.2.2、 堆内存交易"></a>3.2.2、 堆内存交易</h6><p>堆内存交易有点像实物交易，下面笔者来一一解释, 注意下面这段代码会报错</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> a = <span class="string">"世界，你好哇"</span>.to_string(); <span class="comment">/*内存地址：0x600000f651c0*/</span></span><br><span class="line">    <span class="keyword">let</span> b = a ;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;a&#125;"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// error[E0382]: borrow of moved value: `a`</span></span><br><span class="line"><span class="comment">//  --&gt; src/main.rs:6:15</span></span><br><span class="line"><span class="comment">//   |</span></span><br><span class="line"><span class="comment">// 4 |     let a = "世界，你好哇".to_string();</span></span><br><span class="line"><span class="comment">//   |         - move occurs because `a` has type `String`, which does not implement the `Copy` trait</span></span><br><span class="line"><span class="comment">// 5 |     let b = a ;</span></span><br><span class="line"><span class="comment">//   |             - value moved here</span></span><br><span class="line"><span class="comment">// 6 |     println!("&#123;a&#125;")</span></span><br><span class="line"><span class="comment">//   |               ^^^ value borrowed here after move</span></span><br><span class="line"><span class="comment">//   |</span></span><br><span class="line"><span class="comment">//   = note: this error originates in the macro `$crate::format_args_nl` which comes from the expansion of the macro `println` (in Nightly builds, run with -Z macro-backtrace for more info)</span></span><br><span class="line"><span class="comment">// help: consider cloning the value if the performance cost is acceptable</span></span><br><span class="line"><span class="comment">//   |</span></span><br><span class="line"><span class="comment">// 5 |     let b = a.clone() ;</span></span><br><span class="line"><span class="comment">//   |              ++++++++</span></span><br></pre></td></tr></table></figure>
+<p>1、<code>let a = “世界，你好哇”.to_string();</code>会在堆上分配内存来存储字符串。这样这块内存<strong>0x600000f651c0</strong>的所有权就是归变量a所有。<br>2、<code>let b = a ;</code> 记住rust里面的赋值叫变量绑定，就是说现在内存<strong>0x600000f651c0</strong>的所有权转移到了b<br>3、<code>println!(“{a}”)</code> 这个时候你想打印a。记住我们的规则<strong>同一个内存同时只能有一个所有者</strong>，这个时候内存<strong>0x600000f651c0</strong>的所有权是b，a什么都没有，它的所有生命周期结束了。所以也就报错了。<br>4、但是rust编译器有个建议，让你改成<code>let b = a.clone() ;</code><br>那我们对其更改，同时打印出内存的地址<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> a = <span class="string">"世界，你好哇"</span>.to_string();</span><br><span class="line">    <span class="keyword">let</span> a_pointer = a.as_ptr();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"a的内存地址:&#123;a_pointer:p&#125;"</span>);</span><br><span class="line">    <span class="keyword">let</span> b = a.clone() ; <span class="comment">/* 在内存中复制了一摸一样的内容 ，所用内存不一样 */</span></span><br><span class="line">    <span class="keyword">let</span> b_pointer = b.as_ptr();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"b的内存地址:&#123;b_pointer:p&#125;"</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;a&#125;"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// a的内存地址:0x6000038151c0</span></span><br><span class="line"><span class="comment">// b的内存地址:0x6000038151e0</span></span><br><span class="line"><span class="comment">// 世界，你好哇</span></span><br></pre></td></tr></table></figure></p>
+<p>规则依然是试用的，<code>let b = a.clone() ;</code>在内存中复制了一摸一样的内容 ，它们使用的内存是不一样的，这和下面的栈内存交易是一样的。但请记住堆内存的clone交易是有成本的。堆是一种缺乏组织的数据结构，clone是比较耗时的</p>
+<h6 id="3-2-3、-栈内存交易"><a href="#3-2-3、-栈内存交易" class="headerlink" title="3.2.3、 栈内存交易"></a>3.2.3、 栈内存交易</h6><p>栈内存交易有点像虚拟物品交易，拷贝几乎零成本。对于使用栈内存变量，赋值使用的clone。理解这一行为非常重要。因为对于<strong>rust基本类型</strong>，rust都是使用栈内存交易。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> a = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"a的内存地址:&#123;:p&#125;"</span>, &amp;a);</span><br><span class="line">    <span class="keyword">let</span> b = a;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"b的内存地址:&#123;:p&#125;"</span>, &amp;b);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;a&#125;"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// a的内存地址:6103771348</span></span><br><span class="line"><span class="comment">// b的内存地址:6103771428</span></span><br><span class="line"><span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+<p>好了开始一个迷惑行为<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> a = <span class="string">"你好，世界！"</span>;</span><br><span class="line">    <span class="keyword">let</span> a_pointer = a.as_ptr();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"a的内存地址:&#123;a_pointer:p&#125;"</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"a的本身内存地址:&#123;:p&#125;"</span>,&amp;a);</span><br><span class="line">    <span class="keyword">let</span> b = a;</span><br><span class="line">    <span class="keyword">let</span> b_pointer = b.as_ptr();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"b的本身内存地址:&#123;:p&#125;"</span>,&amp;b);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"b的内存地址:&#123;b_pointer:p&#125;"</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;a&#125;"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// a的内存地址:0x1029a9e99</span></span><br><span class="line"><span class="comment">// a的本身内存地址:0x16d486810</span></span><br><span class="line"><span class="comment">// b的本身内存地址:0x16d4868b0</span></span><br><span class="line"><span class="comment">// b的内存地址:0x1029a9e99</span></span><br><span class="line"><span class="comment">// 你好，世界！</span></span><br></pre></td></tr></table></figure></p>
+<p>注意<code> let a = “你好，世界！”;</code>中的a是<strong>&amp;str</strong>的类型。它只是字符串的引用(地址)，而不是字符串本身。a和b是不同的，但是它们指向同一个字符串。这就好比a(0x16d486810)和b(0x16d4868b0)都是某虚拟服务A(0x1029a9e99)的客户，而某虚拟服务才A是资产的所有者。我们可不可以继续增加客户来扩大服务范围呢，当然可以</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> a = <span class="string">"你好，世界！"</span>;</span><br><span class="line">    <span class="keyword">let</span> a_pointer = a.as_ptr();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"a的内存地址:&#123;a_pointer:p&#125;"</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"a的本身内存地址:&#123;:p&#125;"</span>, &amp;a);</span><br><span class="line">    <span class="keyword">let</span> b = a;</span><br><span class="line">    <span class="keyword">let</span> b_pointer = b.as_ptr();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"b的本身内存地址:&#123;:p&#125;"</span>, &amp;b);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"b的内存地址:&#123;b_pointer:p&#125;"</span>);</span><br><span class="line">    <span class="keyword">let</span> c = a;</span><br><span class="line">    <span class="keyword">let</span> c_pointer = c.as_ptr();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"c的本身内存地址:&#123;:p&#125;"</span>, &amp;c);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"c的内存地址:&#123;c_pointer:p&#125;"</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;a&#125;"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// a的内存地址:0x102691e69</span></span><br><span class="line"><span class="comment">// a的本身内存地址:0x16d79e760</span></span><br><span class="line"><span class="comment">// b的本身内存地址:0x16d79e800</span></span><br><span class="line"><span class="comment">// b的内存地址:0x102691e69</span></span><br><span class="line"><span class="comment">// c的本身内存地址:0x16d79e8a0</span></span><br><span class="line"><span class="comment">// c的内存地址:0x102691e69</span></span><br><span class="line"><span class="comment">// 你好，世界！</span></span><br></pre></td></tr></table></figure>
+<h5 id="3-3、自由内存的自由市场-生命周期与借用"><a href="#3-3、自由内存的自由市场-生命周期与借用" class="headerlink" title="3.3、自由内存的自由市场: 生命周期与借用"></a>3.3、自由内存的自由市场: 生命周期与借用</h5><h6 id="3-3-1、自由市场简单介绍"><a href="#3-3-1、自由市场简单介绍" class="headerlink" title="3.3.1、自由市场简单介绍"></a>3.3.1、自由市场简单介绍</h6><p>上述，我们了解了rust的所有权机制。但是资源是有限的。变量占一个内存，就少一个内存。最终资源将被耗尽。说好的改变世界呢？俗话说好，花无百日红，内存所有权不是一成不变的。rust说要使用就有所有权，没有使用就作废。防止占着茅坑不拉屎的行为发生。看下面代码</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    &#123;<span class="keyword">let</span> b = <span class="string">"hello"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"&#123;b&#125;"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// error[E0425]: cannot find value `b` in this scope</span></span><br><span class="line"><span class="comment">//  --&gt; src/main.rs:6:16</span></span><br><span class="line"><span class="comment">//   |</span></span><br><span class="line"><span class="comment">// 6 |     println!("&#123;b&#125;")</span></span><br><span class="line"><span class="comment">//   |                ^</span></span><br><span class="line"><span class="comment">//   |</span></span><br><span class="line"><span class="comment">// help: the binding `b` is available in a different scope in the same function</span></span><br><span class="line"><span class="comment">//  --&gt; src/main.rs:4:10</span></span><br><span class="line"><span class="comment">//   |</span></span><br><span class="line"><span class="comment">// 4 |     &#123;let b = "hello";</span></span><br><span class="line"><span class="comment">//   |          ^</span></span><br></pre></td></tr></table></figure>
+<p><strong>变量离开了作用域(scope) 也就失去了所有权</strong>，占用的内存就自由了。这就是是生命周期的基本原则。</p>
+<p>借用(borrow)就是什么意思？就是所有权归你，使用权在我，而且还有两种使用权，不变借用就是你租了我的房子里可以租，不能动里面的东西。可变借用就是你租了我的房子可以重新装修。而借用(borrow)的操作实现就是引用(reference)</p>
+<p>俗话说有借有还，再借不难。借用也需要规则，租赁市场需要规则。不能一房两卖，是吧。</p>
+<p>总的来说，<strong>借用规则</strong>如下：</p>
+<p>1、<strong>同一时刻，你只能拥有要么一个可变引用, 要么任意多个不可变引用</strong><br>2、<strong>引用必须总是有效的</strong></p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> a = <span class="string">"你好！"</span>.to_string();</span><br><span class="line">    <span class="keyword">let</span> c = &amp;a;</span><br><span class="line">    <span class="keyword">let</span>  b = &amp;<span class="keyword">mut</span> a;</span><br><span class="line">    b.push_str(<span class="string">"这里是戏说rust的世界。"</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;a&#125;"</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;c&#125;"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// error[E0502]: cannot borrow `a` as mutable because it is also borrowed as immutable</span></span><br><span class="line"><span class="comment">//  --&gt; src/main.rs:6:14</span></span><br><span class="line"><span class="comment">//   |</span></span><br><span class="line"><span class="comment">// 5 |     let c = &amp;a;</span></span><br><span class="line"><span class="comment">//   |             -- immutable borrow occurs here</span></span><br><span class="line"><span class="comment">// 6 |     let  b = &amp;mut a;</span></span><br><span class="line"><span class="comment">//   |              ^^^^^^ mutable borrow occurs here</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// 9 |     println!("&#123;c&#125;");</span></span><br><span class="line"><span class="comment">//   |               --- immutable borrow later used here</span></span><br></pre></td></tr></table></figure>
+<p>1、<code>let mut a = “你好！”.to_string();</code>创建了一个可变的字符串。<br>2、<code>let c = &a;</code>把a借用给c，是一个不可变借用<br>3、<code>let  b = &amp;mut a;</code>把a又借用给b，是一个可变借用<br>4、<code>b.push_str(“这里是戏说rust的世界。”);</code>b修改了内容，也就是重新装修了房子。<br>5、<code>println!(“{a}”);println!(“{c}”);</code>a来看看情况<br>6、<code>println!(“{c}”);</code>c来看看情况<br>这个程序报错了，因为c最后回来看情况，借用的生命周期没有结束，而这个时候a还把房子借了b说你可以装修，这肯定就侵犯了c的权益。也就是说<strong>同一时刻，不能同时存在不可变借用和可变借用，也不能同时存在两个可变借用</strong>。<br>我们修改一下代码让他运行通过</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> a = <span class="string">"你好！"</span>.to_string();</span><br><span class="line">    <span class="keyword">let</span> c = &amp;a;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;c&#125;"</span>);</span><br><span class="line">    <span class="keyword">let</span>  b = &amp;<span class="keyword">mut</span> a;</span><br><span class="line">    b.push_str(<span class="string">"这里是戏说rust的世界。"</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;a&#125;"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 你好！</span></span><br><span class="line"><span class="comment">// 你好！这里是戏说rust的世界。</span></span><br></pre></td></tr></table></figure>
+<h6 id="3-3-2、自由市场的繁荣"><a href="#3-3-2、自由市场的繁荣" class="headerlink" title="3.3.2、自由市场的繁荣"></a>3.3.2、自由市场的繁荣</h6><p>自由市场是极度灵活了，它需要能容纳各种交易的发生。<strong>所有权规则、借用规则、生命周期规则是内存自由市场的三大支柱</strong>，所有权和借用规则是非常清晰的，生命周期只有一个简单的<strong>作用域原则</strong>，这就打开的想象：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">longest</span></span>(x: &amp;<span class="built_in">String</span>, y: &amp;<span class="built_in">String</span>) -&gt; &amp;<span class="built_in">String</span> &#123;</span><br><span class="line">       <span class="keyword">if</span> x.len() &gt; y.len() &#123;</span><br><span class="line">            x</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123; y &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> x = <span class="string">"作用域原则"</span>.to_string();</span><br><span class="line">    <span class="keyword">let</span> y = <span class="string">"生命周期的灵活性"</span>.to_string();</span><br><span class="line">    <span class="keyword">let</span> a = &amp;x;</span><br><span class="line">    <span class="keyword">let</span> b = &amp;y;</span><br><span class="line">    <span class="keyword">let</span> c = longest(a, b);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;c&#125;"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// error[E0106]: missing lifetime specifier</span></span><br><span class="line"><span class="comment">//  --&gt; src/main.rs:4:43</span></span><br><span class="line"><span class="comment">//   |</span></span><br><span class="line"><span class="comment">// 4 |     fn longest(x: &amp;String, y: &amp;String) -&gt; &amp;String &#123;</span></span><br><span class="line"><span class="comment">//   |                   -------     -------     ^ expected named lifetime parameter</span></span><br><span class="line"><span class="comment">//   |</span></span><br><span class="line"><span class="comment">//   = help: this function's return type contains a borrowed value, but the signature does not say whether it is borrowed from `x` or `y`</span></span><br><span class="line"><span class="comment">// help: consider introducing a named lifetime parameter</span></span><br><span class="line"><span class="comment">//   |</span></span><br><span class="line"><span class="comment">// 4 |     fn longest&lt;'a&gt;(x: &amp;'a String, y: &amp;'a String) -&gt; &amp;'a String &#123;</span></span><br><span class="line"><span class="comment">//   |               ++++     ++             ++             ++</span></span><br></pre></td></tr></table></figure>
+<p>上面代码报错缺失生命周期提示。为什么呢？因为我们引入了不确定性：比较两个字符串的大小，然后返回最长的那个。这个结果是不确定的，这也意味着a和b的生命周期具有不确定性，所有编译器这个市场监管者就发出警告了，要我们加上生命周期标注：<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">longest</span></span>&lt;<span class="symbol">'t</span>&gt;(x: &amp;<span class="symbol">'t</span> <span class="built_in">String</span>, y: &amp;<span class="symbol">'t</span> <span class="built_in">String</span>) -&gt; &amp;<span class="symbol">'t</span> <span class="built_in">String</span> &#123;</span><br><span class="line">       <span class="keyword">if</span> x.len() &gt; y.len() &#123;</span><br><span class="line">            x</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123; y &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> x = <span class="string">"作用域原则"</span>.to_string();</span><br><span class="line">    <span class="keyword">let</span> y = <span class="string">"生命周期的灵活性"</span>.to_string();</span><br><span class="line">    <span class="keyword">let</span> a = &amp;x;</span><br><span class="line">    <span class="keyword">let</span> b = &amp;y;</span><br><span class="line">    <span class="keyword">let</span> c = longest(a, b);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;c&#125;"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 生命周期的灵活性</span></span><br></pre></td></tr></table></figure></p>
+<p>代码就正常了。<br><code>fn longest&lt;’t&gt;(x: &amp;’t String, y: &amp;’t String) -&gt; &amp;’t String {}</code>代码中我们引入一个生命周期t，并赋到了变量的类型标注上。表示x和y以及返回值的生命周期相同。这样就解决的不确定性的问题。</p>
+<p>我们来写个更加清晰的写法<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">longest</span></span>&lt;<span class="symbol">'long</span>, <span class="symbol">'short</span>&gt;(x: &amp;<span class="symbol">'long</span> <span class="built_in">String</span>, y: &amp;<span class="symbol">'long</span> <span class="built_in">String</span>)</span><br><span class="line">                              -&gt; &amp;<span class="symbol">'short</span> <span class="built_in">String</span></span><br><span class="line">        <span class="keyword">where</span></span><br><span class="line">            <span class="symbol">'long</span>: <span class="symbol">'short</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> x.len() &gt; y.len() &#123;</span><br><span class="line">            x</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123; y &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> x = <span class="string">"作用域原则"</span>.to_string();</span><br><span class="line">    <span class="keyword">let</span> y = <span class="string">"生命周期的灵活性"</span>.to_string();</span><br><span class="line">    <span class="keyword">let</span> a = &amp;x;</span><br><span class="line">    <span class="keyword">let</span> b = &amp;y;</span><br><span class="line">    <span class="keyword">let</span> c = longest(a, b);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;c&#125;"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 生命周期的灵活性</span></span><br></pre></td></tr></table></figure></p>
+<p>这个语法定义了两个生命周期long和short，语法是加个<strong> ‘ </strong>。然后我们要求x和y的生命周期大于返回值的生命周期，来消除不确定性。</p>
+<blockquote>
+</blockquote>
+<p><strong>fn longest&lt;’long, ‘short&gt;(x: &amp;’long String, y: &amp;’long String) -&gt; &amp;’short String where ‘long: ‘short</strong></p>
+<p>语法稍微有点奇怪但是，还是安排合理和清晰的。</p>
+<h4 id="四、评述"><a href="#四、评述" class="headerlink" title="四、评述"></a>四、评述</h4><p>rust要实现自由内存的自由联合，来实现编程世界的目标。为此rust做了三件大事</p>
+<h5 id="4-1、内存所有制"><a href="#4-1、内存所有制" class="headerlink" title="4.1、内存所有制"></a>4.1、内存所有制</h5><hr>
+<p>A、<strong>基本规则</strong></p>
+<blockquote>
+<p>每一个被使用的内存有一个所有者<br>同一个内存同时只能有一个所有者<br>所有者离开，则内存自由</p>
+</blockquote>
+<p>B、<strong>堆内存交易</strong>和<strong>栈内存交易</strong>做出了不同规定，以节约资源。</p>
+<p>并建立交易原则</p>
+<h5 id="4-2、借用规则"><a href="#4-2、借用规则" class="headerlink" title="4.2、借用规则"></a>4.2、借用规则</h5><blockquote>
+</blockquote>
+<p>1、同一时刻，只能拥有要么一个可变引用, 要么任意多个不可变引用<br>2、引用必须总是有效的</p>
+<h5 id="4-3、生命周期规则"><a href="#4-3、生命周期规则" class="headerlink" title="4.3、生命周期规则"></a>4.3、生命周期规则</h5><blockquote>
+<p>1、变量离开了作用域(scope) 也就失去了所有权<br>2、生命周期标注来干预生命周期</p>
+</blockquote>
+<p>自此<strong>rust凭借三大机制内存所有制、借用规则、生命周期规则建立了内存自由交易的自由市场，开启了编程世界的新篇章</strong>。同时我rust会止步，它还进一步安排了各种细节，以优化市场运行。且听我们下回分解。</p>
+<p><hr></p>
+<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="https://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="https://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="https://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="https://www.limoncc.com">[ https://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%"><a href="https://www.limoncc.com/post/afa185b9b060e00e/">https://www.limoncc.com/post/afa185b9b060e00e/</a></td></tr></table><table border="0" width="100%" style="display:inline !important;font-size:14px !important;color:#555555;"><tr><td align="left" width="100%" style="font-family:helvetica;font-size:14px !important;font-weight:bold;">如果您需要引用本文，请参考：</td></tr><tr><td align="left" width="100%">引线小白. (Sep. 8, 2022). 《戏说rust一_入门篇》[Blog post]. Retrieved from <a href="https://www.limoncc.com/post/afa185b9b060e00e">https://www.limoncc.com/post/afa185b9b060e00e</a></td></tr><tr><td align="left" width="100%">@online{limoncc-afa185b9b060e00e,<br>title={戏说rust一_入门篇},<br>author={引线小白},<br>year={2022},<br>month={Sep},<br>date={8},<br>url={\url{<a href="https://www.limoncc.com/post/afa185b9b060e00e}}">https://www.limoncc.com/post/afa185b9b060e00e}}</a>,<br>}</td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/rust/" rel="tag">#rust</a>
+          
+            <a href="/tags/rust语言/" rel="tag">#rust语言</a>
+          
+            <a href="/tags/工程实践/" rel="tag">#工程实践</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/2d743831607dc5bf918db1b4c026a1f8/" rel="next" title="2022的一些思考 述往事思来者">
+                <i class="fa fa-chevron-left"></i> 2022的一些思考 述往事思来者
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/1c60669bbe56769f/" rel="prev" title="扩散模型研究一：去噪扩散概率模型DDPM">
+                扩散模型研究一：去噪扩散概率模型DDPM <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+<!--           </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div> -->
+        <div id="vcomments"></div>
+        <script>new Valine({
+          el: "#vcomments",
+      appId: "BVjuNRCpkVSkz82jFmadIvY8-gzGzoHsz",
+    appKey: "bRjXPp55dop7RTC2xgunGdiP"})
+  </script>'
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="引线小白" />
+          <p class="site-author-name" itemprop="name">引线小白</p>
+          <p class="site-description motion-element" itemprop="description">小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">33</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">58</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="" target="_blank" title="Design">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Design
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.behance.net/limoncc" target="_blank" title="Behance">
+                  
+                    <i class="fa fa-fw fa-behance"></i>
+                  
+                  Behance
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.pinterest.com/aegeanfan/" target="_blank" title="Pinterest">
+                  
+                    <i class="fa fa-fw fa-pinterest"></i>
+                  
+                  Pinterest
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/limoncc" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://weibo.com/3483157951" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://www.zhihu.com/people/limoncc" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              设计不止，折腾不息。
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://chuangzaoshi.com" title="创造狮" target="_blank">创造狮</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、引言"><span class="nav-number">1.</span> <span class="nav-text">一、引言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、初见rust"><span class="nav-number">2.</span> <span class="nav-text">二、初见rust</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1、第一难受的地方fn-main"><span class="nav-number">2.1.</span> <span class="nav-text">2.1、第一难受的地方fn main() {}</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2、第二难受的地方let-hello-amp-str-“hello-world”"><span class="nav-number">2.2.</span> <span class="nav-text">2.2、第二难受的地方let hello: &amp;str = “hello world”;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3、第三难受的地方println-“-hello-”"><span class="nav-number">2.3.</span> <span class="nav-text">2.3、第三难受的地方println!(“{hello}”)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4、总结一下"><span class="nav-number">2.4.</span> <span class="nav-text">2.4、总结一下</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、从一个脑洞开始了解rust的核心"><span class="nav-number">3.</span> <span class="nav-text">三、从一个脑洞开始了解rust的核心</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1、一个脑洞：自由内存的自由联合"><span class="nav-number">3.1.</span> <span class="nav-text">3.1、一个脑洞：自由内存的自由联合</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2、rust重建内存所有制"><span class="nav-number">3.2.</span> <span class="nav-text">3.2、rust重建内存所有制</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#3-2-1、-基本规则"><span class="nav-number">3.2.1.</span> <span class="nav-text">3.2.1、 基本规则</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-2-2、-堆内存交易"><span class="nav-number">3.2.2.</span> <span class="nav-text">3.2.2、 堆内存交易</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-2-3、-栈内存交易"><span class="nav-number">3.2.3.</span> <span class="nav-text">3.2.3、 栈内存交易</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3、自由内存的自由市场-生命周期与借用"><span class="nav-number">3.3.</span> <span class="nav-text">3.3、自由内存的自由市场: 生命周期与借用</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#3-3-1、自由市场简单介绍"><span class="nav-number">3.3.1.</span> <span class="nav-text">3.3.1、自由市场简单介绍</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-3-2、自由市场的繁荣"><span class="nav-number">3.3.2.</span> <span class="nav-text">3.3.2、自由市场的繁荣</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、评述"><span class="nav-number">4.</span> <span class="nav-text">四、评述</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1、内存所有制"><span class="nav-number">4.1.</span> <span class="nav-text">4.1、内存所有制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2、借用规则"><span class="nav-number">4.2.</span> <span class="nav-text">4.2、借用规则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-3、生命周期规则"><span class="nav-number">4.3.</span> <span class="nav-text">4.3、生命周期规则</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">引线小白&nbsp &nbsp |&nbsp &nbsp  一个理想主义者，再造自我，以期未来。</span>
+</div>
+
+<div class="powered-by">
+  由 <a rel="external nofollow" class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a rel="external nofollow" class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>&nbsp &nbsp| &nbsp &nbsp Hosted by  <a href="https://github.com" style="font-weight: bold">Github Pages</a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+<!--   
+   
+  
+
+  
+
+ -->
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+<!--   <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+     showMathMenu: false,
+     showMathMenuMSIE: false,
+     tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+          processEscapes: true
+        },
+        TeX: {
+          equationNumbers: {autoNumber: 'AMS'},
+          Macros: {bm: "\\boldsymbol"}
+        },
+        'HTML-CSS': {
+          imageFont: null
+        }
+    });
+  </script> -->
+<!--     MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    }); -->
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+    processEscapes: true,
+    tags: 'ams',
+    macros: {
+                                            bm: "\\boldsymbol",
+                                            oiint: "{\\iint\\kern{-20mu}{\\unicode{x2B2D}}}",
+                                            oiiint: "{\\iiint\\kern{-24.5mu}\\large{\\unicode{x2B2D}}}"
+                                },
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+  <script type="text/x-mathjax-config">
+MathJax.texReset();
+MathJax.typeset();
+  </script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_SVG-full"></script> -->
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Es7wAnqi0QiGhMLoyl7mkrQo-gzGzoHsz", "BxPXaoPFp3PzWqBTSe6VUuQS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</body>
+</html>
