@@ -94,7 +94,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2023-06-30T03:18:54.747Z">
+<meta property="og:updated_time" content="2023-07-01T13:45:54.428Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="自动微分与反向传播大意">
 <meta name="twitter:description" content="反向传播很多教程和网络文章写的不清不楚。本文意在理清自动微分与反向传播大意的问题。若有错误，请大家指正。">
@@ -387,6 +387,7 @@
 
       
         <p>作者: <a href="https://www.limoncc.com">引线小白</a>-本文永久链接：httpss://<a href="http://www.limoncc.com/post/4be777c8af12fc58/">www.limoncc.com/post/4be777c8af12fc58/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+<p>数学上一切都不理解，很大程度上是对符号的不清晰、不清楚、不理解造成的。究其根本是结合数学概念的符号练习太少了。</p>
 <p>首先我们回忆一下向量函数对向量导数</p>
 <h4 id="1、数量函数对向量导数"><a href="#1、数量函数对向量导数" class="headerlink" title="1、数量函数对向量导数"></a>1、数量函数对向量导数</h4><p>1、数量函数对列向量的导数定义，结果是个列向量。</p>
 <p>$$\begin{align}<br>\big[\nabla f\big]_{i\times 1}=\left[\frac{\partial{f(\bm{x})}}{\partial{\bm{x}}}\right]_{i\times 1}=\frac{\partial{f(\bm{x})}}{\partial{x_i}}<br>\end{align}$$</p>
@@ -418,14 +419,15 @@
 <p>$$\begin{align}<br>\mathop{cal_cost}\bigg(\frac{d\ell}{d\bm{x}}\bigg)=10\times 6 \times 8+10\times 8\times 2+10\times 2\times 1 = 660<br>\end{align}$$</p>
 <p>实际上我们有，如果看不出显然，请自我反思</p>
 <p>$$\begin{align}<br>\forall \dim[\bm{\ell}]\leqslant dim[\bm{x}]\to\mathop{cal_cost}\bigg(\frac{d\ell}{d\bm{x}^\text{T}}\bigg)<br>\leqslant<br>\mathop{cal_cost}\bigg(\frac{d\ell}{d\bm{x}^\text{T}}\bigg)\\<br>\forall \dim[\bm{\ell}]&gt; dim[\bm{x}]\to\mathop{cal_cost}\bigg(\frac{d\ell}{d\bm{x}^\text{T}}\bigg)&gt;\mathop{cal_cost}\bigg(\frac{d\ell}{d\bm{x}^\text{T}}\bigg)<br>\end{align}$$</p>
-<h4 id="5、自动微分一个普遍的写法"><a href="#5、自动微分一个普遍的写法" class="headerlink" title="5、自动微分一个普遍的写法"></a>5、自动微分一个普遍的写法</h4><p>特别的如果我们不将 $\displaystyle \ell$视为标量的损失函数，而是一个可以向量优化目标 $\displaystyle \bm{\ell}$。同时我们特别的定义<br>第 $i$层雅可比矩阵 $\displaystyle \bm{J}_i =\frac{d\bm{z}_i^\text{T}}{d\bm{z}_{i-1}{i-1}} $</p>
+<h4 id="5、自动微分一个普遍的写法"><a href="#5、自动微分一个普遍的写法" class="headerlink" title="5、自动微分一个普遍的写法"></a>5、自动微分一个普遍的写法</h4><p>特别的如果我们不将 $\displaystyle \ell$视为标量的损失函数，而是一个可以向量优化目标 $\displaystyle \bm{\ell}$。同时我们特别的定义<br>第 $i$层雅可比矩阵 $\displaystyle \bm{J}_i =\frac{d\bm{z}_i^\text{T}}{d\bm{z}_{i-1}}$</p>
 <p>如果是标量损失，最后一层导数 $\displaystyle \bm{v}_{output}:=\displaystyle \bm{J}_n=\frac{d\ell}{d\bm{y}}$</p>
 <p>那么有前向计算公式</p>
-<p>$$\begin{align}<br>\frac{d\bm{\ell}^\text{T}}{d\bm{x}} =\prod_{i=1}^{n} \bm{J}_i<br>=\bm{J}_1\cdot\bm{J}_2\cdots\bm{J}_{n-1}\cdot\bm{J}_n<br>\end{align}$$</p>
-<p>后向计算公式<br>$$\begin{align}<br>\frac{d\bm{\ell}}{d\bm{x}^\text{T}} =\prod_{i=0}^{n-1} \bm{J}_{n-i}<br> ^\text{T}<br> =\bm{J}_{n}^\text{T}\cdot\bm{J}_{n-1}^\text{T}\cdots\bm{J}_{2}^\text{T}\cdot\bm{J}_{1}^\text{T}<br>\end{align}$$</p>
+<p>$$\begin{align}<br>\frac{d\bm{\ell}^\text{T}}{d\bm{x}} =\prod_{i=1}^{n} \bm{J}_i ^\text{T}<br>=\bm{J}_1 ^\text{T}\cdot\bm{J}_2 ^\text{T}\cdots\bm{J}_{n-1} ^\text{T}\cdot\bm{J}_n ^\text{T}<br>\end{align}$$</p>
+<p>后向计算公式<br>$$\begin{align}<br>\frac{d\bm{\ell}}{d\bm{x}^\text{T}} =\prod_{i=0}^{n-1} \bm{J}_{n-i}<br> =\bm{J}_{n}\cdot\bm{J}_{n-1}\cdots\bm{J}_{2}\cdot\bm{J}_{1}<br>\end{align}$$</p>
 <p>对于标量损失函数前向计算公式</p>
-<p>$$\begin{align}<br>\frac{d\ell}{d\bm{x}} =\prod_{i=1}^{n-1} \bm{J}_i\cdot\bm{v}_{output}<br>==\bm{J}_1\cdot\bm{J}_2\cdots\bm{J}_{n-1}\cdot\bm{v}_{output}<br>\end{align}$$</p>
-<p>后向计算公式<br>$$\begin{align}<br>\frac{d\ell}{d\bm{x}^\text{T}}<br>=\bm{v}_{output}^\text{T}\cdot\prod_{i=1}^{n-1} \bm{J}_{n-i}^\text{T}<br> =\bm{v}_{output}^\text{T}\cdot\bm{J}_{n-1}^\text{T}\cdots\bm{J}_{2}^\text{T}\cdot\bm{J}_{1}^\text{T}<br>\end{align}$$</p>
+<p>$$\begin{align}<br>\frac{d\ell}{d\bm{x}} =\prod_{i=1}^{n-1} \bm{J}_i ^\text{T}\cdot\bm{v}_{output}<br>==\bm{J}_1 ^\text{T}\cdot\bm{J}_2 ^\text{T}\cdots\bm{J}_{n-1} ^\text{T}\cdot\bm{v}_{output}<br>\end{align}$$</p>
+<p>后向计算公式<br>$$\begin{align}<br>\frac{d\ell}{d\bm{x}^\text{T}}<br>=\bm{v}_{output}^\text{T}\cdot\prod_{i=1}^{n-1} \bm{J}_{n-i}<br> =\bm{v}_{output}^\text{T}\cdot\bm{J}_{n-1}\cdots\bm{J}_{2}\cdot\bm{J}_{1}<br>\end{align}$$</p>
+<p>而对于一个熟练上述概念的人来说，以上所有内容其实应该是显然的，你应该做到在脑海里一闪而过就得出结论。如果不能做到，请打牢固概念基础</p>
 <p><hr></p>
 <p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="https://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="https://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="https://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="https://www.limoncc.com">[ https://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%">httpss://<a href="http://www.limoncc.com/post/4be777c8af12fc58/">www.limoncc.com/post/4be777c8af12fc58/</a></td></tr></table><table border="0" width="100%" style="display:inline !important;font-size:14px !important;color:#555555;"><tr><td align="left" width="100%" style="font-family:helvetica;font-size:14px !important;font-weight:bold;">如果您需要引用本文，请参考：</td></tr><tr><td align="left" width="100%">引线小白. (Apr. 25, 2017). 《自动微分与反向传播大意》[Blog post]. Retrieved from <a href="https://www.limoncc.com/post/4be777c8af12fc58">https://www.limoncc.com/post/4be777c8af12fc58</a></td></tr><tr><td align="left" width="100%">@online{limoncc-4be777c8af12fc58,<br>title={自动微分与反向传播大意},<br>author={引线小白},<br>year={2017},<br>month={Apr},<br>date={25},<br>url={\url{<a href="https://www.limoncc.com/post/4be777c8af12fc58}}">https://www.limoncc.com/post/4be777c8af12fc58}}</a>,<br>}</td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
 <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
