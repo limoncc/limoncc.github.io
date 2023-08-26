@@ -4,18 +4,16 @@
 
     
   <url>
-    <loc>https://www.limoncc.com/post/1c60669bbe56769f/</loc>
-    <lastmod>2023-08-25T06:06:31.962Z</lastmod>
+    <loc>https://www.limoncc.com/post/301c877f0fd6a2cd/</loc>
+    <lastmod>2023-08-26T12:33:08.613Z</lastmod>
     <data>
         <display>
-        <title>扩散模型研究一：去噪扩散概率模型DDPM</title>
-        <pubTime>2023-05-16T09:04:26.000Z</pubTime>
+        <title>损失函数大意</title>
+        <pubTime>2017-05-07T12:37:57.000Z</pubTime>
         
-        <tag>生成模型</tag>
+        <tag>机器学习</tag>
          
-        <tag>去噪扩散概率模型</tag>
-         
-        <tag>DDPM</tag>
+        <tag>损失函数</tag>
          
          
            
@@ -28,16 +26,18 @@
 
     
   <url>
-    <loc>https://www.limoncc.com/post/301c877f0fd6a2cd/</loc>
-    <lastmod>2023-08-25T06:05:29.160Z</lastmod>
+    <loc>https://www.limoncc.com/post/1c60669bbe56769f/</loc>
+    <lastmod>2023-08-25T06:06:31.962Z</lastmod>
     <data>
         <display>
-        <title>损失函数大意</title>
-        <pubTime>2017-05-07T12:37:57.000Z</pubTime>
+        <title>扩散模型研究一：去噪扩散概率模型DDPM</title>
+        <pubTime>2023-05-16T09:04:26.000Z</pubTime>
         
-        <tag>机器学习</tag>
+        <tag>生成模型</tag>
          
-        <tag>损失函数</tag>
+        <tag>去噪扩散概率模型</tag>
+         
+        <tag>DDPM</tag>
          
          
            
