@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="引线小白, limoncc, 柠檬CC, 设计, 数据分析, 数据挖掘, 大数据, 数学, 机器学习" />
+  <meta name="keywords" content="弱收敛,大数定律,连续定理" />
 
 
 
@@ -84,16 +84,21 @@
 
 
 
-<meta name="description" content="小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="柠檬CC">
-<meta property="og:url" content="https://www.limoncc.com/archives/2019/index.html">
+<meta name="description" content="本文主要阐述特征函数的连续定理，它是特征函数法理论基础，是证明大数定理和中心极限定理的必要工具。若有错误，请大家指正。">
+<meta name="keywords" content="弱收敛,大数定律,连续定理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="弱收敛与连续定理——百年大数定律系列02">
+<meta property="og:url" content="https://www.limoncc.com/post/71f28c676a518f5f/index.html">
 <meta property="og:site_name" content="柠檬CC">
-<meta property="og:description" content="小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。">
+<meta property="og:description" content="本文主要阐述特征函数的连续定理，它是特征函数法理论基础，是证明大数定理和中心极限定理的必要工具。若有错误，请大家指正。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.limoncc.com/images/cc.png">
+<meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
+<meta property="og:updated_time" content="2023-10-19T06:01:19.679Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="柠檬CC">
-<meta name="twitter:description" content="小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。">
+<meta name="twitter:title" content="弱收敛与连续定理——百年大数定律系列02">
+<meta name="twitter:description" content="本文主要阐述特征函数的连续定理，它是特征函数法理论基础，是证明大数定理和中心极限定理的必要工具。若有错误，请大家指正。">
+<meta name="twitter:image" content="https://www.limoncc.com/images/cc.png">
 
 
 
@@ -112,7 +117,7 @@
 </script>
 
   <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
-  <title> 归档 | 柠檬CC </title>
+  <title> 弱收敛与连续定理——百年大数定律系列02 | 柠檬CC </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -161,7 +166,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  page-archive  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -292,139 +297,198 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
-
-    <span class="archive-page-counter">
-      
-      
-       
-      
-      OK! 目前共计 40 篇日志。 继续努力。
-    </span>
-
+  <div id="posts" class="posts-expand">
     
-
-      
-      
-      
-
-      
-        
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2019">2019</h2>
-        </div>
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/71f28c676a518f5f/" itemprop="url">
-              
-                <span itemprop="name">弱收敛与连续定理——百年大数定律系列02</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-01-03T11:45:17+08:00"
-              content="2019-01-03" >
-          01-03
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/d780e582351be7e8/" itemprop="url">
-              
-                <span itemprop="name">弱大数定律——百年大数定律系列01</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-01-02T11:45:17+08:00"
-              content="2019-01-02" >
-          01-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/52e9ed9ae74c99f3b483237533c8c708/" itemprop="url">
-              
-                <span itemprop="name">测度论与革命一</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-01-01T20:19:13+08:00"
-              content="2019-01-01" >
-          01-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-  </section>
 
   
+  
 
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                弱收敛与连续定理——百年大数定律系列02
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2019-01-03T11:45:17+08:00" content="2019-01-03">
+              2019-01-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/概率论/" itemprop="url" rel="index">
+                    <span itemprop="name">概率论</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/post/71f28c676a518f5f/" class="leancloud_visitors" data-flag-title="弱收敛与连续定理——百年大数定律系列02">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作者: <a href="https://www.limoncc.com">引线小白</a>-本文永久链接：httpss://<a href="http://www.limoncc.com/post/71f28c676a518f5f/">www.limoncc.com/post/71f28c676a518f5f/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+<p>本文主要阐述特征函数的连续定理。为了清晰说明这个问题，需要引入弱收敛的概念。为什么不用收敛概念，而是使用弱收敛。下面的例子能说明问题：</p>
+<h4 id="一、弱收敛"><a href="#一、弱收敛" class="headerlink" title="一、弱收敛"></a>一、弱收敛</h4><h5 id="1-1、引例"><a href="#1-1、引例" class="headerlink" title="1.1、引例"></a>1.1、引例</h5><p>有分布函数列 $ \{F_n(x)\}$</p>
+<p>$$\begin{align}<br>F_n(x)=<br>\begin{cases}<br>0,x&lt;- \frac{1}{n}\\<br>1,x\geqslant - \frac{1}{n}<br>\end{cases}<br>\end{align}$$</p>
+<p>这是一个退化分布，它可以解释为一个单位质量全部集中在 $x= -\frac{1}{n}$这一点的分布，当 $ n\to \infty$，我们很自然认为分布函数列 $\{F_n(x)\}$应该收敛于一个单位质量全部集中在 $ x=0$这一点的分布函数</p>
+<p>$$\begin{align}<br>F(x)=<br>\begin{cases}<br>0,x&lt;0\\<br>1,x\geqslant 0<br>\end{cases}<br>\end{align}$$<br>但是 $ F_n(0)\equiv1$ 而 $ F(0)=0$，显然 $ F_n(x)\not\to F(0)$，因此看来要去分布函数列在所有点都收敛到极限分布是太严格了，例中不收敛点是极限分布函数 $ F(x)$的不连续点。</p>
+<h5 id="1-2、弱收敛定义"><a href="#1-2、弱收敛定义" class="headerlink" title="1.2、弱收敛定义"></a>1.2、弱收敛定义</h5><p>对于分布函数列 $ \{F_n(x)\}$，如果存在一个函数 $ F(x)$，有如下结论：<br>$$\begin{align}<br>\forall x\in \{x\mid \lim_{t\to x}F(t)=F(x)\}\to \lim_{n\to \infty}F_n(x)=F(x)<br>\end{align}$$则称 $ F_n(x)$弱收敛于 $ F(x)$，记为</p>
+<p>$$\begin{align}<br> F_n(x)\mathop{\longrightarrow}^{\mathrm{W}}F(x)<br>\end{align}$$</p>
+<p>这个结论也就是说，在 $ F(x)$的每一个连续点上，都有 $\displaystyle  \lim_{n\to \infty}F_n(x)=F(x)$。这样得到的一个极限函数是一个有界非减函数，我们可以选得它是右连续的，但它不一定是一个分布函数。下面我们就来研究分布函数列弱收敛于一分布函数的充要条件。</p>
+<h5 id="1-3、引理：分布函数列在稠密集收敛，那么该函数列也弱收敛"><a href="#1-3、引理：分布函数列在稠密集收敛，那么该函数列也弱收敛" class="headerlink" title="1.3、引理：分布函数列在稠密集收敛，那么该函数列也弱收敛"></a>1.3、引理：分布函数列在稠密集收敛，那么该函数列也弱收敛</h5><p>设 $ \{F_n(x)\}$是实变量 $ x$的单调不减函数列， $ E$是 $ \mathbb{R}^1$上的稠密集。如果有 $\displaystyle \forall x\in E\to \lim_{n\to \infty}F_n(x)=F(x)$，那么</p>
+<p>$$\begin{align}<br>\forall x\in \{x\in \mathbb{R}^1\mid \lim_{t\to x}F(t)=F(x)\}\to \lim_{n\to \infty}F_n(x)=F(x)<br>\end{align}$$</p>
+<p>证明</p>
+<p>令 $ A=\{x\in \mathbb{R}^1\mid \lim_{t\to x}F(t)=F(x)\}$，对于任意 $ x\in A$， 取 $ x_1,x_2\in E$使得 $ x_1\leqslant x\leqslant x_2$，由 $ F_n(x)$非减性知</p>
+<p>$$\begin{align}<br>F_n(x_1)\leqslant F_n(x)\leqslant F_n(x_2)<br>\end{align}$$<br>取极限，由收敛性有<br>$$\begin{align}<br>F(x_1)\leqslant \liminf_{n\to \infty}F_n(x)\leqslant \limsup_{n\to \infty}F_n(x)\leqslant F(x_2)<br>\end{align}$$<br>因为 $ x$是 $ F(x)$的连续点，若令 $ x_1\to x-0$， $ x_2\to x+0$，则有</p>
+<p>$$\begin{align}<br>F(x-0)=\lim_{x_1\to x^-}F(x_1)\leqslant \liminf_{n\to \infty}F_n(x)\leqslant \limsup_{n\to \infty}F_x(x)\leqslant \lim_{x_2\to x^+}F(x_1)=F(x+0)<br>\end{align}$$<br>而在连续情况下，他们是相等的。从而<br>$$\begin{align}<br>\forall x\in \{x\in \mathbb{R}^1\mid \lim_{t\to x}F(t)=F(x)\}\to \lim_{n\to \infty}F_n(x)=F(x)<br>\end{align}$$</p>
+<p>这个引理实际是说：单调不减函数列在稠密集收敛，那么该函数列也弱收敛</p>
+<h5 id="1-4、赫利定理"><a href="#1-4、赫利定理" class="headerlink" title="1.4、赫利定理"></a>1.4、赫利定理</h5><h6 id="1-4-1、赫利选择定理"><a href="#1-4-1、赫利选择定理" class="headerlink" title="1.4.1、赫利选择定理"></a>1.4.1、赫利选择定理</h6><p>这个定理的证明路线如下：魏尔施特拉斯聚点定理(致密定理，有界数列必有收敛子列) $ \to$波尔查诺-魏尔施特拉斯定理+引理 $ \to$赫利选择定理</p>
+<p>任意的一致有界单调非减函数列 $ \{F_n(x)\}$中必有一子序列 $ \{F_{n_k}(x)\}$弱收敛于某一有界单调非减函数 $ F(x)$。</p>
+<p>证明</p>
+<p>【1、在稠密的可数点集也就是有理数集上考虑问题】</p>
+<p>任取 $ \mathbb{R}^1$上的一个到处稠密的可数点集 $ E$，下面我们取有理数全体 $ \mathbb{Q}$，并排列为 $ q_1,q_2,\cdots,q_m,\cdots$。</p>
+<p>由于 $ F_n(x)$有界，可见序列 $ \{F_n(q_1)\}$是一个有界点集，由波尔查诺-魏尔施特拉斯定理 <strong>(Bolzano–Weierstrass theorem) </strong>知道它比含有子列 $ \{F_{n_1}(q_1)\}$收敛于某个又穷极限，记为 $ G(q_1)$</p>
+<p>为简洁和清晰记，令 $ \{F_{1,n}(q_1)\}= \{F_{n_1}(q_1)\}$，于是我们把上述结论表示为</p>
+<p>$$\begin{align}<br>\lim_{n\to \infty}F_{1,n}(q_1)=G(q_1)<br>\end{align}$$</p>
+<p>【2、构造子序列】<br>现在我们连续使用波尔查诺-魏尔施特拉斯定理，并用嵌套和对角线来考虑一系列收敛函数列<br>$$\begin{align}<br> \cdots\subset\{F_{m,n}(x)\}\subset  \{F_{m-1,n}(x)\}\subset\cdots \{F_{1,n}(x)\}<br>\end{align}$$<br>我们稍微解释一下这个方法，考虑序列 $  \{F_{1,n}(x)\}$和其有界性，那么存在序列 $ \{F_{2,n}(q_2)\}$收敛于某一值 $ G(q_2)$，这时候有下式同时成立</p>
+<p>$$\begin{align}<br>\lim_{n\to \infty}F_{2,n}(q_1)=G(q_1)\quad\lim_{n\to \infty}F_{2,n}(q_2)=G(q_2)<br>\end{align}$$</p>
+<p>继续下去就可得上述嵌套序列，且使得</p>
+<p>$$\begin{align}<br>\lim_{n\to \infty} F_{m,n}(q_k)=G(q_k)\quad k=1,2,\cdots,m<br>\end{align}$$同时成立。<br>我们把这些序列排列一下</p>
+<p>$$\begin{matrix}<br>F_{1,1}(x)&amp; F_{1,2}(x)&amp;F_{1,3}(x)&amp;\cdots &amp; F_{1,n}(x)&amp;\cdots\\<br>F_{2,1}(x)&amp; F_{2,2}(x)&amp;F_{2,3}(x)&amp;\cdots &amp; F_{2,n}(x)&amp;\cdots\\<br>\cdots&amp;\cdots&amp;\cdots&amp;\cdots&amp;\cdots&amp;\cdots\\<br>F_{m,1}(x)&amp; F_{m,2}(x)&amp;F_{m,3}(x)&amp;\cdots &amp; F_{m,n}(x)&amp;\cdots\\<br>\cdots&amp;\cdots&amp;\cdots&amp;\cdots&amp;\cdots&amp;\cdots<br> \end{matrix}$$</p>
+<p>这里的每一行都是前一行的子序列，而且都有性质 $\lim_{n\to \infty} F_{m,n}(q_k)=G(q_k)$。</p>
+<p>【3、取对角线构造新序列】<br>选取对角线元素构成新的序列 $ \{F_{n,n}(x)\}$：那么我们有<br>1、 $\displaystyle \{F_{n,n}(x)\}_{n=1}^\infty\subset  \{F_{1,n}(x)\}\to \lim_{n\to \infty} F_{m,n}(q_1)=G(q_1)$<br>2、 $\displaystyle \{F_{n,n}(x)\}_{n=2}^\infty\subset  \{F_{2,n}(x)\}\to \lim_{n\to \infty} F_{m,n}(q_2)=G(q_2)$<br>继续舍弃前k个元素，有<br>$$\begin{align}<br>\forall k\in \mathbb{Q} \{F_{n,n}(x)\}_{n=k}^\infty\subset  \{F_{2,n}(x)\}\to \lim_{n\to \infty} F_{m,n}(q_k)=G(q_k)<br>\end{align}$$</p>
+<p>【4、构造实数集上的函数】<br>现在 $ G(q)$是定义在有理数集上的函数，是有界和非减的。对于任意 $ x\in \mathbb{R}^1$定义</p>
+<p>$$\begin{align}<br>F(x)=\sup_{q_k\leqslant x}G(q_k)<br>\end{align}$$<br>函数 $ F(x)$在有理数集上与 $ G(x)$相等，也是有界和非减的。这样我们有序列 $  x$$ \{F_{n,n}(x)\}$在有理数集上收敛到 $ F(x)$，根据引理有，对于 $ F(x)$的一切连续点，也有</p>
+<p>$$\begin{align}<br>\lim_{n\to \infty}F_{n,n}(x)=F(x)<br>\end{align}$$<br>这就证明了结论。</p>
+<p>极限函数不一定右连续，我们这样修正，令 $ A=\{x\in\mid \lim_{t\to x}F(t)=F(x)\}$</p>
+<p>$$\begin{align}<br>F(x):=<br>\begin{cases}<br>\displaystyle F(x)&amp;x\in A\\<br>\\<br>\displaystyle\lim_{t\to x^+}F(t)&amp;x\notin A<br>\end{cases}<br>\end{align}$$</p>
+<p>若函数列是分布函数，显然有 $ 0\leqslant F(x)\leqslant 1$，</p>
+<p><hr></p>
+<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="https://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="https://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="https://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="https://www.limoncc.com">[ https://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%">httpss://<a href="http://www.limoncc.com/post/71f28c676a518f5f/">www.limoncc.com/post/71f28c676a518f5f/</a></td></tr></table><table border="0" width="100%" style="display:inline !important;font-size:14px !important;color:#555555;"><tr><td align="left" width="100%" style="font-family:helvetica;font-size:14px !important;font-weight:bold;">如果您需要引用本文，请参考：</td></tr><tr><td align="left" width="100%">引线小白. (Jan. 3, 2019). 《弱收敛与连续定理——百年大数定律系列02》[Blog post]. Retrieved from <a href="https://www.limoncc.com/post/71f28c676a518f5f">https://www.limoncc.com/post/71f28c676a518f5f</a></td></tr><tr><td align="left" width="100%">@online{limoncc-71f28c676a518f5f,<br>title={弱收敛与连续定理——百年大数定律系列02},<br>author={引线小白},<br>year={2019},<br>month={Jan},<br>date={3},<br>url={\url{<a href="https://www.limoncc.com/post/71f28c676a518f5f}}">https://www.limoncc.com/post/71f28c676a518f5f}}</a>,<br>}</td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/概率论/" rel="tag">#概率论</a>
+          
+            <a href="/tags/大数定律/" rel="tag">#大数定律</a>
+          
+            <a href="/tags/弱收敛/" rel="tag">#弱收敛</a>
+          
+            <a href="/tags/连续定理/" rel="tag">#连续定理</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/d780e582351be7e8/" rel="next" title="弱大数定律——百年大数定律系列01">
+                <i class="fa fa-chevron-left"></i> 弱大数定律——百年大数定律系列01
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/2d743831607dc5bf918db1b4c026a1f8/" rel="prev" title="2022的一些思考 述往事思来者">
+                2022的一些思考 述往事思来者 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
 <!--           </div>
@@ -432,6 +496,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div> -->
         <div id="vcomments"></div>
@@ -457,8 +525,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -579,6 +656,17 @@
       </section>
 
       
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、弱收敛"><span class="nav-number">1.</span> <span class="nav-text">一、弱收敛</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1、引例"><span class="nav-number">1.1.</span> <span class="nav-text">1.1、引例</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2、弱收敛定义"><span class="nav-number">1.2.</span> <span class="nav-text">1.2、弱收敛定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3、引理：分布函数列在稠密集收敛，那么该函数列也弱收敛"><span class="nav-number">1.3.</span> <span class="nav-text">1.3、引理：分布函数列在稠密集收敛，那么该函数列也弱收敛</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-4、赫利定理"><span class="nav-number">1.4.</span> <span class="nav-text">1.4、赫利定理</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-4-1、赫利选择定理"><span class="nav-number">1.4.1.</span> <span class="nav-text">1.4.1、赫利选择定理</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
 
     </div>
   </aside>
@@ -674,11 +762,9 @@
   
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
 
 
   
