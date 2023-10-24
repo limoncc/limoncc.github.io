@@ -98,7 +98,7 @@
 <meta property="og:image" content="https://www.limoncc.com/images/对齐.png">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2023-10-24T02:33:31.070Z">
+<meta property="og:updated_time" content="2023-10-24T02:40:53.156Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="gguf的原理和使用——大模型CPU部署系列02">
 <meta name="twitter:description" content="本文主要介绍了大模型量化与CPU部署中gguf的格式，如有错误请指正。">
@@ -392,7 +392,7 @@
       
         <p>作者: <a href="https://www.limoncc.com">引线小白</a>-本文永久链接：httpss://<a href="http://www.limoncc.com/post/360dc16c61c8a0a9/">www.limoncc.com/post/360dc16c61c8a0a9/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
 <blockquote>
-<p><strong>摘要</strong>: 本文意在理清ggfu的原理和使用。若有错误，请大家指正。<br><strong>关键词</strong>: <code>gguf</code>,<code>大模型</code></p>
+<p><strong>摘要</strong>: 本文意在理清ggfu的原理和使用。若有错误，请大家指正。<br><strong>关键词</strong>: <code>gguf</code>,<code>大模型</code>,<code>模型量化</code></p>
 </blockquote>
 <h4 id="一、导言"><a href="#一、导言" class="headerlink" title="一、导言"></a>一、导言</h4><p>开发者 Georgi Gerganov 基于 Llama 模型手撸的纯 C/C++ 版本，它最大的优势是可以在 CPU上快速地进行推理而不需要 GPU。然后作者将该项目中模型量化的部分提取出来做成了一个用于机器学习张量库：GGML，项目名称中的GG其实就是作者的名字首字母。它与其他张量库最大的不同，就是支持量化模型在CPU中执行推断。从而实现了低资源部署LLM，也就是大家常说的大模型民主化。而它生成的文件格式只存储了张量，为了适应发展提出了gguf格式标准，除了张量，还能存储分词器等其他模型信息。</p>
 <p>目前这一格式标准得到了hugging face的支持。你应该容易发现hugging face仓库中经常能看到gguf后缀的文件。</p>
@@ -480,8 +480,7 @@
 <li>tokenizer.ggml.padding_token_id: uint32</li>
 <li>tokenizer.huggingface.json: string</li>
 </ul>
-<p>3.3、如何读取gguf文件</p>
-<p>读取头信息，为什么总有一个&lt;的符号？这个符号的作用主要是为了按照指定格式对齐长度</p>
+<h5 id="3-3、如何读取gguf文件"><a href="#3-3、如何读取gguf文件" class="headerlink" title="3.3、如何读取gguf文件"></a>3.3、如何读取gguf文件</h5><p>读取头信息，为什么总有一个&lt;的符号？这个符号的作用主要是为了按照指定格式对齐长度</p>
 <div align="center"><img src="/images/对齐.png" width="900"><br>对齐</div>
 
 
@@ -727,7 +726,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、导言"><span class="nav-number">1.</span> <span class="nav-text">一、导言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、设计一个二进制文件标准"><span class="nav-number">2.</span> <span class="nav-text">二、设计一个二进制文件标准</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、揭开gguf的面纱"><span class="nav-number">3.</span> <span class="nav-text">三、揭开gguf的面纱</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1、如何生成gguf文件"><span class="nav-number">3.1.</span> <span class="nav-text">3.1、如何生成gguf文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2、gguf标准键值对"><span class="nav-number">3.2.</span> <span class="nav-text">3.2、gguf标准键值对</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、导言"><span class="nav-number">1.</span> <span class="nav-text">一、导言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、设计一个二进制文件标准"><span class="nav-number">2.</span> <span class="nav-text">二、设计一个二进制文件标准</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、揭开gguf的面纱"><span class="nav-number">3.</span> <span class="nav-text">三、揭开gguf的面纱</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1、如何生成gguf文件"><span class="nav-number">3.1.</span> <span class="nav-text">3.1、如何生成gguf文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2、gguf标准键值对"><span class="nav-number">3.2.</span> <span class="nav-text">3.2、gguf标准键值对</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3、如何读取gguf文件"><span class="nav-number">3.3.</span> <span class="nav-text">3.3、如何读取gguf文件</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
