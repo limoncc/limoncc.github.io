@@ -1,0 +1,1151 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="大模型,模型量化,AI,CPU部署,gguf" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本文主要介绍了大模型量化与CPU部署中gguf的格式，如有错误请指正。">
+<meta name="keywords" content="大模型,模型量化,AI,CPU部署,gguf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gguf的原理和使用——大模型CPU部署系列02">
+<meta property="og:url" content="https://www.limoncc.com/post/360dc16c61c8a0a9/index.html">
+<meta property="og:site_name" content="柠檬CC">
+<meta property="og:description" content="本文主要介绍了大模型量化与CPU部署中gguf的格式，如有错误请指正。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.limoncc.com/images/二进制文件格式设计.png">
+<meta property="og:image" content="https://www.limoncc.com/images/c语言类型.png">
+<meta property="og:image" content="https://www.limoncc.com/images/gguf文件格式.png">
+<meta property="og:image" content="https://www.limoncc.com/images/对齐.png">
+<meta property="og:image" content="https://www.limoncc.com/images/cc.png">
+<meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
+<meta property="og:updated_time" content="2023-10-24T02:33:31.070Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="gguf的原理和使用——大模型CPU部署系列02">
+<meta name="twitter:description" content="本文主要介绍了大模型量化与CPU部署中gguf的格式，如有错误请指正。">
+<meta name="twitter:image" content="https://www.limoncc.com/images/二进制文件格式设计.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <title> gguf的原理和使用——大模型CPU部署系列02 | 柠檬CC </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-73837972-3', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d225b8f8559eb2eb6a8bd8792e01ebb9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=60130136";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">柠檬CC</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">小白爱吃柠檬O(∩_∩)O</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-poetry">
+          <a href="/poetry" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-leaf"></i> <br />
+            
+            诗集
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                gguf的原理和使用——大模型CPU部署系列02
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2023-10-24T10:30:08+08:00" content="2023-10-24">
+              2023-10-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/工程实践/" itemprop="url" rel="index">
+                    <span itemprop="name">工程实践</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/post/360dc16c61c8a0a9/" class="leancloud_visitors" data-flag-title="gguf的原理和使用——大模型CPU部署系列02">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作者: <a href="https://www.limoncc.com">引线小白</a>-本文永久链接：httpss://<a href="http://www.limoncc.com/post/360dc16c61c8a0a9/">www.limoncc.com/post/360dc16c61c8a0a9/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+<blockquote>
+<p><strong>摘要</strong>: 本文意在理清ggfu的原理和使用。若有错误，请大家指正。<br><strong>关键词</strong>: <code>gguf</code>,<code>大模型</code></p>
+</blockquote>
+<h4 id="一、导言"><a href="#一、导言" class="headerlink" title="一、导言"></a>一、导言</h4><p>开发者 Georgi Gerganov 基于 Llama 模型手撸的纯 C/C++ 版本，它最大的优势是可以在 CPU上快速地进行推理而不需要 GPU。然后作者将该项目中模型量化的部分提取出来做成了一个用于机器学习张量库：GGML，项目名称中的GG其实就是作者的名字首字母。它与其他张量库最大的不同，就是支持量化模型在CPU中执行推断。从而实现了低资源部署LLM，也就是大家常说的大模型民主化。而它生成的文件格式只存储了张量，为了适应发展提出了gguf格式标准，除了张量，还能存储分词器等其他模型信息。</p>
+<p>目前这一格式标准得到了hugging face的支持。你应该容易发现hugging face仓库中经常能看到gguf后缀的文件。</p>
+<p>下面通过一个简单例子回顾一下python二进制文件读写的知识，以方便深入理解gguf格式标准。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1、准备文件和数据</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">file_path = <span class="string">"./data/test.bin"</span></span><br><span class="line">data = <span class="number">123</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2、将数据转换为二进制并写入</span></span><br><span class="line">content= data.to_bytes(<span class="number">1</span>, <span class="string">'big'</span>)</span><br><span class="line">bin_file = open(file_path, <span class="string">'wb'</span>) <span class="comment">#覆盖写入</span></span><br><span class="line">bin_file.write(content)</span><br><span class="line">print(<span class="string">'content'</span>,content) <span class="comment"># b'&#123;'</span></span><br><span class="line">bin_file.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3、打开文件读取二进制文件</span></span><br><span class="line">bin_file = open(file=file_path,mode=<span class="string">'rb'</span>)</span><br><span class="line">size = os.path.getsize(file_path) <span class="comment">#获得文件大小</span></span><br><span class="line">content = <span class="string">b''</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(size):</span><br><span class="line">    content += bin_file.read(<span class="number">1</span>) <span class="comment">#每次输出一个字节</span></span><br><span class="line">    print(content)</span><br><span class="line">bin_file.close()</span><br><span class="line">data = int.from_bytes(data)</span><br><span class="line">print(data) <span class="comment"># 123</span></span><br></pre></td></tr></table></figure>
+<h4 id="二、设计一个二进制文件标准"><a href="#二、设计一个二进制文件标准" class="headerlink" title="二、设计一个二进制文件标准"></a>二、设计一个二进制文件标准</h4><p>上面是一个简单的例子，但是面临的数据类型是多种多样的，python为我们提供了struct库，它可以将Python对象转换为二进制格式并反之。这个模块提供了一种简单、快速和灵活的方法来处理结构化数据。下面我们来设计一个简单键值对二进制数据格式：<strong>键值对 = 长度+键+长度+值</strong>，然后不断堆叠。解码二进制的时候我们需要对值做一些约定即可。下面展示一个自己设计的例子：</p>
+<div align="center"><img src="/images/二进制文件格式设计.png" width="900"><br>二进制文件格式设计</div>
+
+
+<p>按照这一格式设计，生成二进制文件的代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"></span><br><span class="line">file_path = <span class="string">"./data/test.bin"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 我们来设计一个二进制文件</span></span><br><span class="line"><span class="comment"># 按照len+key+len+value</span></span><br><span class="line">bin_kv_data = <span class="string">b''</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一部分是title</span></span><br><span class="line">key1 = <span class="string">"title"</span>.encode(<span class="string">'utf-8'</span>)</span><br><span class="line">value1 = <span class="string">"欢迎来学习大模型量化与CPU部署"</span>.encode(<span class="string">'utf-8'</span>)</span><br><span class="line">bin_kv_data += struct.pack(<span class="string">'&lt;H'</span>, len(key1)) + key1</span><br><span class="line">bin_kv_data += struct.pack(<span class="string">'&lt;H'</span>, len(value1)) + value1</span><br><span class="line"><span class="comment"># 第二部分是data</span></span><br><span class="line">key2 = <span class="string">"data"</span>.encode(<span class="string">'utf-8'</span>)</span><br><span class="line">value2 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">value2 = struct.pack(<span class="string">'3i'</span>, *value2)</span><br><span class="line">bin_kv_data += struct.pack(<span class="string">'&lt;H'</span>, len(key2)) + key2</span><br><span class="line">bin_kv_data += struct.pack(<span class="string">'&lt;H'</span>, len(value2))+value2</span><br><span class="line"><span class="comment"># 写入数据</span></span><br><span class="line">bin_file = open(file_path, <span class="string">'wb'</span>) <span class="comment">#覆盖写入</span></span><br><span class="line">bin_file.write(bin_kv_data)</span><br><span class="line">print(<span class="string">'content'</span>,bin_kv_data)</span><br><span class="line">bin_file.close()</span><br></pre></td></tr></table></figure>
+<p>有这样一套标准信息，我们就很容易读取这个文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 然后我们读取这个二进制文件</span></span><br><span class="line">bin_file = open(file=file_path,mode=<span class="string">'rb'</span>)</span><br><span class="line">size = os.path.getsize(file_path) <span class="comment">#获得文件大小</span></span><br><span class="line"><span class="comment"># 我们先读取前缀,然后读取内容</span></span><br><span class="line">key_len = struct.unpack(<span class="string">'&lt;H'</span>, bin_file.read(<span class="number">2</span>))[<span class="number">0</span>]</span><br><span class="line">key = bin_file.read(key_len).decode(<span class="string">'utf-8'</span>)</span><br><span class="line">value_len = struct.unpack(<span class="string">'&lt;H'</span>, bin_file.read(<span class="number">2</span>))[<span class="number">0</span>]</span><br><span class="line">value = bin_file.read(value_len).decode(<span class="string">'utf-8'</span>)</span><br><span class="line">print(<span class="string">f"key:<span class="subst">&#123;key&#125;</span>\nvalue:<span class="subst">&#123;value&#125;</span>"</span>)</span><br></pre></td></tr></table></figure>
+<p>读取第二部分，对于list我们需要知道长度这样，才能方便读取。我们目前的设计没有考虑，注意这段代码中的3i，是c语言中的类型，见表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">value = struct.unpack(<span class="string">'3i'</span>, bin_file.read(value_len))</span><br></pre></td></tr></table></figure>
+<div align="center"><img src="/images/c语言类型.png" width="900"><br>c语言类型</div>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 我们先读取前缀,然后读取内容</span></span><br><span class="line">key_len = struct.unpack(<span class="string">'&lt;H'</span>, bin_file.read(<span class="number">2</span>))[<span class="number">0</span>]</span><br><span class="line">key = bin_file.read(key_len).decode(<span class="string">'utf-8'</span>)</span><br><span class="line">value_len = struct.unpack(<span class="string">'&lt;H'</span>, bin_file.read(<span class="number">2</span>))[<span class="number">0</span>]</span><br><span class="line">value = struct.unpack(<span class="string">'3i'</span>, bin_file.read(value_len))</span><br><span class="line">print(<span class="string">f"key:<span class="subst">&#123;key&#125;</span>\nvalue:<span class="subst">&#123;value&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 到了文件末尾就关闭文件</span></span><br><span class="line"><span class="keyword">if</span> bin_file.tell()==size:</span><br><span class="line">    bin_file.close()</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>最后我们做个总结，所谓二进制文件格式设计就是对内容的长度、数据类型、键值对的设计和一套默认规范。有了这套默认规范，这样就方便跨语言分享了。从而降低对框架的依赖。</p>
+<h4 id="三、揭开gguf的面纱"><a href="#三、揭开gguf的面纱" class="headerlink" title="三、揭开gguf的面纱"></a>三、揭开gguf的面纱</h4><h5 id="3-1、如何生成gguf文件"><a href="#3-1、如何生成gguf文件" class="headerlink" title="3.1、如何生成gguf文件"></a>3.1、如何生成gguf文件</h5><p>下面揭开gguf的面纱，实际上gguf也是这样差不多的规范。我们从一个简单例子开始</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> gguf <span class="keyword">import</span> GGUFWriter</span><br><span class="line"></span><br><span class="line"><span class="comment"># 写入一下head信息</span></span><br><span class="line">gguf_writer = GGUFWriter(<span class="string">"./data/test.gguf"</span>, <span class="string">"test"</span>)</span><br><span class="line">gguf_writer.add_block_count(<span class="number">12</span>)</span><br><span class="line">gguf_writer.add_uint32(<span class="string">"answer"</span>, <span class="number">42</span>)  <span class="comment"># Write a 32-bit integer</span></span><br><span class="line">gguf_writer.add_float32(<span class="string">"answer_in_float"</span>, <span class="number">42.0</span>)  <span class="comment"># Write a 32-bit float</span></span><br><span class="line">gguf_writer.add_custom_alignment(<span class="number">64</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 写入矩阵信息</span></span><br><span class="line">tensor1 = np.ones((<span class="number">32</span>,<span class="number">8</span>), dtype=np.float32) * <span class="number">100.0</span></span><br><span class="line">tensor2 = np.ones((<span class="number">64</span>,), dtype=np.float32) * <span class="number">101.0</span></span><br><span class="line">gguf_writer.add_tensor(<span class="string">"tensor1"</span>, tensor1)</span><br><span class="line">gguf_writer.add_tensor(<span class="string">"tensor2"</span>, tensor2)</span><br><span class="line"><span class="comment"># 正式写入</span></span><br><span class="line">gguf_writer.write_header_to_file()</span><br><span class="line">gguf_writer.write_kv_data_to_file()</span><br><span class="line">gguf_writer.write_tensors_to_file()</span><br><span class="line"><span class="comment"># 关闭文件</span></span><br><span class="line">gguf_writer.close()</span><br></pre></td></tr></table></figure>
+<p>然后我们解析它，给个图，可能更加清晰</p>
+<div align="center"><img src="/images/gguf文件格式.png" width="900"><br>gguf文件格式</div>
+
+<p>是不是非常简单。gguf按照自己的规范封装了一python库。这就是我们常见的在llama.cpp中的convert.py系列文件用到的一个核心库。</p>
+<h5 id="3-2、gguf标准键值对"><a href="#3-2、gguf标准键值对" class="headerlink" title="3.2、gguf标准键值对"></a>3.2、gguf标准键值对</h5><p>general</p>
+<ul>
+<li>general.architecture: string</li>
+<li>general.quantization_version: uint32</li>
+<li>general.alignment: uint32</li>
+<li>general.name: string</li>
+<li>general.author: string</li>
+<li>general.description: string</li>
+<li>general.license: string</li>
+<li>general.file_type: uint32</li>
+<li>general.source.url: string</li>
+<li>general.source.huggingface.repository: string</li>
+</ul>
+<p>llm</p>
+<ul>
+<li>[llm].context_length: uint64</li>
+<li>[llm].embedding_length: uint64</li>
+<li>[llm].block_count: uint64</li>
+<li>[llm].feed_forward_length: uint64</li>
+<li>[llm].use_parallel_residual: bool</li>
+<li>[llm].tensor_data_layout: string</li>
+</ul>
+<p>attention</p>
+<ul>
+<li>[llm].attention.head_count: uint64</li>
+<li>[llm].attention.head_count_kv: uint64</li>
+<li>[llm].attention.max_alibi_bias: float32</li>
+<li>[llm].attention.clamp_kqv: float32</li>
+<li>[llm].attention.layer_norm_epsilon: float32</li>
+<li>[llm].attention.layer_norm_rms_epsilon: float32</li>
+<li>[llm].rope.dimension_count: uint64</li>
+<li>[llm].rope.freq_base: float32</li>
+<li>[llm].rope.scale_linear: float32</li>
+</ul>
+<p>model</p>
+<ul>
+<li>[model].context_length</li>
+<li>[model].embedding_length</li>
+<li>[model].block_count</li>
+<li>[model]..feed_forward_length</li>
+<li>[model]..rope.dimension_count</li>
+<li>[model]..attention.head_count</li>
+<li>[model]..attention.layer_norm_rms_epsilon</li>
+<li>[model].rope.scale</li>
+<li>[model]..attention.head_count_kv</li>
+<li>[model]..tensor_data_layout</li>
+</ul>
+<p>tokenizer</p>
+<ul>
+<li>tokenizer.ggml.model: string</li>
+<li>tokenizer.ggml.tokens: array[string]</li>
+<li>tokenizer.ggml.scores: array[float32]</li>
+<li>tokenizer.ggml.token_type: array[uint32]</li>
+<li>tokenizer.ggml.merges: array[string]</li>
+<li>tokenizer.ggml.added_tokens: array[string]</li>
+<li>tokenizer.ggml.bos_token_id: uint32</li>
+<li>tokenizer.ggml.eos_token_id: uint32</li>
+<li>tokenizer.ggml.unknown_token_id: uint32</li>
+<li>tokenizer.ggml.separator_token_id: uint32</li>
+<li>tokenizer.ggml.padding_token_id: uint32</li>
+<li>tokenizer.huggingface.json: string</li>
+</ul>
+<p>3.3、如何读取gguf文件</p>
+<p>读取头信息，为什么总有一个&lt;的符号？这个符号的作用主要是为了按照指定格式对齐长度</p>
+<div align="center"><img src="/images/对齐.png" width="900"><br>对齐</div>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line">path = <span class="string">"./data/test.gguf"</span></span><br><span class="line">model_bin = open(file=path,mode=<span class="string">'rb'</span>)</span><br><span class="line">size = os.path.getsize(path) <span class="comment">#获得文件大小</span></span><br><span class="line"><span class="comment"># 读取第一个,这个确实是一个魔法数，它的二进制是GGUF。</span></span><br><span class="line">gguf_magic_num = struct.unpack(<span class="string">'&lt;I'</span>, model_bin.read(<span class="number">4</span>))[<span class="number">0</span>]</span><br><span class="line">gguf_magic = struct.pack(<span class="string">"&lt;I"</span>, gguf_magic_num)</span><br><span class="line">print(gguf_magic) <span class="comment"># b'GGUF'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取第二个,gguf的版本信息</span></span><br><span class="line">gguf_version = struct.unpack(<span class="string">'&lt;I'</span>, model_bin.read(<span class="number">4</span>))[<span class="number">0</span>]</span><br><span class="line">print(gguf_version) <span class="comment"># 2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取第三个,gguf的张量信息(tesor information)个数</span></span><br><span class="line">ti_data_count = struct.unpack(<span class="string">'&lt;Q'</span>, model_bin.read(<span class="number">8</span>))[<span class="number">0</span>]</span><br><span class="line">print(ti_data_count) <span class="comment"># 291</span></span><br><span class="line"><span class="comment"># 读取第三个,gguf的kv数据个数信息</span></span><br><span class="line">kv_data_count = struct.unpack(<span class="string">'&lt;Q'</span>, model_bin.read(<span class="number">8</span>))[<span class="number">0</span>]</span><br><span class="line">print(kv_data_count) <span class="comment"># 20</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 取第一个kv信息</span></span><br><span class="line">key1_len = struct.unpack(<span class="string">'&lt;Q'</span>, model_bin.read(<span class="number">8</span>))[<span class="number">0</span>]</span><br><span class="line">key1_data = model_bin.read(key1_len).decode(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line">value1_type = struct.unpack(<span class="string">'&lt;I'</span>, model_bin.read(<span class="number">4</span>))[<span class="number">0</span>] <span class="comment"># 8对应这string类型</span></span><br><span class="line">value1_len = struct.unpack(<span class="string">'&lt;Q'</span>, model_bin.read(<span class="number">8</span>))[<span class="number">0</span>]</span><br><span class="line">value1_data = model_bin.read(value1_len).decode(<span class="string">'utf-8'</span>) <span class="comment"># llama</span></span><br><span class="line">print(<span class="string">f"<span class="subst">&#123;key1_data&#125;</span>:<span class="subst">&#123;value1_data&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 取第二个kv信息</span></span><br><span class="line">key2_len = struct.unpack(<span class="string">'&lt;Q'</span>, model_bin.read(<span class="number">8</span>))[<span class="number">0</span>]</span><br><span class="line">key2_data = model_bin.read(key2_len).decode(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line">value2_type = struct.unpack(<span class="string">'&lt;I'</span>, model_bin.read(<span class="number">4</span>))[<span class="number">0</span>] <span class="comment"># 4对应这UINT32</span></span><br><span class="line">value2_data = struct.unpack(<span class="string">'&lt;I'</span>, model_bin.read(<span class="number">4</span>))[<span class="number">0</span>]</span><br><span class="line">print(<span class="string">f"<span class="subst">&#123;key2_data&#125;</span>:<span class="subst">&#123;value2_data&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 取第三个kv信息</span></span><br><span class="line">key3_len = struct.unpack(<span class="string">'&lt;Q'</span>, model_bin.read(<span class="number">8</span>))[<span class="number">0</span>]</span><br><span class="line">key3_data = model_bin.read(key3_len).decode(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line">value3_type = struct.unpack(<span class="string">'&lt;I'</span>, model_bin.read(<span class="number">4</span>))[<span class="number">0</span>] <span class="comment"># 4对应着UINT32</span></span><br><span class="line">value3_data = struct.unpack(<span class="string">'&lt;I'</span>, model_bin.read(<span class="number">4</span>))[<span class="number">0</span>]</span><br><span class="line">print(<span class="string">f"<span class="subst">&#123;key3_data&#125;</span>:<span class="subst">&#123;value3_data&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 取第四个kv信息</span></span><br><span class="line">key4_len = struct.unpack(<span class="string">'&lt;Q'</span>, model_bin.read(<span class="number">8</span>))[<span class="number">0</span>]</span><br><span class="line">key4_data = model_bin.read(key4_len).decode(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line">value4_type = struct.unpack(<span class="string">'&lt;I'</span>, model_bin.read(<span class="number">4</span>))[<span class="number">0</span>] <span class="comment"># 6对应着FLOAT32</span></span><br><span class="line">value4_data = struct.unpack(<span class="string">'&lt;f'</span>, model_bin.read(<span class="number">4</span>))[<span class="number">0</span>]</span><br><span class="line">print(<span class="string">f"<span class="subst">&#123;key4_data&#125;</span>:<span class="subst">&#123;value4_data&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 取第五个kv信息</span></span><br><span class="line">key5_len = struct.unpack(<span class="string">'&lt;Q'</span>, model_bin.read(<span class="number">8</span>))[<span class="number">0</span>]</span><br><span class="line">key5_data = model_bin.read(key5_len).decode(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line">value5_type = struct.unpack(<span class="string">'&lt;I'</span>, model_bin.read(<span class="number">4</span>))[<span class="number">0</span>] <span class="comment"># 4对应这UINT32</span></span><br><span class="line">value5_data = struct.unpack(<span class="string">'&lt;I'</span>, model_bin.read(<span class="number">4</span>))[<span class="number">0</span>]</span><br><span class="line">print(<span class="string">f"<span class="subst">&#123;key5_data&#125;</span>:<span class="subst">&#123;value5_data&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取tensor信息</span></span><br><span class="line">tensor1_name_len = struct.unpack(<span class="string">'&lt;Q'</span>, model_bin.read(<span class="number">8</span>))[<span class="number">0</span>]</span><br><span class="line">tensor1_name_data = model_bin.read(tensor1_name_len).decode(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line">tensor1_dim = struct.unpack(<span class="string">'&lt;I'</span>, model_bin.read(<span class="number">4</span>))[<span class="number">0</span>]</span><br><span class="line">tensor1_shape = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(tensor1_dim):</span><br><span class="line">    tensor1_shape.append(struct.unpack(<span class="string">'&lt;Q'</span>, model_bin.read(<span class="number">8</span>))[<span class="number">0</span>])</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">tensor1_type = struct.unpack(<span class="string">'&lt;I'</span>, model_bin.read(<span class="number">4</span>))[<span class="number">0</span>]</span><br><span class="line">tensor1_offset = struct.unpack(<span class="string">'&lt;Q'</span>, model_bin.read(<span class="number">8</span>))[<span class="number">0</span>]</span><br><span class="line">print(<span class="string">f"<span class="subst">&#123;tensor1_name_data&#125;</span>==&gt;dim:<span class="subst">&#123;tensor1_dim&#125;</span>,type:<span class="subst">&#123;tensor1_type&#125;</span>,shape:<span class="subst">&#123;tensor1_shape&#125;</span>,offset:<span class="subst">&#123;tensor1_offset&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">tensor2_name_len = struct.unpack(<span class="string">'&lt;Q'</span>, model_bin.read(<span class="number">8</span>))[<span class="number">0</span>]</span><br><span class="line">tensor2_name_data = model_bin.read(tensor2_name_len).decode(<span class="string">'utf-8'</span>)</span><br><span class="line">tensor2_dim = struct.unpack(<span class="string">'&lt;I'</span>, model_bin.read(<span class="number">4</span>))[<span class="number">0</span>]</span><br><span class="line">tensor2_shape = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(tensor2_dim):</span><br><span class="line">    tensor2_shape.append(struct.unpack(<span class="string">'&lt;Q'</span>, model_bin.read(<span class="number">8</span>))[<span class="number">0</span>])</span><br><span class="line">    ...</span><br><span class="line">tensor2_type = struct.unpack(<span class="string">'&lt;I'</span>, model_bin.read(<span class="number">4</span>))[<span class="number">0</span>]</span><br><span class="line">tensor2_offset = struct.unpack(<span class="string">'&lt;Q'</span>, model_bin.read(<span class="number">8</span>))[<span class="number">0</span>]</span><br><span class="line">print(<span class="string">f"<span class="subst">&#123;tensor2_name_data&#125;</span>==&gt;dim:<span class="subst">&#123;tensor2_dim&#125;</span>,type:<span class="subst">&#123;tensor2_type&#125;</span>,shape:<span class="subst">&#123;tensor2_shape&#125;</span>,offset:<span class="subst">&#123;tensor2_offset&#125;</span>"</span>)</span><br></pre></td></tr></table></figure>
+<p>注意当我们开始写入张量信息的时候，gguf标准会对前面的二进制信息作补全操作，就是会加零。这样方便我们读取张量信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取当前二进制文件位置</span></span><br><span class="line">n = model_bin.tell()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算补零数</span></span><br><span class="line">off_set = ((n + <span class="number">64</span> - <span class="number">1</span>) // <span class="number">64</span>) * <span class="number">64</span> -model_bin.tell()</span><br><span class="line">model_bin.seek(n + off_set)</span><br><span class="line"></span><br><span class="line">tensor1_data = struct.unpack(<span class="string">f'&lt;<span class="subst">&#123;<span class="number">32</span>*<span class="number">8</span>&#125;</span>f'</span>, model_bin.read(<span class="number">4</span>*<span class="number">32</span>))</span><br><span class="line">print(tensor1_data)</span><br><span class="line">len(tensor1_data)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">tensor2_data = struct.unpack(<span class="string">'&lt;64f'</span>, model_bin.read(<span class="number">4</span>*<span class="number">64</span>))</span><br><span class="line">print(tensor2_data)</span><br><span class="line">len(tensor2_data)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> model_bin.tell()==size:</span><br><span class="line">    model_bin.close()</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p><hr></p>
+<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="https://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="https://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="https://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="https://www.limoncc.com">[ https://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%">httpss://<a href="http://www.limoncc.com/post/360dc16c61c8a0a9/">www.limoncc.com/post/360dc16c61c8a0a9/</a></td></tr></table><table border="0" width="100%" style="display:inline !important;font-size:14px !important;color:#555555;"><tr><td align="left" width="100%" style="font-family:helvetica;font-size:14px !important;font-weight:bold;">如果您需要引用本文，请参考：</td></tr><tr><td align="left" width="100%">引线小白. (Oct. 24, 2023). 《gguf的原理和使用——大模型CPU部署系列02》[Blog post]. Retrieved from <a href="https://www.limoncc.com/post/360dc16c61c8a0a9">https://www.limoncc.com/post/360dc16c61c8a0a9</a></td></tr><tr><td align="left" width="100%">@online{limoncc-360dc16c61c8a0a9,<br>title={gguf的原理和使用——大模型CPU部署系列02},<br>author={引线小白},<br>year={2023},<br>month={Oct},<br>date={24},<br>url={\url{<a href="https://www.limoncc.com/post/360dc16c61c8a0a9}}">https://www.limoncc.com/post/360dc16c61c8a0a9}}</a>,<br>}</td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/大语言模型/" rel="tag">#大语言模型</a>
+          
+            <a href="/tags/AI/" rel="tag">#AI</a>
+          
+            <a href="/tags/模型量化/" rel="tag">#模型量化</a>
+          
+            <a href="/tags/CPU部署/" rel="tag">#CPU部署</a>
+          
+            <a href="/tags/gguf原理/" rel="tag">#gguf原理</a>
+          
+            <a href="/tags/gguf/" rel="tag">#gguf</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/9971336748ed0b5b/" rel="next" title="一些信息总结——大模型量化与CPU部署系列01">
+                <i class="fa fa-chevron-left"></i> 一些信息总结——大模型量化与CPU部署系列01
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+<!--           </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div> -->
+        <div id="vcomments"></div>
+        <script>new Valine({
+          el: "#vcomments",
+      appId: "BVjuNRCpkVSkz82jFmadIvY8-gzGzoHsz",
+    appKey: "bRjXPp55dop7RTC2xgunGdiP"})
+  </script>'
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="引线小白" />
+          <p class="site-author-name" itemprop="name">引线小白</p>
+          <p class="site-description motion-element" itemprop="description">小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">43</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="" target="_blank" title="Design">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Design
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.behance.net/limoncc" target="_blank" title="Behance">
+                  
+                    <i class="fa fa-fw fa-behance"></i>
+                  
+                  Behance
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.pinterest.com/aegeanfan/" target="_blank" title="Pinterest">
+                  
+                    <i class="fa fa-fw fa-pinterest"></i>
+                  
+                  Pinterest
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/limoncc" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://weibo.com/3483157951" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://www.zhihu.com/people/limoncc" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              设计不止，折腾不息。
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://chuangzaoshi.com" title="创造狮" target="_blank">创造狮</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、导言"><span class="nav-number">1.</span> <span class="nav-text">一、导言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、设计一个二进制文件标准"><span class="nav-number">2.</span> <span class="nav-text">二、设计一个二进制文件标准</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、揭开gguf的面纱"><span class="nav-number">3.</span> <span class="nav-text">三、揭开gguf的面纱</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1、如何生成gguf文件"><span class="nav-number">3.1.</span> <span class="nav-text">3.1、如何生成gguf文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2、gguf标准键值对"><span class="nav-number">3.2.</span> <span class="nav-text">3.2、gguf标准键值对</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">引线小白&nbsp &nbsp |&nbsp &nbsp  一个理想主义者，再造自我，以期未来。</span>
+</div>
+
+<div class="powered-by">
+  由 <a rel="external nofollow" class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a rel="external nofollow" class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>&nbsp &nbsp| &nbsp &nbsp Hosted by  <a href="https://github.com" style="font-weight: bold">Github Pages</a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+<!--   
+   
+  
+
+  
+
+ -->
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+<!--   <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+     showMathMenu: false,
+     showMathMenuMSIE: false,
+     tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+          processEscapes: true
+        },
+        TeX: {
+          equationNumbers: {autoNumber: 'AMS'},
+          Macros: {bm: "\\boldsymbol"}
+        },
+        'HTML-CSS': {
+          imageFont: null
+        }
+    });
+  </script> -->
+<!--     MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    }); -->
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+    processEscapes: true,
+    tags: 'ams',
+    macros: {
+                                            bm: "\\boldsymbol",
+					    T:"\\intercal",
+                                            oiint: "{\\iint\\kern{-20mu}{\\unicode{x2B2D}}}",
+                                            oiiint: "{\\iiint\\kern{-24.5mu}\\large{\\unicode{x2B2D}}}"
+                                },
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+  <script type="text/x-mathjax-config">
+MathJax.texReset();
+MathJax.typeset();
+  </script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_SVG-full"></script> -->
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Es7wAnqi0QiGhMLoyl7mkrQo-gzGzoHsz", "BxPXaoPFp3PzWqBTSe6VUuQS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</body>
+</html>
