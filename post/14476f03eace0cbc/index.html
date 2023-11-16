@@ -1,0 +1,1081 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="大模型,Chat Format,AI,聊天格式,gguf" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本文主要介绍了大模型量Chat Format的格式，如有错误请指正。">
+<meta name="keywords" content="大模型,Chat Format,AI,聊天格式,gguf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="不得不说的Chat Format——大模型CPU部署系列03">
+<meta property="og:url" content="https://www.limoncc.com/post/14476f03eace0cbc/index.html">
+<meta property="og:site_name" content="柠檬CC">
+<meta property="og:description" content="本文主要介绍了大模型量Chat Format的格式，如有错误请指正。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.limoncc.com/images/cc.png">
+<meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
+<meta property="og:updated_time" content="2023-11-16T01:26:05.613Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="不得不说的Chat Format——大模型CPU部署系列03">
+<meta name="twitter:description" content="本文主要介绍了大模型量Chat Format的格式，如有错误请指正。">
+<meta name="twitter:image" content="https://www.limoncc.com/images/cc.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <title> 不得不说的Chat Format——大模型CPU部署系列03 | 柠檬CC </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-73837972-3', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d225b8f8559eb2eb6a8bd8792e01ebb9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=60130136";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">柠檬CC</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">小白爱吃柠檬O(∩_∩)O</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-poetry">
+          <a href="/poetry" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-leaf"></i> <br />
+            
+            诗集
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                不得不说的Chat Format——大模型CPU部署系列03
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2023-10-25T20:30:08+08:00" content="2023-10-25">
+              2023-10-25
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/工程实践/" itemprop="url" rel="index">
+                    <span itemprop="name">工程实践</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/post/14476f03eace0cbc/" class="leancloud_visitors" data-flag-title="不得不说的Chat Format——大模型CPU部署系列03">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作者: <a href="https://www.limoncc.com">引线小白</a>-本文永久链接：httpss://<a href="http://www.limoncc.com/post/14476f03eace0cbc/">www.limoncc.com/post/14476f03eace0cbc/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+<blockquote>
+<p><strong>摘要</strong>: 本文意在理清ggfu的原理和使用。若有错误，请大家指正。<br><strong>关键词</strong>: <code>Chat Format</code>,<code>大模型</code>,<code>聊天格式</code></p>
+</blockquote>
+<h4 id="一、引导"><a href="#一、引导" class="headerlink" title="一、引导"></a>一、引导</h4><p>所谓Chat Format其实就是一种聊天格式，给模型能看的懂的语言格式。模型训练不可能像人对话一样，你说一句，它说一句。这bert时代就有诸如[CLS]、[SEP]、[PAD]之类的特殊token。到了大模型时代这个问题稍微复杂了一点。因为你不仅要标记句子的开始，结尾还要区分说话角色，谁说了哪些话。于是各种Chat Format就出现了。</p>
+<p>一个简单想法就是这样处理<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;一段角色定位的话&#125;</span><br><span class="line">User：</span><br><span class="line">&#123;一段用户的话&#125;</span><br><span class="line">Assistant:</span><br><span class="line">&#123;一段助理的话&#125;</span><br></pre></td></tr></table></figure></p>
+<p>但是这样还是有点问题，如果角色说的话中包含一段对话，有俄罗斯套娃怎么办？还是要用一种特殊token才行。我们在本地部署模型的时候，尤其要注意模型的Chat Format格式。每家的模型是不一样的，如果弄错用户指令理解就会存在问题。</p>
+<h4 id="二、一些典型的Chat-Format"><a href="#二、一些典型的Chat-Format" class="headerlink" title="二、一些典型的Chat Format"></a>二、一些典型的Chat Format</h4><h5 id="2-1、ChatML-聊天标记语言"><a href="#2-1、ChatML-聊天标记语言" class="headerlink" title="2.1、ChatML(聊天标记语言)"></a>2.1、ChatML(聊天标记语言)</h5><p>最有名的应该是openai的ChatML(聊天标记语言)，英文全称Chat Markup Language。具体格式如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;|im_start|&gt;system</span><br><span class="line">&#123;一段角色定位的话&#125;</span><br><span class="line">&lt;|im_end|&gt;</span><br><span class="line">&lt;|im_start|&gt;user</span><br><span class="line">&#123;一段用户的话&#125;</span><br><span class="line">&lt;|im_end|&gt;</span><br><span class="line">&lt;|im_start|&gt;assistant</span><br><span class="line">&#123;一段助理的话&#125;</span><br><span class="line">&lt;|im_end|&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="2-2、Llama2-Format"><a href="#2-2、Llama2-Format" class="headerlink" title="2.2、Llama2 Format"></a>2.2、Llama2 Format</h5><p>llama2多对话格式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;s&gt;[INST] &lt;&lt;SYS&gt;&gt;</span><br><span class="line">&#123;一段角色定位的话&#125;</span><br><span class="line">&lt;&lt;/SYS&gt;&gt;</span><br><span class="line">&#123;一段用户的话&#125;</span><br><span class="line">[/INST]</span><br><span class="line">&#123;一段助理的话&#125;</span><br><span class="line">&lt;\s&gt;</span><br></pre></td></tr></table></figure>
+<p>多轮对话长这个样子</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;s&gt;[INST] &lt;&lt;SYS&gt;&gt;</span><br><span class="line">&#123;一段角色定位的话&#125;</span><br><span class="line">&lt;&lt;/SYS&gt;&gt;</span><br><span class="line">&#123;一段用户的话&#125;</span><br><span class="line">[/INST]</span><br><span class="line">&#123;一段助理的话&#125;</span><br><span class="line">&lt;/s&gt;</span><br><span class="line">&lt;s&gt;[INST]</span><br><span class="line">&#123;一段用户的话&#125;</span><br><span class="line">[/INST]</span><br><span class="line">&#123;一段助理的话&#125;</span><br><span class="line">&lt;/s&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="2-3、Alpaca-Format"><a href="#2-3、Alpaca-Format" class="headerlink" title="2.3、Alpaca Format"></a>2.3、Alpaca Format</h5><p>Llama2 Format和ChatML都略微复杂，Alpaca Format是一个比较简单，没有添加特殊token。具体如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;一段角色定位的话&#125;</span><br><span class="line">\n</span><br><span class="line">\n</span><br><span class="line"><span class="comment">### Instruction:</span></span><br><span class="line">&#123;一段用户的话&#125;</span><br><span class="line"><span class="comment">### Response</span></span><br><span class="line">&#123;一段助理的话&#125;</span><br><span class="line">&lt;/s&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="三、一些典型的Chat-Format"><a href="#三、一些典型的Chat-Format" class="headerlink" title="三、一些典型的Chat Format"></a>三、一些典型的Chat Format</h4><h5 id="3-1、魔改llama-cpp-python"><a href="#3-1、魔改llama-cpp-python" class="headerlink" title="3.1、魔改llama-cpp-python"></a>3.1、魔改llama-cpp-python</h5><p> 这三个格式llama-cpp-python均有实现。但是总有一些模型采用了比较特殊格式。我们像要实现自定义就必须去改变llama-cpp-python的源码。有没有一种比较优雅的方式呢？有人提出一个方案<a href="https://github.com/abetlen/llama-cpp-python/pull/875" target="_blank" rel="noopener"> #875Integration of Jinja2 Templating</a>，目前还没有接受。笔者这里也提出一个方案，方便魔改。首先说明一下版本</p>
+<blockquote>
+</blockquote>
+<p>llama-cpp-python==0.2.15<br>openai==1.1.1<br>pip install pyautogen==0.2.0b3 #pyautogen 0.2即将来临</p>
+<p>llama-cpp-pythonV0.2.15增加了seed参数。方便大家调试强烈建议升级到此版本。</p>
+<p>修改llama-cpp-pythonV0.2.15的llama_cpp/llama_chat_format.py<br>添加如下两个函数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加一个自定义chat_format</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_format_custom</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    system_message: str, messages: List[Tuple[str, Optional[str]]], sep: str, sep2: str</span></span></span><br><span class="line"><span class="function"><span class="params">)</span> -&gt; str:</span></span><br><span class="line">    <span class="string">"""Format the prompt with the custom style."""</span></span><br><span class="line">    seps = [sep, sep2]</span><br><span class="line">    ret = system_message</span><br><span class="line">    <span class="keyword">for</span> role, message <span class="keyword">in</span> messages:</span><br><span class="line">        <span class="keyword">if</span> message:</span><br><span class="line">            ret += role + message + sep</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            ret += role</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@register_chat_format("custom")</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">format_custom</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    messages: List[llama_types.ChatCompletionRequestMessage],</span></span></span><br><span class="line"><span class="function"><span class="params">    **kwargs: Any,</span></span></span><br><span class="line"><span class="function"><span class="params">)</span> -&gt; ChatFormatterResponse:</span></span><br><span class="line">    _system_template = <span class="string">"&#123;system_message&#125;"</span></span><br><span class="line">    _roles = dict(user=<span class="string">""</span>, assistant=<span class="string">""</span>)</span><br><span class="line">    _messages = _map_roles(messages, _roles)</span><br><span class="line">    system_message = _get_system_message(messages)</span><br><span class="line">    <span class="keyword">if</span> system_message:</span><br><span class="line">        system_message = _system_template.format(system_message=system_message)</span><br><span class="line">    _prompt = _format_custom(system_message, _messages, <span class="string">" "</span>, <span class="string">"&lt;/s&gt;"</span>)</span><br><span class="line">    <span class="comment"># _prompt = system_message + _messages</span></span><br><span class="line">    <span class="keyword">return</span> ChatFormatterResponse(prompt=_prompt)</span><br></pre></td></tr></table></figure></p>
+<p>这里我们去除了格式。我们仅在多轮对话的末尾增加了终止token。这样方便我们在输出时候魔改<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;一段角色定位的话&#125;</span><br><span class="line">&#123;一段用户的话&#125;</span><br><span class="line">&#123;一段助理的话&#125;</span><br><span class="line">&lt;/s&gt;</span><br><span class="line">&#123;一段用户的话&#125;</span><br><span class="line">&#123;一段助理的话&#125;</span><br></pre></td></tr></table></figure></p>
+<p>启动服务的时候，我们这样启动，即添加–chat_format custom<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python -m llama_cpp.server --model ../models/ggml-model-Q6_K.gguf \</span><br><span class="line">--n_gpu_layers 32 --n_ctx 2048 --chat_format custom</span><br></pre></td></tr></table></figure></p>
+<h5 id="3-2、任意聊天格式实现"><a href="#3-2、任意聊天格式实现" class="headerlink" title="3.2、任意聊天格式实现"></a>3.2、任意聊天格式实现</h5><p>上文我们通过修改了llama-cpp-python服务，去掉了格式。这使得我们可以在调用的时候自定义chat Format。</p>
+<p>我们先定义一下类来规范输入输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> Literal, TypedDict, Optional, Union, List, Protocol</span><br><span class="line"></span><br><span class="line"><span class="comment"># 规范输入格式</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Chat_Completion_Request_System_Message</span><span class="params">(TypedDict)</span>:</span></span><br><span class="line">    role: Literal[<span class="string">"system"</span>]</span><br><span class="line">    content: Optional[str]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Chat_Completion_Request_User_Message</span><span class="params">(TypedDict)</span>:</span></span><br><span class="line">    role: Literal[<span class="string">"user"</span>]</span><br><span class="line">    content: Optional[str]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Chat_Completion_Request_Assistant_Message</span><span class="params">(TypedDict)</span>:</span></span><br><span class="line">    role: Literal[<span class="string">"assistant"</span>]</span><br><span class="line">    content: Optional[str]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Chat_Completion_Request_Message = Union[</span><br><span class="line">    Chat_Completion_Request_System_Message,</span><br><span class="line">    Chat_Completion_Request_User_Message,</span><br><span class="line">    Chat_Completion_Request_Assistant_Message,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 规范Chat_Template格式</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Role_Fix</span><span class="params">(TypedDict)</span>:</span></span><br><span class="line">    prefix: str</span><br><span class="line">    suffix: str</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Chat_Template</span><span class="params">(TypedDict)</span>:</span></span><br><span class="line">    system: Role_Fix</span><br><span class="line">    user: Role_Fix</span><br><span class="line">    assistant: Role_Fix</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个接口</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LLM</span><span class="params">(Protocol)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, messages: List[Chat_Completion_Request_Message], **kwargs)</span>:</span></span><br><span class="line">        ...</span><br></pre></td></tr></table></figure>
+<p>接下来我们实现一个装饰器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> rtoml</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Chat_Format</span>:</span></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">build</span><span class="params">(cls, chat_template_path: Path)</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">decorator</span><span class="params">(func: LLM)</span>:</span></span><br><span class="line">            <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">                <span class="keyword">with</span> chat_template_path.open(<span class="string">"r"</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    chat_template = rtoml.load(f)</span><br><span class="line">                    ...</span><br><span class="line">                <span class="keyword">if</span> args:</span><br><span class="line">                    <span class="comment"># 这里可以修改参数</span></span><br><span class="line">                    args = (cls.gen_fix_messages(args[<span class="number">0</span>], chat_template),) + args[<span class="number">1</span>:<span class="number">0</span>]</span><br><span class="line">                <span class="keyword">elif</span> kwargs:</span><br><span class="line">                    kwargs[<span class="string">'messages'</span>] = cls.gen_fix_messages(kwargs[<span class="string">'messages'</span>], chat_template)</span><br><span class="line">                    ...</span><br><span class="line">                </span><br><span class="line">                func(*args, **kwargs)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">return</span> wrapper</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> decorator</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_fix</span><span class="params">(cls, item: Chat_Completion_Request_Message, chat_template: Chat_Template)</span>:</span></span><br><span class="line">        item[<span class="string">'content'</span>] = <span class="string">f"""<span class="subst">&#123;chat_template[item[<span class="string">'role'</span>]][<span class="string">'prefix'</span>]&#125;</span><span class="subst">&#123;item[<span class="string">'content'</span>]&#125;</span><span class="subst">&#123;chat_template[item[<span class="string">'role'</span>]][<span class="string">'suffix'</span>]&#125;</span>"""</span></span><br><span class="line">        <span class="keyword">return</span> item</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">gen_fix_messages</span><span class="params">(cls, messages: List[Chat_Completion_Request_Message], chat_template: Chat_Template)</span> \</span></span><br><span class="line"><span class="function">            -&gt; List[Chat_Completion_Request_Message]:</span></span><br><span class="line">        fix_messages = []</span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> messages:</span><br><span class="line">            fix_messages.append(cls.add_fix(item, chat_template))</span><br><span class="line">        <span class="keyword">return</span> messages</span><br></pre></td></tr></table></figure>
+<p>下面我们来使用这个这个装饰器，注意我们使用的openai-v1.1<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI</span><br><span class="line"></span><br><span class="line">api_key = <span class="string">"NULL"</span></span><br><span class="line">organization = <span class="string">"limoncc"</span></span><br><span class="line">base_url = <span class="string">"http://127.0.0.1:8000/v1"</span></span><br><span class="line"></span><br><span class="line">client = OpenAI(api_key=api_key, organization=organization, base_url=base_url)</span><br><span class="line"></span><br><span class="line"><span class="meta">@Chat_Format.build(Path("./openbuddy.toml"))</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">llm</span><span class="params">(messages: List[Chat_Completion_Request_Message], temperature: int = <span class="number">0</span>)</span>:</span></span><br><span class="line">    print(<span class="string">"test"</span>)</span><br><span class="line">    stream = client.chat.completions.create(</span><br><span class="line">        model=<span class="string">"mistral-7b"</span>,</span><br><span class="line">        messages=messages,  <span class="comment"># type: ignore</span></span><br><span class="line">        temperature=temperature,</span><br><span class="line">        n=<span class="number">1</span>,</span><br><span class="line">        top_p=<span class="number">1.0</span>,</span><br><span class="line">        presence_penalty=<span class="number">1.1</span>,</span><br><span class="line">        stop=[<span class="string">"&lt;/s&gt;"</span>],</span><br><span class="line">        max_tokens=<span class="number">3024</span>,</span><br><span class="line">        seed=<span class="number">101</span>,</span><br><span class="line">        stream=<span class="keyword">True</span></span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> part <span class="keyword">in</span> stream:</span><br><span class="line">        print(part.choices[<span class="number">0</span>].delta.content <span class="keyword">or</span> <span class="string">""</span>, end=<span class="string">''</span>)  <span class="comment"># type: ignore</span></span><br></pre></td></tr></table></figure></p>
+<p>我们的toml模版长这样<br><figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[system]</span></span><br><span class="line"><span class="attr">prefix</span> = <span class="string">""</span></span><br><span class="line"><span class="attr">suffix</span> = <span class="string">"\n\n"</span></span><br><span class="line"></span><br><span class="line"><span class="section">[user]</span></span><br><span class="line"><span class="attr">prefix</span> = <span class="string">"### Instruction:"</span></span><br><span class="line"><span class="attr">suffix</span> = <span class="string">""</span></span><br><span class="line"></span><br><span class="line"><span class="section">[assistant]</span></span><br><span class="line"><span class="attr">prefix</span> = <span class="string">"### Response"</span></span><br><span class="line"><span class="attr">suffix</span> = <span class="string">"&lt;/s&gt;"</span></span><br></pre></td></tr></table></figure></p>
+<p>最后我们来尝试一下，能否正确遵循指令，对于开源模型最好是多举例子。描述详细。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">inst = <span class="string">f"""你是一个翻译专家，你会翻译用户的输入为英文，不要回答多余的话。翻译完后，不要做多余的输出。</span></span><br><span class="line"><span class="string">下面是一些例子：</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">输入: 你好。</span></span><br><span class="line"><span class="string">英文: hello.</span></span><br><span class="line"><span class="string">输入: 大模型将如何影响未来工作？</span></span><br><span class="line"><span class="string">英文: How will big models affect the future of work?</span></span><br><span class="line"><span class="string">输入: 在街道上一个兔子起自行车.</span></span><br><span class="line"><span class="string">英文: In the street a rabbit picked up a bicycle.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">msg = [</span><br><span class="line">    &#123;<span class="string">"role"</span>: <span class="string">"user"</span>, <span class="string">"content"</span>: inst+<span class="string">"输入: 我想提高自己的技能水平，这样能提高自己未来的工资。"</span>&#125;</span><br><span class="line">]</span><br><span class="line">llm(msg)</span><br><span class="line"><span class="comment"># 英文: I want to improve my skills so that I can increase my future salary.</span></span><br></pre></td></tr></table></figure>
+<p><hr></p>
+<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="https://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="https://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="https://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="https://www.limoncc.com">[ https://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%">httpss://<a href="http://www.limoncc.com/post/14476f03eace0cbc/">www.limoncc.com/post/14476f03eace0cbc/</a></td></tr></table><table border="0" width="100%" style="display:inline !important;font-size:14px !important;color:#555555;"><tr><td align="left" width="100%" style="font-family:helvetica;font-size:14px !important;font-weight:bold;">如果您需要引用本文，请参考：</td></tr><tr><td align="left" width="100%">引线小白. (Oct. 25, 2023). 《不得不说的Chat Format——大模型CPU部署系列03》[Blog post]. Retrieved from <a href="https://www.limoncc.com/post/14476f03eace0cbc">https://www.limoncc.com/post/14476f03eace0cbc</a></td></tr><tr><td align="left" width="100%">@online{limoncc-14476f03eace0cbc,<br>title={不得不说的Chat Format——大模型CPU部署系列03},<br>author={引线小白},<br>year={2023},<br>month={Oct},<br>date={25},<br>url={\url{<a href="https://www.limoncc.com/post/14476f03eace0cbc}}">https://www.limoncc.com/post/14476f03eace0cbc}}</a>,<br>}</td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/大语言模型/" rel="tag">#大语言模型</a>
+          
+            <a href="/tags/AI/" rel="tag">#AI</a>
+          
+            <a href="/tags/gguf原理/" rel="tag">#gguf原理</a>
+          
+            <a href="/tags/gguf/" rel="tag">#gguf</a>
+          
+            <a href="/tags/聊天格式/" rel="tag">#聊天格式</a>
+          
+            <a href="/tags/Chat-Format/" rel="tag">#Chat Format,</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/360dc16c61c8a0a9/" rel="next" title="gguf的原理和使用——大模型CPU部署系列02">
+                <i class="fa fa-chevron-left"></i> gguf的原理和使用——大模型CPU部署系列02
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+<!--           </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div> -->
+        <div id="vcomments"></div>
+        <script>new Valine({
+          el: "#vcomments",
+      appId: "BVjuNRCpkVSkz82jFmadIvY8-gzGzoHsz",
+    appKey: "bRjXPp55dop7RTC2xgunGdiP"})
+  </script>'
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="引线小白" />
+          <p class="site-author-name" itemprop="name">引线小白</p>
+          <p class="site-description motion-element" itemprop="description">小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">44</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="" target="_blank" title="Design">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Design
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.behance.net/limoncc" target="_blank" title="Behance">
+                  
+                    <i class="fa fa-fw fa-behance"></i>
+                  
+                  Behance
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.pinterest.com/aegeanfan/" target="_blank" title="Pinterest">
+                  
+                    <i class="fa fa-fw fa-pinterest"></i>
+                  
+                  Pinterest
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/limoncc" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://weibo.com/3483157951" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://www.zhihu.com/people/limoncc" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              设计不止，折腾不息。
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://chuangzaoshi.com" title="创造狮" target="_blank">创造狮</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、引导"><span class="nav-number">1.</span> <span class="nav-text">一、引导</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、一些典型的Chat-Format"><span class="nav-number">2.</span> <span class="nav-text">二、一些典型的Chat Format</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1、ChatML-聊天标记语言"><span class="nav-number">2.1.</span> <span class="nav-text">2.1、ChatML(聊天标记语言)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2、Llama2-Format"><span class="nav-number">2.2.</span> <span class="nav-text">2.2、Llama2 Format</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3、Alpaca-Format"><span class="nav-number">2.3.</span> <span class="nav-text">2.3、Alpaca Format</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、一些典型的Chat-Format"><span class="nav-number">3.</span> <span class="nav-text">三、一些典型的Chat Format</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1、魔改llama-cpp-python"><span class="nav-number">3.1.</span> <span class="nav-text">3.1、魔改llama-cpp-python</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2、任意聊天格式实现"><span class="nav-number">3.2.</span> <span class="nav-text">3.2、任意聊天格式实现</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">引线小白&nbsp &nbsp |&nbsp &nbsp  一个理想主义者，再造自我，以期未来。</span>
+</div>
+
+<div class="powered-by">
+  由 <a rel="external nofollow" class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a rel="external nofollow" class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>&nbsp &nbsp| &nbsp &nbsp Hosted by  <a href="https://github.com" style="font-weight: bold">Github Pages</a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+<!--   
+   
+  
+
+  
+
+ -->
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+<!--   <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+     showMathMenu: false,
+     showMathMenuMSIE: false,
+     tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+          processEscapes: true
+        },
+        TeX: {
+          equationNumbers: {autoNumber: 'AMS'},
+          Macros: {bm: "\\boldsymbol"}
+        },
+        'HTML-CSS': {
+          imageFont: null
+        }
+    });
+  </script> -->
+<!--     MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    }); -->
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+    processEscapes: true,
+    tags: 'ams',
+    macros: {
+                                            bm: "\\boldsymbol",
+					    T:"\\intercal",
+                                            oiint: "{\\iint\\kern{-20mu}{\\unicode{x2B2D}}}",
+                                            oiiint: "{\\iiint\\kern{-24.5mu}\\large{\\unicode{x2B2D}}}"
+                                },
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+  <script type="text/x-mathjax-config">
+MathJax.texReset();
+MathJax.typeset();
+  </script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_SVG-full"></script> -->
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Es7wAnqi0QiGhMLoyl7mkrQo-gzGzoHsz", "BxPXaoPFp3PzWqBTSe6VUuQS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</body>
+</html>
