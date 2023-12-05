@@ -4,28 +4,26 @@
 
     
   <url>
-    <loc>https://www.limoncc.com/post/b6e87fb18befa699/</loc>
-    <lastmod>2023-11-24T13:43:11.442Z</lastmod>
+    <loc>https://www.limoncc.com/post/3271c9aecd8f7df1/</loc>
+    <lastmod>2023-12-05T13:14:30.588Z</lastmod>
     <data>
         <display>
-        <title>大模型时代的交互语言——Autogen系列03</title>
-        <pubTime>2023-10-14T13:07:23.000Z</pubTime>
+        <title>Autogen的基本框架,人工智能的管理系统——Autogen系列02</title>
+        <pubTime>2023-10-13T13:07:23.000Z</pubTime>
         
         <tag>生成模型</tag>
-         
-        <tag>大语言模型</tag>
          
         <tag>AI-Agent</tag>
          
         <tag>autogen</tag>
          
-        <tag>交互语言</tag>
-         
-        <tag>领域特定语言</tag>
-         
         <tag>工作流</tag>
          
-        <tag>自适应UI</tag>
+        <tag>大模型</tag>
+         
+        <tag>管理系统</tag>
+         
+        <tag>基本框架</tag>
          
          
            
@@ -38,8 +36,34 @@
 
     
   <url>
+    <loc>https://www.limoncc.com/post/9971336748ed0b5b/</loc>
+    <lastmod>2023-12-05T06:00:43.306Z</lastmod>
+    <data>
+        <display>
+        <title>一些信息总结——大模型量化与CPU部署系列01</title>
+        <pubTime>2023-10-24T02:28:00.000Z</pubTime>
+        
+        <tag>大语言模型</tag>
+         
+        <tag>AI</tag>
+         
+        <tag>模型量化</tag>
+         
+        <tag>CPU部署</tag>
+         
+         
+           
+             
+              <breadCrumb title="工程实践" url="https://www.limoncc.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://www.limoncc.com/post/14476f03eace0cbc/</loc>
-    <lastmod>2023-11-16T01:26:05.613Z</lastmod>
+    <lastmod>2023-12-05T06:00:19.413Z</lastmod>
     <data>
         <display>
         <title>不得不说的Chat Format——大模型CPU部署系列03</title>
@@ -69,7 +93,7 @@
     
   <url>
     <loc>https://www.limoncc.com/post/360dc16c61c8a0a9/</loc>
-    <lastmod>2023-10-24T02:40:53.156Z</lastmod>
+    <lastmod>2023-12-05T05:59:40.997Z</lastmod>
     <data>
         <display>
         <title>gguf的原理和使用——大模型CPU部署系列02</title>
@@ -98,25 +122,33 @@
 
     
   <url>
-    <loc>https://www.limoncc.com/post/9971336748ed0b5b/</loc>
-    <lastmod>2023-10-24T02:29:32.141Z</lastmod>
+    <loc>https://www.limoncc.com/post/b6e87fb18befa699/</loc>
+    <lastmod>2023-11-24T13:43:11.442Z</lastmod>
     <data>
         <display>
-        <title>一些信息总结——大模型量化与CPU部署系列01</title>
-        <pubTime>2023-10-24T02:28:00.000Z</pubTime>
+        <title>大模型时代的交互语言——Autogen系列03</title>
+        <pubTime>2023-10-14T13:07:23.000Z</pubTime>
         
+        <tag>生成模型</tag>
+         
         <tag>大语言模型</tag>
          
-        <tag>AI</tag>
+        <tag>AI-Agent</tag>
          
-        <tag>模型量化</tag>
+        <tag>autogen</tag>
          
-        <tag>CPU部署</tag>
+        <tag>交互语言</tag>
+         
+        <tag>领域特定语言</tag>
+         
+        <tag>工作流</tag>
+         
+        <tag>自适应UI</tag>
          
          
            
              
-              <breadCrumb title="工程实践" url="https://www.limoncc.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+              <breadCrumb title="大模型应用开发" url="https://www.limoncc.com/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/"/>
           
         </display>
     </data>
