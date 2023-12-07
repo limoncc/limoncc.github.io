@@ -94,7 +94,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2023-12-07T09:19:51.435Z">
+<meta property="og:updated_time" content="2023-12-07T09:23:40.205Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何训练——大语言模型研究02">
 <meta name="twitter:description" content="本文主要介绍了如何训练大语言模型与人类对齐一些理论问题，最近发现RLFT实质是一个贝叶斯推断，本文基于贝叶斯推断提出了一个类似多脑区的多模型多模态训练构想。如有错误请指正。">
@@ -431,8 +431,7 @@
 <p>不妨令对齐模型是由多个脑区模型构成的:<br>$$\begin{align}<br>\pi_{\theta}(y\mid x)=\sum_{k \in \text{Brain Areas}}\pi_k(y\mid x,c)<br>\end{align}$$</p>
 <p>或许我们还应该添加沟通不同脑区的功能:</p>
 <p>$$\begin{align}<br>\pi_{\theta}(y\mid x)=\sum_{k \in \text{Brain Areas}}\pi_k(y\mid x,c)+\pi_\text{cross}(y\mid x)<br>\end{align}$$</p>
-<p>不同脑区与交叉脑区底层应该都有信号连接</p>
-<p>然后未来也许不是这样。受限笔者实验条件，目前无法验证这个想法，如有同行赞同笔者想法，欢迎一起合作。我的邮箱: <a href="mailto:limoncc@icloud.com" target="_blank" rel="noopener">limoncc@icloud.com</a></p>
+<p>不同脑区与交叉脑区底层应该都有信号连接。当然未来也许不是这样。受限笔者实验条件，目前无法验证这个想法，如有同行赞同笔者想法，欢迎一起合作。我的邮箱: <a href="mailto:limoncc@icloud.com" target="_blank" rel="noopener">limoncc@icloud.com</a></p>
 <p>[^1]: Wang, G., Cheng, S., Zhan, X., Li, X., Song, S., &amp; Liu, Y. (2023, September 20). OpenChat: Advancing Open-source Language Models with Mixed-Quality Data. arXiv. <a href="http://arxiv.org/abs/2309.11235" target="_blank" rel="noopener">http://arxiv.org/abs/2309.11235</a>. Accessed 6 December 2023</p>
 <p>[^2]: Zhu, B., Sharma, H., Frujeri, F. V., Dong, S., Zhu, C., Jordan, M. I., &amp; Jiao, J. (2023, November 2). Fine-Tuning Language Models with Advantage-Induced Policy Alignment. arXiv. <a href="http://arxiv.org/abs/2306.02231" target="_blank" rel="noopener">http://arxiv.org/abs/2306.02231</a>. Accessed 7 December 2023</p>
 <p>[^3]: Korbak, T., Perez, E., &amp; Buckley, C. L. (2022, October 21). RL with KL penalties is better viewed as Bayesian inference. arXiv. <a href="http://arxiv.org/abs/2205.11275" target="_blank" rel="noopener">http://arxiv.org/abs/2205.11275</a>. Accessed 7 December 2023</p>
