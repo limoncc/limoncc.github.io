@@ -4,6 +4,40 @@
 
     
   <url>
+    <loc>https://www.limoncc.com/post/b6e87fb18befa699/</loc>
+    <lastmod>2023-12-12T10:31:38.312Z</lastmod>
+    <data>
+        <display>
+        <title>大模型时代的交互语言——Autogen系列03</title>
+        <pubTime>2023-10-14T13:07:23.000Z</pubTime>
+        
+        <tag>生成模型</tag>
+         
+        <tag>大语言模型</tag>
+         
+        <tag>AI-Agent</tag>
+         
+        <tag>autogen</tag>
+         
+        <tag>交互语言</tag>
+         
+        <tag>领域特定语言</tag>
+         
+        <tag>工作流</tag>
+         
+        <tag>自适应UI</tag>
+         
+         
+           
+             
+              <breadCrumb title="大模型应用开发" url="https://www.limoncc.com/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://www.limoncc.com/post/bd7e41e00dc8afad/</loc>
     <lastmod>2023-12-12T10:30:58.346Z</lastmod>
     <data>
@@ -171,40 +205,6 @@
            
              
               <breadCrumb title="工程实践" url="https://www.limoncc.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://www.limoncc.com/post/b6e87fb18befa699/</loc>
-    <lastmod>2023-11-24T13:43:11.442Z</lastmod>
-    <data>
-        <display>
-        <title>大模型时代的交互语言——Autogen系列03</title>
-        <pubTime>2023-10-14T13:07:23.000Z</pubTime>
-        
-        <tag>生成模型</tag>
-         
-        <tag>大语言模型</tag>
-         
-        <tag>AI-Agent</tag>
-         
-        <tag>autogen</tag>
-         
-        <tag>交互语言</tag>
-         
-        <tag>领域特定语言</tag>
-         
-        <tag>工作流</tag>
-         
-        <tag>自适应UI</tag>
-         
-         
-           
-             
-              <breadCrumb title="大模型应用开发" url="https://www.limoncc.com/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/"/>
           
         </display>
     </data>
