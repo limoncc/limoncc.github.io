@@ -94,7 +94,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2023-12-07T09:23:40.205Z">
+<meta property="og:updated_time" content="2023-12-12T10:28:26.328Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何训练——大语言模型研究02">
 <meta name="twitter:description" content="本文主要介绍了如何训练大语言模型与人类对齐一些理论问题，最近发现RLFT实质是一个贝叶斯推断，本文基于贝叶斯推断提出了一个类似多脑区的多模型多模态训练构想。如有错误请指正。">
@@ -421,7 +421,7 @@
 <p>$$\begin{align}<br>\pi^*(y\mid x,c ) &amp;= \frac{1}{Z(x,c)}\pi_c(y\mid x,c)\exp\bigg(\frac{1}{\beta}r_c(x,y)\bigg)\\<br>Z(x,c) &amp;= \int_{y}\pi_{c}(y\mid x,c)\exp\bigg(\frac{1}{\beta}r_c(x,y)\bigg)dy<br>\end{align}$$</p>
 <p>其中 $Z(x,c)$是归一化项，确保它是 $\pi^*(y\mid x,c ) $有效的概率分布。</p>
 <p>也可以基于「RLFT实质是一个贝叶斯推断」的思想重新表述问题</p>
-<p>$$\begin{align}<br>\pi_{\theta} &amp; = \arg\min_{\theta}\mathbb{E}_{(x,c)\sim \mathcal{D}_c}\big[\mathbb{KL}[\pi^<em>(\cdot\mid x,c))\parallel  \pi_{\theta}(\cdot\mid x,c]\big]\\<br>&amp;=\arg\min_{\theta}\mathbb{E}_{(x,c)\sim \mathcal{D}_c}\big[\mathbb{E}_{y\sim \pi^</em>}[-\log\pi_{\theta}(y\mid x,c)]\big]\\<br>&amp;=\arg\max_{\theta}\mathbb{E}_{(x,y,c)\sim \mathcal{D}_c}\bigg[\exp\bigg(\frac{1}{\beta}r_c(x,y)\log \pi_{\theta}(y\mid x,c)\bigg)\bigg]<br>\end{align}$$</p>
+<p>$$\begin{align}<br>\pi_{\theta} &amp; = \arg\min_{\theta}\mathbb{E}_{(x,c)\sim \mathcal{D}_c}\big[\mathbb{KL}[\pi^*(\cdot\mid x,c))\parallel  \pi_{\theta}(\cdot\mid x,c]\big]\\<br>&amp;=\arg\min_{\theta}\mathbb{E}_{(x,c)\sim \mathcal{D}_c}\big[\mathbb{E}_{y\sim \pi^*}[-\log\pi_{\theta}(y\mid x,c)]\big]\\<br>&amp;=\arg\max_{\theta}\mathbb{E}_{(x,y,c)\sim \mathcal{D}_c}\bigg[\exp\bigg(\frac{1}{\beta}r_c(x,y)\log \pi_{\theta}(y\mid x,c)\bigg)\bigg]<br>\end{align}$$</p>
 <p>也就是有：<br>$$\begin{align}<br>\pi^*(y\mid x,c)\propto \pi_c(y\mid x,c)\exp\bigg(\frac{1}{\beta}r_c(x,y)\bigg)<br>\end{align}$$</p>
 <h4 id="四、关于未来的多模态语言模型"><a href="#四、关于未来的多模态语言模型" class="headerlink" title="四、关于未来的多模态语言模型"></a>四、关于未来的多模态语言模型</h4><p>既然RLFT实质是一个贝叶斯推断，而且C-RLFT(条件强化学习微调)已经示范了证怎么充分利用数据集的信息来与人类对齐。那么我们是不是可以充分利率贝叶斯的思想来扩展大语言模型。</p>
 <p>如果我们有视觉、听觉、味觉、触觉的一个庞大数据集。如何训练它们与人类对齐呢？</p>
