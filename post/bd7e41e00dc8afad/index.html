@@ -1,0 +1,1104 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="大语言模型,LLM,如何训练,C-RLFT,条件强化学习微调" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本文主要介绍了如何训练大语言模型与人类对齐一些理论问题，最近发现RLFT实质是一个贝叶斯推断，本文基于贝叶斯推断提出了一个类似多脑区的多模型多模态训练构想。如有错误请指正。">
+<meta name="keywords" content="大语言模型,LLM,如何训练,C-RLFT,条件强化学习微调">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何训练——大语言模型研究02">
+<meta property="og:url" content="https://www.limoncc.com/post/bd7e41e00dc8afad/index.html">
+<meta property="og:site_name" content="柠檬CC">
+<meta property="og:description" content="本文主要介绍了如何训练大语言模型与人类对齐一些理论问题，最近发现RLFT实质是一个贝叶斯推断，本文基于贝叶斯推断提出了一个类似多脑区的多模型多模态训练构想。如有错误请指正。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.limoncc.com/images/cc.png">
+<meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
+<meta property="og:updated_time" content="2023-12-12T10:30:58.346Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何训练——大语言模型研究02">
+<meta name="twitter:description" content="本文主要介绍了如何训练大语言模型与人类对齐一些理论问题，最近发现RLFT实质是一个贝叶斯推断，本文基于贝叶斯推断提出了一个类似多脑区的多模型多模态训练构想。如有错误请指正。">
+<meta name="twitter:image" content="https://www.limoncc.com/images/cc.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <title> 如何训练——大语言模型研究02 | 柠檬CC </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-73837972-3', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d225b8f8559eb2eb6a8bd8792e01ebb9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=60130136";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">柠檬CC</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">小白爱吃柠檬O(∩_∩)O</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-poetry">
+          <a href="/poetry" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-leaf"></i> <br />
+            
+            诗集
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                如何训练——大语言模型研究02
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2023-12-07T17:16:10+08:00" content="2023-12-07">
+              2023-12-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/post/bd7e41e00dc8afad/" class="leancloud_visitors" data-flag-title="如何训练——大语言模型研究02">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作者: <a href="https://www.limoncc.com">引线小白</a>-本文永久链接：httpss://<a href="http://www.limoncc.com/post/bd7e41e00dc8afad/">www.limoncc.com/post/bd7e41e00dc8afad/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+<blockquote>
+<p><strong>摘要</strong>: 本文意在理清如何训练大语言模型。若有错误，请大家指正。<br><strong>关键词</strong>: <code>如何训练大语言模型</code>,<code>C-RLFT</code>,<code>条件强化学习微调</code></p>
+</blockquote>
+<p>[TOC]</p>
+<h4 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h4><p>关于大语言模型训练的概念可谓层出不穷：预训练 （PT）、监督微调 （SFT）、基于人类反馈的强化学习 （RLHF）、近端策略优化（PPO）、C-RLFT(条件强化学习微调)[^1]、优势诱导策略调整 （APA）[^2]</p>
+<p>构造一个对话数据集 $\mathcal{D}=\{(x_i,y_i)\}$，其中 $x_i$表示指令， $y_i$是预训练的语言模型的输出。 $\pi_0(y\mid x)$是从指令到输出的概率分布。</p>
+<p>当前有两条研究路线可以使预训练语言模型与人类对齐，这包括监督微调和基于人类反馈的强化学习微调。</p>
+<p>$$\begin{align}<br>J_{\mathrm{SFT}}(\theta)=\mathbb{E}_{(x,y)\sim \mathcal{D}}\big[\log \pi_{\theta}(y\mid x)\big]<br>\end{align}$$</p>
+<p>$$\begin{align}<br>J_{\mathrm{RLFT}}(\theta)=\mathbb{E}_{y\sim \pi_{\theta}}\big[ r(x,y)\big]-\beta\mathbb{KL}[\pi_{\theta}\parallel \pi_{0}]<br>\end{align}$$</p>
+<h4 id="二、RLFT实质是一个贝叶斯推断"><a href="#二、RLFT实质是一个贝叶斯推断" class="headerlink" title="二、RLFT实质是一个贝叶斯推断"></a>二、RLFT实质是一个贝叶斯推断</h4><p>RLFT实质是一个贝叶斯推断[^3]，$\pi$在强化学习中是策略的意思，这里我们不妨理解为大语言模型，或者说就是一个概率分布。一开始我们通过语料训练了一个预训练模型 $\pi_{\text{PT}}$，然后有得到一个 $\pi_{\text{SFT}}$模型，接下来通过RLHF我们要得到一个 $\pi_{\text{RLHF}}$的模型。这其实是什么？是不断调整分布的过程，或者说是语言模型不断调整信念的过程。</p>
+<p>符号说明$\mathcal{D}=\{(x_i,y_i)\}$，其中 $x_i$表示指令， $y_i$是预训练的语言模型的输出。 $\pi(y\mid x)$是从指令到输出的概率分布。</p>
+<p>1、首先一开始有一个在大规模语料上训练的语言模型 $\pi_0(y\mid x)$, 目前它表现欠佳，它的世界和人类的世界差别有点大，说起话来前言不搭后语。<br>2、好了现在有一个对话语料 $\mathcal{D}=\{(x_i,y_i)\}$，这个对话预料的特点就是真实反应了人类世界的情况，或者说基于此我们能生成一个评分函数 $r(x,y)$这个函数能给语言模型基于指令 $x$生成的 $y$打分。既然如此不如这样思考</p>
+<p>$$\begin{align}<br>q(r\mid y,x )\propto \exp\bigg(\frac{1}{\beta}r(x,y)\bigg)<br>\end{align}$$</p>
+<p>给定 $x,y$对评分 $r$附上一个信念或者概率 $q$，这里的 $\beta$是一个信念可调整的超参数。比较是个比较主观的东西，加个可调整参数来调节，以便让大多数人满意。</p>
+<p>3、现在的问题就变成了如何根据初始模型 $\pi_0(y\mid x)$和人类的评分信念 $q(r\mid y,x )$来调整模型参数 $\theta$得到一个新的模型 $\pi_{\theta}(y\mid x)$</p>
+<p>如果说 $\pi_0(y\mid x)$是先验分布，那么人类的评分信念 $q(r\mid y,x )$就是似然函数，于是我们可以构造一个后验分布</p>
+<p>$$\begin{align}<br>\pi_{\text{KL-RL}}(y\mid x, r)<br>\propto q(r\mid y,x )\pi_0(y\mid x)<br>=\exp\bigg(\frac{1}{\beta}r(x,y)\bigg)\pi_0(y\mid x)<br>\end{align}$$</p>
+<p>或者加上归一参数或者说证据$Z(y,x,r)$<br>$$\begin{align}<br>\pi_{\text{KL-RL}}(y\mid x, r)  = \frac{1}{Z}\exp\bigg(\frac{1}{\beta}r(x,y)\bigg)\pi_0(y\mid x)<br>\end{align}$$<br>其中 $\displaystyle  Z(y,x,r)=\int \exp\bigg(\frac{1}{\beta}r(x,y)\bigg)\pi_0(y\mid x)dy$</p>
+<p>现在我们是无法直接得到 $\pi_{\text{KL-RL}}(y\mid x, r)$，计算证据$Z(y,x,r)$计算是巨大的。但是我们可以让一个分布接进它，或者最好的方式就是就地取材微调 $\pi_0(y\mid x,\theta)$得到 $\pi_{\theta}(y\mid x)$使得它接近。 我们的后验$\pi_{\text{KL-RL}}(y\mid x, r)$，这样我们就得到了对齐后的模型。我们自然就使用到了计算分布相似度的 $\mathbb{KL}$散度。于是问题就变为了</p>
+<p>$$\begin{align}<br>\min_{\theta}\mathbb{KL}\bigg[\pi_{\theta}(y\mid x)\parallel\pi_{\text{KL-RL}}(y\mid x, r)\bigg]<br>\end{align}$$<br>不难证明它与RLFT是等价的。</p>
+<p>证明：</p>
+<p>$$\begin{align}<br>&amp;\min_{\theta}\mathbb{KL}\bigg[\pi_{\theta}(y\mid x)\parallel\pi_{\text{KL-RL}}(y\mid x, r)\bigg]=\min_{\theta}\int \pi_\theta \log \frac{\pi_\theta}{\pi_{\text{KL-RL}}}dy\\<br>&amp;=\min_{\theta}\int \pi_\theta [\log \pi_\theta -\log\pi_{\text{KL-RL}} ]dy\\<br>&amp;=-\max_{\theta}\int \pi_\theta \Bigg[\log\Big[\frac{1}{Z}\exp\bigg(\frac{1}{\beta}r(x,y)\bigg)\pi_0(y\mid x)\Big] -\log \pi_\theta\Bigg]dy\\<br>&amp;=-\max_{\theta}\mathbb{E}_{(x,y)\sim\pi_{\theta}}\bigg[\frac{1}{\beta}r(x,y)-\log Z+\log \frac{\pi_0}{\pi_\theta}\bigg]\\<br>&amp;=-\max_{\theta}\frac{1}{\beta}\mathbb{E}_{(x,y)\sim\pi_{\theta}}\bigg[r(x,y)-\log Z+\log \frac{\pi_0}{\pi_\theta}\bigg]\\<br>&amp;=-\max_{\theta}\frac{1}{\beta}\mathbb{E}_{(x,y)\sim\pi_{\theta}}\big[r(x,y)\big]-\mathbb{E}_{(x,y)\sim\pi_{\theta}}\bigg[\log \frac{\pi_0}{\pi_\theta}\bigg]+C\\<br>&amp;=-\max_{\theta}\frac{1}{\beta}\mathbb{E}_{(x,y)\sim\pi_{\theta}}\big[r(x,y)\big]+\mathbb{KL}[\pi_\theta \parallel\pi_0]+C\\<br>&amp;= \min_{\theta} \mathbb{E}_{(x,y)\sim\pi_{\theta}}\big[r(x,y)\big]-\beta\mathbb{KL}[\pi_\theta \parallel\pi_0]<br>\end{align}$$</p>
+<h4 id="三、C-RLFT-条件强化学习微调"><a href="#三、C-RLFT-条件强化学习微调" class="headerlink" title="三、C-RLFT(条件强化学习微调)"></a>三、C-RLFT(条件强化学习微调)</h4><p>openchat3.5模型提出了C-RLFT(条件强化学习微调)[^1]，它充分利用了两类数据集 $\mathcal{D}_{sub}$, $\mathcal{D}_{exp}$，其中一类sub是成本比较低的，exp则是专家标注过的。这样我们得到一个综合的数据集$\displaystyle \mathcal{D}_c=\mathcal{D}_{sub}\cup \mathcal{D}_{exp}=\{x_i,y_i,c_i\},c_i\in \{exp,sub\}$，这样处理奖励</p>
+<p>$$\begin{align}<br>r_c(x_i,y_i)=<br>\begin{cases}<br>1,\text{if } (x_i,y_i) \in \mathcal{D}_{exp}\\<br>\alpha,\text{if } (x_i,y_i) \in \mathcal{D}_{sub}\quad(\alpha&lt;1)<br>\end{cases}<br>\end{align}$$</p>
+<p>C-RLFT的目标是找到最优的KL正则化条件策略。这个优化问题可以表述为</p>
+<p>$$\begin{align}<br>\max_{\pi}\mathbb{E}_{y\sim \pi}\big[r_c(x,y)\big]-\beta \mathbb{KL}[\pi\parallel  \pi_c]<br>\end{align}$$<br>注意这里的 $\pi_c=\pi_c(y\mid x,\theta)$，是调整后的分布不是初始分布。为了确保 $\pi$概率分布有效，我们添加了归一化约束，优化问题变为：</p>
+<p>$$\begin{align}<br>&amp;\max_{\pi}\mathbb{E}_{y\sim \pi}\big[r_c(x,y)\big]-\beta \mathbb{KL}[\pi\parallel  \pi_c]\\<br>&amp;s.t.\int_{y}\pi(y\mid x,c)dy=1<br>\end{align}$$<br>我们可以通过求解其Karush-Kuhn-Tucker（KKT）条件来获得该约束优化问题的最优解。这个问题的拉格朗日量是：</p>
+<p>$$\begin{align}<br>\mathcal{L}(\pi,\lambda)=\mathbb{E}_{y\sim \pi}\big[r_c(x,y)\big]-\beta\mathbb{KL}[\pi\parallel  \pi_c]+\lambda(1-\int_{y}\pi(y\mid x,c)dy)<br>\end{align}$$</p>
+<p>根据 KKT 条件，我们取 $\mathcal{L}$的 $\pi$ 和 $\lambda$导数，并将它们设置为零：</p>
+<p>$$\begin{align}<br>\frac{\partial \mathcal{L}}{\partial  \pi}<br>&amp;= r_c(x,y)-\beta\log \pi(y\mid x,c)+\beta\log \pi_c(y\mid x,c)-\beta-\lambda=0\\<br>\frac{\partial \mathcal{L}}{\partial \lambda}<br>&amp;=1 -\int_{y}\pi(y\mid x,c )dy =0<br>\end{align}$$</p>
+<p>求解这些方程为我们提供了最优策略 $\pi^*$</p>
+<p>$$\begin{align}<br>\pi^*(y\mid x,c ) &amp;= \frac{1}{Z(x,c)}\pi_c(y\mid x,c)\exp\bigg(\frac{1}{\beta}r_c(x,y)\bigg)\\<br>Z(x,c) &amp;= \int_{y}\pi_{c}(y\mid x,c)\exp\bigg(\frac{1}{\beta}r_c(x,y)\bigg)dy<br>\end{align}$$</p>
+<p>其中 $Z(x,c)$是归一化项，确保它是 $\pi^*(y\mid x,c ) $有效的概率分布。</p>
+<p>也可以基于「RLFT实质是一个贝叶斯推断」的思想重新表述问题</p>
+<p>$$\begin{align}<br>\pi_{\theta} &amp; = \arg\min_{\theta}\mathbb{E}_{(x,c)\sim \mathcal{D}_c}\big[\mathbb{KL}[\pi^*(\cdot\mid x,c))\parallel  \pi_{\theta}(\cdot\mid x,c]\big]\\<br>&amp;=\arg\min_{\theta}\mathbb{E}_{(x,c)\sim \mathcal{D}_c}\big[\mathbb{E}_{y\sim \pi^*}[-\log\pi_{\theta}(y\mid x,c)]\big]\\<br>&amp;=\arg\max_{\theta}\mathbb{E}_{(x,y,c)\sim \mathcal{D}_c}\bigg[\exp\bigg(\frac{1}{\beta}r_c(x,y)\log \pi_{\theta}(y\mid x,c)\bigg)\bigg]<br>\end{align}$$</p>
+<p>也就是有：<br>$$\begin{align}<br>\pi^*(y\mid x,c)\propto \pi_c(y\mid x,c)\exp\bigg(\frac{1}{\beta}r_c(x,y)\bigg)<br>\end{align}$$</p>
+<h4 id="四、关于未来的多模态语言模型"><a href="#四、关于未来的多模态语言模型" class="headerlink" title="四、关于未来的多模态语言模型"></a>四、关于未来的多模态语言模型</h4><p>既然RLFT实质是一个贝叶斯推断，而且C-RLFT(条件强化学习微调)已经示范了证怎么充分利用数据集的信息来与人类对齐。那么我们是不是可以充分利率贝叶斯的思想来扩展大语言模型。</p>
+<p>如果我们有视觉、听觉、味觉、触觉的一个庞大数据集。如何训练它们与人类对齐呢？</p>
+<p>$\displaystyle \mathcal{D}_{\text{total}}=\mathcal{D}_{text}\cup \mathcal{D}_{audio}\cup \mathcal{D}_{image}\cup \mathcal{D}_{video}\cup \mathcal{D}_{smell}\cup \mathcal{D}_{tactus}=\{x_i,y_i,c_i\},c_i\in \{text,audio,image,video,smell,tactus\}$</p>
+<p>现在的做法是一个统一的大模型，个人认为未来一定是分开的小模型。理由如下，既然我们是训练一个对齐模型与结合先验和人类信念似然后的后验接近。那么为什么不能是多个模型呢？</p>
+<p>$$\begin{align}<br>\min_{\theta}\mathbb{KL}\bigg[\pi_{\theta}(y\mid x)\parallel\pi_{\text{KL-RL}}(y\mid x, r, c)\bigg]<br>\end{align}$$</p>
+<p>不妨令对齐模型是由多个脑区模型构成的:<br>$$\begin{align}<br>\pi_{\theta}(y\mid x)=\sum_{k \in \text{Brain Areas}}\pi_k(y\mid x,c)<br>\end{align}$$</p>
+<p>或许我们还应该添加沟通不同脑区的功能:</p>
+<p>$$\begin{align}<br>\pi_{\theta}(y\mid x)=\sum_{k \in \text{Brain Areas}}\pi_k(y\mid x,c)+\pi_\text{cross}(y\mid x)<br>\end{align}$$</p>
+<p>不同脑区与交叉脑区底层应该都有信号连接。当然未来也许不是这样。受限笔者实验条件，目前无法验证这个想法，如有同行赞同笔者想法，欢迎一起合作。我的邮箱: <a href="mailto:limoncc@icloud.com" target="_blank" rel="noopener">limoncc@icloud.com</a></p>
+<p>[^1]: Wang, G., Cheng, S., Zhan, X., Li, X., Song, S., &amp; Liu, Y. (2023, September 20). OpenChat: Advancing Open-source Language Models with Mixed-Quality Data. arXiv. <a href="http://arxiv.org/abs/2309.11235" target="_blank" rel="noopener">http://arxiv.org/abs/2309.11235</a>. Accessed 6 December 2023</p>
+<p>[^2]: Zhu, B., Sharma, H., Frujeri, F. V., Dong, S., Zhu, C., Jordan, M. I., &amp; Jiao, J. (2023, November 2). Fine-Tuning Language Models with Advantage-Induced Policy Alignment. arXiv. <a href="http://arxiv.org/abs/2306.02231" target="_blank" rel="noopener">http://arxiv.org/abs/2306.02231</a>. Accessed 7 December 2023</p>
+<p>[^3]: Korbak, T., Perez, E., &amp; Buckley, C. L. (2022, October 21). RL with KL penalties is better viewed as Bayesian inference. arXiv. <a href="http://arxiv.org/abs/2205.11275" target="_blank" rel="noopener">http://arxiv.org/abs/2205.11275</a>. Accessed 7 December 2023</p>
+<p><hr></p>
+<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="https://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="https://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="https://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="https://www.limoncc.com">[ https://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%">httpss://<a href="http://www.limoncc.com/post/bd7e41e00dc8afad/">www.limoncc.com/post/bd7e41e00dc8afad/</a></td></tr></table><table border="0" width="100%" style="display:inline !important;font-size:14px !important;color:#555555;"><tr><td align="left" width="100%" style="font-family:helvetica;font-size:14px !important;font-weight:bold;">如果您需要引用本文，请参考：</td></tr><tr><td align="left" width="100%">引线小白. (Dec. 7, 2023). 《如何训练——大语言模型研究02》[Blog post]. Retrieved from <a href="https://www.limoncc.com/post/bd7e41e00dc8afad">https://www.limoncc.com/post/bd7e41e00dc8afad</a></td></tr><tr><td align="left" width="100%">@online{limoncc-bd7e41e00dc8afad,<br>title={如何训练——大语言模型研究02},<br>author={引线小白},<br>year={2023},<br>month={Dec},<br>date={7},<br>url={\url{<a href="https://www.limoncc.com/post/bd7e41e00dc8afad}}">https://www.limoncc.com/post/bd7e41e00dc8afad}}</a>,<br>}</td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/生成模型/" rel="tag">#生成模型</a>
+          
+            <a href="/tags/大语言模型/" rel="tag">#大语言模型</a>
+          
+            <a href="/tags/条件强化学习微调/" rel="tag">#条件强化学习微调</a>
+          
+            <a href="/tags/LLM/" rel="tag">#LLM</a>
+          
+            <a href="/tags/C-RLFT/" rel="tag">#C-RLFT</a>
+          
+            <a href="/tags/RLFT/" rel="tag">#RLFT</a>
+          
+            <a href="/tags/多模态学习/" rel="tag">#多模态学习</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/14476f03eace0cbc/" rel="next" title="不得不说的Chat Format——大模型CPU部署系列03">
+                <i class="fa fa-chevron-left"></i> 不得不说的Chat Format——大模型CPU部署系列03
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/7a80f1e682c4de99/" rel="prev" title="大模型使用工具原理——大模型CPU部署系列04">
+                大模型使用工具原理——大模型CPU部署系列04 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+<!--           </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div> -->
+        <div id="vcomments"></div>
+        <script>new Valine({
+          el: "#vcomments",
+      appId: "BVjuNRCpkVSkz82jFmadIvY8-gzGzoHsz",
+    appKey: "bRjXPp55dop7RTC2xgunGdiP"})
+  </script>'
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="引线小白" />
+          <p class="site-author-name" itemprop="name">引线小白</p>
+          <p class="site-description motion-element" itemprop="description">小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">49</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">93</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="" target="_blank" title="Design">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Design
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.behance.net/limoncc" target="_blank" title="Behance">
+                  
+                    <i class="fa fa-fw fa-behance"></i>
+                  
+                  Behance
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.pinterest.com/aegeanfan/" target="_blank" title="Pinterest">
+                  
+                    <i class="fa fa-fw fa-pinterest"></i>
+                  
+                  Pinterest
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/limoncc" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://weibo.com/3483157951" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://www.zhihu.com/people/limoncc" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              设计不止，折腾不息。
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://chuangzaoshi.com" title="创造狮" target="_blank">创造狮</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、引言"><span class="nav-number">1.</span> <span class="nav-text">一、引言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、RLFT实质是一个贝叶斯推断"><span class="nav-number">2.</span> <span class="nav-text">二、RLFT实质是一个贝叶斯推断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、C-RLFT-条件强化学习微调"><span class="nav-number">3.</span> <span class="nav-text">三、C-RLFT(条件强化学习微调)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、关于未来的多模态语言模型"><span class="nav-number">4.</span> <span class="nav-text">四、关于未来的多模态语言模型</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">引线小白&nbsp &nbsp |&nbsp &nbsp  一个理想主义者，再造自我，以期未来。</span>
+</div>
+
+<div class="powered-by">
+  由 <a rel="external nofollow" class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a rel="external nofollow" class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>&nbsp &nbsp| &nbsp &nbsp Hosted by  <a href="https://github.com" style="font-weight: bold">Github Pages</a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+<!--   
+   
+  
+
+  
+
+ -->
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+<!--   <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+     showMathMenu: false,
+     showMathMenuMSIE: false,
+     tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+          processEscapes: true
+        },
+        TeX: {
+          equationNumbers: {autoNumber: 'AMS'},
+          Macros: {bm: "\\boldsymbol"}
+        },
+        'HTML-CSS': {
+          imageFont: null
+        }
+    });
+  </script> -->
+<!--     MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    }); -->
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+    processEscapes: true,
+    tags: 'ams',
+    macros: {
+                                            bm: "\\boldsymbol",
+					    T:"\\intercal",
+                                            oiint: "{\\iint\\kern{-20mu}{\\unicode{x2B2D}}}",
+                                            oiiint: "{\\iiint\\kern{-24.5mu}\\large{\\unicode{x2B2D}}}"
+                                },
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+  <script type="text/x-mathjax-config">
+MathJax.texReset();
+MathJax.typeset();
+  </script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_SVG-full"></script> -->
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Es7wAnqi0QiGhMLoyl7mkrQo-gzGzoHsz", "BxPXaoPFp3PzWqBTSe6VUuQS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1080 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="引线小白,数学分析,数的建立,数学分析笔记,现代数学" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="数的建立是数学分析的基础。实数的最小上界性质是我们开启现代数学的钥匙。">
+<meta name="keywords" content="引线小白,数学分析,数的建立,数学分析笔记,现代数学">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数学分析笔记-数的建立">
+<meta property="og:url" content="https://www.limoncc.com/post/e16e96fd600d84099331bdee7ae39758/index.html">
+<meta property="og:site_name" content="柠檬CC">
+<meta property="og:description" content="数的建立是数学分析的基础。实数的最小上界性质是我们开启现代数学的钥匙。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.limoncc.com/images/cc.png">
+<meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
+<meta property="og:updated_time" content="2023-06-05T02:07:46.124Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数学分析笔记-数的建立">
+<meta name="twitter:description" content="数的建立是数学分析的基础。实数的最小上界性质是我们开启现代数学的钥匙。">
+<meta name="twitter:image" content="https://www.limoncc.com/images/cc.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <title> 数学分析笔记-数的建立 | 柠檬CC </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-73837972-3', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d225b8f8559eb2eb6a8bd8792e01ebb9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=60130136";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">柠檬CC</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">小白爱吃柠檬O(∩_∩)O</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-poetry">
+          <a href="/poetry" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-leaf"></i> <br />
+            
+            诗集
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                数学分析笔记-数的建立
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-23T21:57:59+08:00" content="2016-12-23">
+              2016-12-23
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/数学分析/" itemprop="url" rel="index">
+                    <span itemprop="name">数学分析</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/post/e16e96fd600d84099331bdee7ae39758/" class="leancloud_visitors" data-flag-title="数学分析笔记-数的建立">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作者: <a href="https://www.limoncc.com">引线小白</a>-本文永久链接：httpss://<a href="http://www.limoncc.com/post/e16e96fd600d84099331bdee7ae39758/">www.limoncc.com/post/e16e96fd600d84099331bdee7ae39758/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+<blockquote>
+<p><strong>摘要</strong>：本文意在理清数的问题。若有错误，请大家指正。<br><strong>关键词</strong>: <code>有理数</code>,<code>实数</code></p>
+</blockquote>
+<p>这是测试文章：</p>
+<h4 id="一、数的建立"><a href="#一、数的建立" class="headerlink" title="一、数的建立"></a>一、数的建立</h4><h5 id="1、有理数的缝隙"><a href="#1、有理数的缝隙" class="headerlink" title="1、有理数的缝隙"></a>1、有理数的缝隙</h5><p>数的建立是数学分析的基础。实数的最小上界性质是我们开启现代数学的钥匙。</p>
+<p>关于$p=\sqrt{2}$的重要定律：</p>
+<p>构造一个数 $\displaystyle z=\frac{2x+2}{x+2}=x-\frac{x^2-2}{x+2}$</p>
+<p>同时令  $\displaystyle A=\{a\mid a^2&lt;2,a\in \mathbb{Q}^+\}$ </p>
+<p>又有 $\displaystyle B=\{b\mid b^2&gt;2, b \in \mathbb{Q}^+\}$</p>
+<p>我们有 $\displaystyle z^2-2=\frac{2(x^2-2)}{(p+2)^2}$</p>
+<p>即可证明<br>$\displaystyle A$ 里面没有最大的数<br>$$\begin{align}<br>x \in A,\to z \in A\,, z&gt;x<br>\end{align}$$<br> $\displaystyle B$ 里面没有最小的数<br>$$\begin{align}<br>\,x \in B\to z \in B\,,0&lt;z&lt;x<br>\end{align}$$</p>
+<font face="微软雅黑" size="2" color="red">这说明尽管有理数之间还有有理数，但是有理数系还是有空隙。而实数系填满了这些空隙，这就是实数系能在分析学中能起基础作用的主要原因。</font>
+
+
+
+
+<p>$\displaystyle \ell  \mathbb{ABC}$</p>
+<h4 id="二、行列式"><a href="#二、行列式" class="headerlink" title="二、行列式"></a>二、行列式</h4><p>行列式定义： $\displaystyle det: M_n(F) \to \Bbb{R} $</p>
+<p>行列式表达式</p>
+<p>$$\begin{align}<br>det(A)=\sum _{\sigma \in S_n}sgn(\sigma) \prod _{i=1}^n A_{\sigma(i)i }<br>\end{align}$$</p>
+<p>$$\displaystyle<br>det(A)=\sum _{\sigma \in S_n}sgn(\sigma) \prod _{i=1}^n A_{\sigma(i)i }<br>$$</p>
+<p>其中$\sigma$是集合$X=\{1,2,\,…\,n\}$上的置换：$\sigma: X \to X$。$S_n$是置换$\sigma$的集合,易知$S_n$是一个对称群。$\tau(\sigma)$是$\sigma$的逆序数。$\displaystyle sgn(\sigma)=\prod_{1\leqslant i&lt;j\leqslant n}sign\big(\sigma(i)-\sigma(j)\big)=(-1)^{\tau(\sigma)}$是置换的符号函数。于是：</p>
+<p>$$\displaystyle det(A)=\sum _{\sigma \in S_n}\prod_{1\leqslant i&lt;j\leqslant n}sign\big(\sigma(i)-\sigma(j)\big)\prod _{i=1}^n A_{\sigma(i)i }=\sum _{\sigma \in S_n}(-1)^{\tau(\sigma)}\prod _{i=1}^n A_{\sigma(i)i }$$</p>
+<p>简记为：<br>$$det(A)=\sum _{\sigma \in S_n} sgn(\sigma) \prod _{i=1}^n A_{\sigma(i)i }$$</p>
+<h4 id="三、【函数的极限】"><a href="#三、【函数的极限】" class="headerlink" title="三、【函数的极限】"></a>三、【函数的极限】</h4><p>令$X$和$Y$是度量空间，假设$E \subseteq X$、$\bm{f}$将$E$映入$Y$内、且$\bm{p}$是$E$的极限点。如果 $\forall \epsilon\,,\exists \delta&gt;0$，对于 $\{\bm{x} \in E\mid 0&lt;d_{X}(\bm{x},\bm{p})&lt;\delta\}$中一切点 $\bm{x}$，使得 $\displaystyle d_{Y}(\bm{f}(\bm{x}),\bm{q})&lt;\epsilon,\,\bm{q}\in Y$成立。就说:</p>
+<p>$$\lim_{\bf{x} \to\bm{p}} \bm{f}(\bm{x})=\bm{q}$$</p>
+<p>卷积<br>$\displaystyle \mathbf{C}=\mathbf{X}*\mathbf{W}$</p>
+<p>$\displaystyle \bm{C}=\bm{X}*\bm{W}$</p>
+<p>分段函数<br>$$\displaystyle f(n)= \left\{\begin{matrix} n/2, &amp; \text {if $n$ is even} \\\ 3n+1, &amp; \text{if $n$ is odd} \end{matrix}\right. \\<br>$$</p>
+<p>$\displaystyle \begin{bmatrix} 1 &amp; 2 \\\ 3 &amp; 4  \end{bmatrix}$</p>
+<p>我们可以看到<code> session.run</code>专业我们就可以<code>Variable</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line">hello = tf.constant(<span class="string">'Hello, TensorFlow!'</span>)</span><br><span class="line">sess = tf.Session()</span><br><span class="line">print(sess.run(hello).decode(<span class="string">'utf-8'</span>))</span><br></pre></td></tr></table></figure>
+<p><hr></p>
+<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="https://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="https://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="https://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="https://www.limoncc.com">[ https://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%">httpss://<a href="http://www.limoncc.com/post/e16e96fd600d84099331bdee7ae39758/">www.limoncc.com/post/e16e96fd600d84099331bdee7ae39758/</a></td></tr></table><table border="0" width="100%" style="display:inline !important;font-size:14px !important;color:#555555;"><tr><td align="left" width="100%" style="font-family:helvetica;font-size:14px !important;font-weight:bold;">如果您需要引用本文，请参考：</td></tr><tr><td align="left" width="100%">引线小白. (Dec. 23, 2016). 《数学分析笔记-数的建立》[Blog post]. Retrieved from <a href="https://www.limoncc.com/post/e16e96fd600d84099331bdee7ae39758">https://www.limoncc.com/post/e16e96fd600d84099331bdee7ae39758</a></td></tr><tr><td align="left" width="100%">@online{limoncc-e16e96fd600d84099331bdee7ae39758,<br>title={数学分析笔记-数的建立},<br>author={引线小白},<br>year={2016},<br>month={Dec},<br>date={23},<br>url={\url{<a href="https://www.limoncc.com/post/e16e96fd600d84099331bdee7ae39758}}">https://www.limoncc.com/post/e16e96fd600d84099331bdee7ae39758}}</a>,<br>}</td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数学分析/" rel="tag">#数学分析</a>
+          
+            <a href="/tags/数学/" rel="tag">#数学</a>
+          
+            <a href="/tags/现代数学基础/" rel="tag">#现代数学基础</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/ae12247dac6e96d2796b3e6769150a6c/" rel="next" title="pyhton-notebook主题颜色配置">
+                <i class="fa fa-chevron-left"></i> pyhton-notebook主题颜色配置
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/3fe19b4e56c4dfbdfa57a7f8da13e428/" rel="prev" title="行列式">
+                行列式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+<!--           </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div> -->
+        <div id="vcomments"></div>
+        <script>new Valine({
+          el: "#vcomments",
+      appId: "BVjuNRCpkVSkz82jFmadIvY8-gzGzoHsz",
+    appKey: "bRjXPp55dop7RTC2xgunGdiP"})
+  </script>'
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="引线小白" />
+          <p class="site-author-name" itemprop="name">引线小白</p>
+          <p class="site-description motion-element" itemprop="description">小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">49</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">93</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="" target="_blank" title="Design">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Design
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.behance.net/limoncc" target="_blank" title="Behance">
+                  
+                    <i class="fa fa-fw fa-behance"></i>
+                  
+                  Behance
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.pinterest.com/aegeanfan/" target="_blank" title="Pinterest">
+                  
+                    <i class="fa fa-fw fa-pinterest"></i>
+                  
+                  Pinterest
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/limoncc" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://weibo.com/3483157951" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://www.zhihu.com/people/limoncc" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              设计不止，折腾不息。
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://chuangzaoshi.com" title="创造狮" target="_blank">创造狮</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、数的建立"><span class="nav-number">1.</span> <span class="nav-text">一、数的建立</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、有理数的缝隙"><span class="nav-number">1.1.</span> <span class="nav-text">1、有理数的缝隙</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、行列式"><span class="nav-number">2.</span> <span class="nav-text">二、行列式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、【函数的极限】"><span class="nav-number">3.</span> <span class="nav-text">三、【函数的极限】</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">引线小白&nbsp &nbsp |&nbsp &nbsp  一个理想主义者，再造自我，以期未来。</span>
+</div>
+
+<div class="powered-by">
+  由 <a rel="external nofollow" class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a rel="external nofollow" class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>&nbsp &nbsp| &nbsp &nbsp Hosted by  <a href="https://github.com" style="font-weight: bold">Github Pages</a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+<!--   
+   
+  
+
+  
+
+ -->
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+<!--   <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+     showMathMenu: false,
+     showMathMenuMSIE: false,
+     tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+          processEscapes: true
+        },
+        TeX: {
+          equationNumbers: {autoNumber: 'AMS'},
+          Macros: {bm: "\\boldsymbol"}
+        },
+        'HTML-CSS': {
+          imageFont: null
+        }
+    });
+  </script> -->
+<!--     MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    }); -->
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+    processEscapes: true,
+    tags: 'ams',
+    macros: {
+                                            bm: "\\boldsymbol",
+					    T:"\\intercal",
+                                            oiint: "{\\iint\\kern{-20mu}{\\unicode{x2B2D}}}",
+                                            oiiint: "{\\iiint\\kern{-24.5mu}\\large{\\unicode{x2B2D}}}"
+                                },
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+  <script type="text/x-mathjax-config">
+MathJax.texReset();
+MathJax.typeset();
+  </script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_SVG-full"></script> -->
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Es7wAnqi0QiGhMLoyl7mkrQo-gzGzoHsz", "BxPXaoPFp3PzWqBTSe6VUuQS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</body>
+</html>

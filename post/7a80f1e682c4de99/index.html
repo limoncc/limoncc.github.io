@@ -1,0 +1,1101 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="大模型,Chat Format,AI,使用工具,调用函数" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本文主要介绍了开源大模型使用工具原理，如有错误请指正。">
+<meta name="keywords" content="大模型,Chat Format,AI,使用工具,调用函数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大模型使用工具原理——大模型CPU部署系列04">
+<meta property="og:url" content="https://www.limoncc.com/post/7a80f1e682c4de99/index.html">
+<meta property="og:site_name" content="柠檬CC">
+<meta property="og:description" content="本文主要介绍了开源大模型使用工具原理，如有错误请指正。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.limoncc.com/images/开源模型使用工具.png">
+<meta property="og:image" content="https://www.limoncc.com/images/cc.png">
+<meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
+<meta property="og:updated_time" content="2024-01-21T04:53:41.355Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="大模型使用工具原理——大模型CPU部署系列04">
+<meta name="twitter:description" content="本文主要介绍了开源大模型使用工具原理，如有错误请指正。">
+<meta name="twitter:image" content="https://www.limoncc.com/images/开源模型使用工具.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <title> 大模型使用工具原理——大模型CPU部署系列04 | 柠檬CC </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-73837972-3', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d225b8f8559eb2eb6a8bd8792e01ebb9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=60130136";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">柠檬CC</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">小白爱吃柠檬O(∩_∩)O</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-poetry">
+          <a href="/poetry" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-leaf"></i> <br />
+            
+            诗集
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                大模型使用工具原理——大模型CPU部署系列04
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2024-01-07T14:39:55+08:00" content="2024-01-07">
+              2024-01-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/工程实践/" itemprop="url" rel="index">
+                    <span itemprop="name">工程实践</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/post/7a80f1e682c4de99/" class="leancloud_visitors" data-flag-title="大模型使用工具原理——大模型CPU部署系列04">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作者: <a href="https://www.limoncc.com">引线小白</a>-本文永久链接：httpss://<a href="http://www.limoncc.com/post/7a80f1e682c4de99/">www.limoncc.com/post/7a80f1e682c4de99/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+<blockquote>
+<p><strong>摘要</strong>: 本文意在理清大模型使用工具原理和使用。若有错误，请大家指正。<br><strong>关键词</strong>: <code>使用工具</code>,<code>大模型</code>,<code>提示词</code></p>
+</blockquote>
+<h4 id="一、使用tool-llama来使得开源模型调用工具"><a href="#一、使用tool-llama来使得开源模型调用工具" class="headerlink" title="一、使用tool_llama来使得开源模型调用工具"></a>一、使用tool_llama来使得开源模型调用工具</h4><p>不买关子，直接上干货：tool_llama是由笔者开发的工具，它配合llama-cpp-python的模型服务使用，它有一下特点</p>
+<ul>
+<li>1、支持pydantic风格工具输入   </li>
+<li>2、外部的装饰器风格导入工具与数据模型, 然后使用工具</li>
+<li>3、支持llama-cpp-python通用聊天模式，不必为了使用工具启动两个模型</li>
+</ul>
+<p>下面是一个极简使用方法：</p>
+<div align="center"><img src="https://www.limoncc.com/images/开源模型使用工具.png" width="900" ==""><br></div>
+
+<h5 id="1-1、安装"><a href="#1-1、安装" class="headerlink" title="1.1、安装"></a>1.1、安装</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install tool_llama</span><br></pre></td></tr></table></figure>
+<p>然后用llama-cpp-python启动一个模型服务，如果不懂这一步可以参考网上的文字和llama-cpp-python的文档</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python -m llama_cpp.server \</span><br><span class="line">--model ../models/mlabonne/NeuralHermes-2.5-Mistral-7B/Q4_K_M.gguf \</span><br><span class="line">--n_gpu_layers -1 --n_ctx 4096 --chat_format chatml</span><br></pre></td></tr></table></figure>
+<h5 id="1-2、AutoGen的使用模式"><a href="#1-2、AutoGen的使用模式" class="headerlink" title="1.2、AutoGen的使用模式"></a>1.2、AutoGen的使用模式</h5><p>需要实现一个推理函数：messages，stream这个两个参数是必须的。然后你可以使用BaseModel来规范数据格式。这对与你想获得指定格式非常有用。</p>
+<blockquote>
+</blockquote>
+<p>@toolkit.build(tools=[AdvisoryGroup], tool_choice=AdvisoryGroup, namespace=”consultative_tool”)<br>chat_infer(messages: List[ChatCompletionRequestMessage], stream=False)</p>
+<p>你也可以构造一个函数工具，使用typing的类型和Annotated来注释。并使用一个元组来注释函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># tools</span></span><br><span class="line"><span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI</span><br><span class="line"><span class="keyword">from</span> pprint <span class="keyword">import</span> pprint</span><br><span class="line"><span class="keyword">from</span> tool_llama <span class="keyword">import</span> Use_Tool</span><br><span class="line"></span><br><span class="line"><span class="comment"># types</span></span><br><span class="line"><span class="keyword">from</span> openai <span class="keyword">import</span> Stream</span><br><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel, Field</span><br><span class="line"><span class="keyword">from</span> openai.types.chat <span class="keyword">import</span> ChatCompletion, ChatCompletionChunk</span><br><span class="line"><span class="keyword">from</span> llama_cpp.llama_types <span class="keyword">import</span> ChatCompletionRequestMessage</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> List, Optional, Union</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Expert</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    <span class="string">"""Expert"""</span></span><br><span class="line">    </span><br><span class="line">    name: str = Field(description=<span class="string">"Expert name, such as Li Rui"</span>)</span><br><span class="line">    description: str = Field(description=<span class="string">"Describe the expert's skills in as much detail as possible"</span>)</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AdvisoryGroup</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    <span class="string">"""Advisory Group"""</span></span><br><span class="line">    </span><br><span class="line">    name: str = Field(description=<span class="string">"Name of the advisory group"</span>)</span><br><span class="line">    target: str = Field(description=<span class="string">"Advisory board objective mission"</span>)</span><br><span class="line">    members: List[Expert] = Field(description=<span class="string">"members"</span>)</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">toolkit = Use_Tool()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># autogen model</span></span><br><span class="line"><span class="meta">@toolkit.build(tools=[AdvisoryGroup], tool_choice=AdvisoryGroup, namespace="consultative_tool")</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">chat_infer</span><span class="params">(messages: List[ChatCompletionRequestMessage], stream=False,</span></span></span><br><span class="line"><span class="function"><span class="params">               temperature: int = <span class="number">0.1</span>)</span> -&gt; Union[ChatCompletion, Stream[ChatCompletionChunk]]:</span></span><br><span class="line">    api_key = <span class="string">"NULL"</span></span><br><span class="line">    organization = <span class="string">"limoncc"</span></span><br><span class="line">    base_url = <span class="string">"http://127.0.0.1:8000/v1"</span></span><br><span class="line">    client = OpenAI(api_key=api_key, organization=organization, base_url=base_url)</span><br><span class="line">    </span><br><span class="line">    response = client.chat.completions.create(</span><br><span class="line">        model=<span class="string">"mistral-7b"</span>,</span><br><span class="line">        messages=messages,  <span class="comment"># type: ignore</span></span><br><span class="line">        temperature=temperature,</span><br><span class="line">        n=<span class="number">1</span>,</span><br><span class="line">        top_p=<span class="number">1.0</span>,</span><br><span class="line">        presence_penalty=<span class="number">1.1</span>,</span><br><span class="line">        stop=[<span class="string">"&lt;/s&gt;"</span>, <span class="string">'&lt;|im_end|&gt;'</span>],</span><br><span class="line">        max_tokens=<span class="number">3024</span>,</span><br><span class="line">        seed=<span class="number">1010</span>,</span><br><span class="line">        stream=stream</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">return</span> response</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">prompt = <span class="string">"Generate a team of advisors, consisting of 3 experts. To solve the AI landing application as the goal."</span></span><br><span class="line">msg = [&#123;<span class="string">"role"</span>: <span class="string">"user"</span>, <span class="string">"content"</span>: prompt&#125;, ]</span><br><span class="line">response = chat_infer(msg, stream=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">result = toolkit.execute_function(response, tools=[AdvisoryGroup])</span><br><span class="line">pprint(result[<span class="number">0</span>].__dict__, sort_dicts=<span class="keyword">False</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'name'</span>: <span class="string">'AI Landing Application Advisory Group'</span>,</span><br><span class="line"> <span class="string">'target'</span>: <span class="string">'Solving AI Landing Application Goal'</span>,</span><br><span class="line"> <span class="string">'members'</span>: [Expert(name=<span class="string">'Expert 1'</span>, description=<span class="string">'An expert in AI and landing page optimization'</span>),</span><br><span class="line">             Expert(name=<span class="string">'Expert 2'</span>, description=<span class="string">'A professional with expertise in application development and user experience design'</span>),</span><br><span class="line">             Expert(name=<span class="string">'Expert 3'</span>, description=<span class="string">'An expert in AI-based problem solving and data analysis for landing page optimization'</span>)]&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="1-3、OpenAI的使用模式"><a href="#1-3、OpenAI的使用模式" class="headerlink" title="1.3、OpenAI的使用模式"></a>1.3、OpenAI的使用模式</h5><p>OpenAI的使用模式可以方便你构建使用工具的API，当然如果你对llama-cpp-python熟悉，你也可以构造一个通用的chat-dformat，支持使用API调用工具。tool_llama作为一个独立包尽量解耦。如何魔改llama-cpp-python，笔者将在一下篇文章中介绍。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># openai model</span></span><br><span class="line">toolkit = Use_Tool()</span><br><span class="line">mytools, mytool_choice = toolkit.gen_tools_api_from(tools=[AdvisoryGroup], tool_choice=AdvisoryGroup)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@toolkit.inject(namespace="consultative_tool")</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tool_infer</span><span class="params">(messages: List[ChatCompletionRequestMessage], stream=False,</span></span></span><br><span class="line"><span class="function"><span class="params">               temperature: int = <span class="number">0.1</span>, tools: Optional[List] = None,</span></span></span><br><span class="line"><span class="function"><span class="params">               tool_choice: Optional[List] = None)</span> -&gt; Union[ChatCompletion, Stream[ChatCompletionChunk]]:</span></span><br><span class="line">    api_key = <span class="string">"NULL"</span></span><br><span class="line">    organization = <span class="string">"limoncc"</span></span><br><span class="line">    base_url = <span class="string">"http://127.0.0.1:8000/v1"</span></span><br><span class="line">    client = OpenAI(api_key=api_key, organization=organization, base_url=base_url)</span><br><span class="line">    </span><br><span class="line">    ok = client.chat.completions.create(</span><br><span class="line">        model=<span class="string">"mistral-7b"</span>,</span><br><span class="line">        messages=messages,  <span class="comment"># type: ignore</span></span><br><span class="line">        temperature=temperature,</span><br><span class="line">        n=<span class="number">1</span>,</span><br><span class="line">        top_p=<span class="number">1.0</span>,</span><br><span class="line">        presence_penalty=<span class="number">1.1</span>,</span><br><span class="line">        stop=[<span class="string">"&lt;/s&gt;"</span>, <span class="string">'&lt;|im_end|&gt;'</span>],</span><br><span class="line">        max_tokens=<span class="number">3024</span>,</span><br><span class="line">        seed=<span class="number">1010</span>,</span><br><span class="line">        stream=stream</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">return</span> ok</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">response = tool_infer(msg, tools=mytools, tool_choice=mytool_choice, stream=<span class="keyword">False</span>)</span><br><span class="line">result = toolkit.execute_function(response, tools=[AdvisoryGroup])</span><br><span class="line">pprint(result[<span class="number">0</span>], sort_dicts=<span class="keyword">False</span>)</span><br></pre></td></tr></table></figure>
+<h5 id="1-4、OpenAI的使用模式不使用工具"><a href="#1-4、OpenAI的使用模式不使用工具" class="headerlink" title="1.4、OpenAI的使用模式不使用工具"></a>1.4、OpenAI的使用模式不使用工具</h5><p>当然如果你不使用工具，不输入tools变量即可使正常聊天的模式。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">response = tool_infer(msg, stream=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> part <span class="keyword">in</span> response:</span><br><span class="line">    print(part.choices[<span class="number">0</span>].delta.content <span class="keyword">or</span> <span class="string">""</span>, end=<span class="string">''</span>)  <span class="comment"># type: ignore</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">To create an effective team of advisors <span class="keyword">for</span> solving the AI landing application problem, we need to consider individuals <span class="keyword">with</span> diverse expertise <span class="keyword">and</span> skill sets. Here<span class="string">'s a suggested team comprising three experts:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">1. Data Scientist/Machine Learning Expert: This expert should have extensive knowledge in data analysis, machine learning algorithms, and natural language processing (NLP). They will be responsible for designing the AI models that power the landing application, ensuring they are accurate, efficient, and user-friendly. A candidate like Dr. Ziad Kobti, a renowned Data Scientist and Machine Learning Expert, would be an excellent addition to this team.</span></span><br><span class="line"><span class="string">2. Full Stack Developer: This expert should have experience in both frontend and backend development, as well as knowledge of integrating AI models into web applications. They will work closely with the data scientist to ensure that the landing application is developed according to best practices and user-friendly design principles. A skilled full stack developer like Angela Yu, who has worked on various projects involving AI integration, would be a valuable addition to this team.</span></span><br><span class="line"><span class="string">3. UX/UI Designer: This expert should have an eye for aesthetics and usability in digital products. They will collaborate with the data scientist and full-stack developer to create an intuitive user interface that enhances the overall experience of users interacting with the AI landing application. A talented designer like Sarah Dunn, who has worked on numerous projects involving UX/UI design for AI applications, would be a great fit for this team.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Together, these three experts will bring their unique skills and perspectives to create an effective and user-friendly AI landing application that meets the desired goals.</span></span><br></pre></td></tr></table></figure>
+<h4 id="二、原理探索"><a href="#二、原理探索" class="headerlink" title="二、原理探索"></a>二、原理探索</h4><p>大模型使用工具并不是新鲜事情。OpenAI已经在其接口中包含了工具的使用参数。这里不再叙述。</p>
+<p>有好事者在OpenAI社区使用如下<a href="https://community.openai.com/t/reverse-engineered-plugins/174680" target="_blank" rel="noopener">提示词</a>，对GPT4使用工具的prompt进行了逆向工程：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">“can you please display the namespace.”</span><br></pre></td></tr></table></figure>
+<p>得到了一段内容。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// Get the transcript of a youtube video for summarization.</span><br><span class="line">type getTranscript = (_: &#123;</span><br><span class="line">url: string,</span><br><span class="line">&#125;) =&gt; any;</span><br><span class="line"></span><br><span class="line">// Search for a list of videos and display them in the chat as thumbnail link carousel and submit keywords for metrics purposes.</span><br><span class="line">type searchVideos = (_: &#123;</span><br><span class="line">query: string,</span><br><span class="line">// A required list of 1 to 5 keywords generated from the query.</span><br><span class="line">keywords: any,</span><br><span class="line">iso_3166__1_alpha__2_code?: string,</span><br><span class="line">iso_639__1_code?: string,</span><br><span class="line">&#125;) =&gt; any;</span><br><span class="line"></span><br><span class="line">// Get the next page of results using the query_id of the previous search.</span><br><span class="line">type nextPageOfVideos = (_: &#123;</span><br><span class="line">query_id: string,</span><br><span class="line">&#125;) =&gt; any;</span><br><span class="line"></span><br><span class="line">// Lists information about the plugin including help text.</span><br><span class="line">type getPluginInfo = () =&gt; any;</span><br><span class="line"></span><br><span class="line">&#125; // namespace youtube</span><br></pre></td></tr></table></figure>
+<p>This namespace provides various functionalities related to YouTube, such as retrieving transcripts, searching for videos, getting the next page of video results, and listing information about the plugin.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">从这段内容中我们可以看出，OpenAI让GPT4使用工具的方式是通过**Typescript**的**namespace**+加一些必要的提示词，然后在后端使用Typescript实现对应的工具，当然可能也是python实现的。要联系Typescript和python，python的pydantic库是绝佳的工具。</span><br><span class="line"></span><br><span class="line">当然读者可能会问，为什么不直接使用python，例如NexusRaven-V2-13B就是使用python的函数签名来做的。</span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">prompt_template = \</span><br><span class="line">&apos;&apos;&apos;</span><br><span class="line">Function:</span><br><span class="line">def get_weather_data(coordinates):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Fetches weather data from the Open-Meteo API for the given latitude and longitude.</span><br><span class="line"></span><br><span class="line">    Args:</span><br><span class="line">    coordinates (tuple): The latitude of the location.</span><br><span class="line"></span><br><span class="line">    Returns:</span><br><span class="line">    float: The current temperature in the coordinates you&apos;ve asked for</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">Function:</span><br><span class="line">def get_coordinates_from_city(city_name):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Fetches the latitude and longitude of a given city name using the Maps.co Geocoding API.</span><br><span class="line"></span><br><span class="line">    Args:</span><br><span class="line">    city_name (str): The name of the city.</span><br><span class="line"></span><br><span class="line">    Returns:</span><br><span class="line">    tuple: The latitude and longitude of the city.</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">User Query: &#123;query&#125;&lt;human_end&gt;</span><br><span class="line"></span><br><span class="line">&apos;&apos;&apos;</span><br><span class="line">query = &quot;What&apos;s the weather like in Seattle right now?&quot;</span><br></pre></td></tr></table></figure></p>
+<p>这就体现的OpenAI的产品设计上了，个人认为使用<strong>Typescript</strong>的<strong>namespace</strong>，是有如下优势的</p>
+<ul>
+<li>1、节省tokens，因为用Typescript来描述函数或者数据模型是比较简单，直接说就是省字数。</li>
+<li>2、强类型，Typescript是强类型语言。防止模型理解歧义</li>
+<li>3、开发容易，Typescript是比较容易学习的语言，也可以直接在浏览器中使用，便于插件的开发与运行</li>
+</ul>
+<p>那么为什么GPT4能够理解Typescript呢，或者说GPT4实现使用工具到底是如何实现的呢？</p>
+<h4 id="三、大模型使用工具原理"><a href="#三、大模型使用工具原理" class="headerlink" title="三、大模型使用工具原理"></a>三、大模型使用工具原理</h4><p>我们人使用使用工具是看说明书，LLM使用工具也是看说明书，一个启发的思路是把API文档给模型看，然后它应该会学会使用API。现在的问题是大模型的回复是文字，有点随意。我们去解析模型回复的时候就非常容易出现问题。例如下面这个提示词。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">### Instruction:</span></span><br><span class="line"><span class="string">熊猫公司的翻译API文档：</span></span><br><span class="line"></span><br><span class="line"><span class="string">请求地址:</span> <span class="attr">http://127.0.0.1:3000/hello</span></span><br><span class="line"><span class="string">请求方法：post</span></span><br><span class="line"><span class="string">请求数据:</span></span><br><span class="line"></span><br><span class="line"><span class="string">inputs=&#123;</span></span><br><span class="line"><span class="attr">"sentence":</span><span class="string">"输入一段句子"</span><span class="string">,</span> <span class="comment"># 输入想要翻译的句子</span></span><br><span class="line"><span class="attr">"lang":</span><span class="string">"en"</span> <span class="comment"># 选择目标语言，目前仅en可选</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">返回数据:</span></span><br><span class="line"></span><br><span class="line"><span class="string">outputs=&#123;</span></span><br><span class="line"><span class="attr">"src_sentence":</span><span class="string">"输入一段句子"</span></span><br><span class="line"><span class="attr">"target_sentence":</span><span class="string">"input a sentence"</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="string">问:</span></span><br><span class="line"><span class="string">使用熊猫公司的翻译API文档翻译："我爱你"。</span></span><br><span class="line"></span><br><span class="line"><span class="string">答:</span></span><br><span class="line"><span class="string">python代码如下:</span></span><br><span class="line"></span><br><span class="line"><span class="string">\```python</span></span><br><span class="line"><span class="string">import</span> <span class="string">requests</span></span><br><span class="line"><span class="string">import</span> <span class="string">json</span></span><br><span class="line"></span><br><span class="line"><span class="string">data</span> <span class="string">=</span> <span class="string">&#123;</span></span><br><span class="line"><span class="attr">  "sentence":</span> <span class="string">"我爱你"</span><span class="string">,</span></span><br><span class="line"><span class="attr">  "lang":</span><span class="string">"en"</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">res</span> <span class="string">=</span> <span class="string">requests.post(url,json=data)</span></span><br><span class="line"><span class="string">a</span> <span class="string">=</span> <span class="string">json.loads(res.content)</span></span><br><span class="line"><span class="string">print(a["target_sentence"])</span></span><br><span class="line"><span class="string">\</span></span><br></pre></td></tr></table></figure>
+<p>总结一下熊猫公司的翻译API文档，然后使用这个api翻译：”我很好”<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">读者可试试，结果是不太友好的，如何才能让大模型精准使用工具，把工具的输入和函数弄的明明白白呢？答案就是微调或者对齐。 &lt;a style=&quot;font-family:微软雅黑;font-size:14px;font-weight:bold;color:red&quot;&gt;其实所谓精准是一个语言风格问题&lt;/a&gt;，你让它经常回复json。它就能回复json。而json是我们电子世界传递信息的常用格式，是严格和通用的。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">```yaml</span><br><span class="line">&lt;|im_start|&gt;system</span><br><span class="line">You are a helpful AI Assistant. You polite answers to the user&apos;s questions.</span><br><span class="line">1. If the question is unclear, Please polite ask the user about context.</span><br><span class="line">2. if the task has no available function in the namespace, Please reply:</span><br><span class="line">    There is no function to call to complete the task, here is my plan for completing the task:</span><br><span class="line">    [you plan steps]</span><br><span class="line">3. if you calls functions with appropriate input when necessary. Please strictly reply the following format json to the question. Don&apos;t have extra characters.</span><br><span class="line">&#123;</span><br><span class="line">    &quot;functions&quot;: //不要省略</span><br><span class="line">    [&#123;  &quot;namespace&quot;: namespace_name,</span><br><span class="line">        &quot;name&quot;: function_name,</span><br><span class="line">        &quot;arguments&quot;: **kwargs</span><br><span class="line">    &#125;]</span><br><span class="line">&#125;//end</span><br><span class="line">3. For coding tasks, only use the functions you have been provided with. Reply TERMINATE when the task is done.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// Supported function definitions that should be called when necessary.</span><br><span class="line">namespace tools &#123;</span><br><span class="line"></span><br><span class="line">  // 获取地点天气情况</span><br><span class="line">  type get_location_weather = (_: &#123;</span><br><span class="line">    // 地点</span><br><span class="line">    location: string,</span><br><span class="line">  &#125;) =&gt; any;</span><br><span class="line"></span><br><span class="line">&#125; // namespace tools</span><br><span class="line"></span><br><span class="line">note: 请使用中文回答。&lt;|im_end|&gt;</span><br><span class="line">&lt;|im_start|&gt;user</span><br><span class="line">北京天气如何？&lt;|im_end|&gt;</span><br><span class="line">&lt;|im_start|&gt;assistant</span><br></pre></td></tr></table></figure></p>
+<p>然后我们会收到这样一份回复</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"functions"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"namespace"</span>: <span class="string">"tools"</span>,</span><br><span class="line">      <span class="attr">"name"</span>: <span class="string">"get_location_weather"</span>,</span><br><span class="line">      <span class="attr">"arguments"</span>: &#123;</span><br><span class="line">        <span class="attr">"location"</span>: <span class="string">"北京"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后我们解析这个字符串，在python里面调用函数，还是在浏览器里面使用js就都非常容易了。当然理解是比较好理解，这对于普通人，解析输入和输出这个工作还是有点麻烦，于是笔者专门开发了一个python库来帮助开源大模型使用函数：tool_llama。欢迎大家使用。</p>
+<p><hr></p>
+<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="https://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="https://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="https://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="https://www.limoncc.com">[ https://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%">httpss://<a href="http://www.limoncc.com/post/7a80f1e682c4de99/">www.limoncc.com/post/7a80f1e682c4de99/</a></td></tr></table><table border="0" width="100%" style="display:inline !important;font-size:14px !important;color:#555555;"><tr><td align="left" width="100%" style="font-family:helvetica;font-size:14px !important;font-weight:bold;">如果您需要引用本文，请参考：</td></tr><tr><td align="left" width="100%">引线小白. (Jan. 7, 2024). 《大模型使用工具原理——大模型CPU部署系列04》[Blog post]. Retrieved from <a href="https://www.limoncc.com/post/7a80f1e682c4de99">https://www.limoncc.com/post/7a80f1e682c4de99</a></td></tr><tr><td align="left" width="100%">@online{limoncc-7a80f1e682c4de99,<br>title={大模型使用工具原理——大模型CPU部署系列04},<br>author={引线小白},<br>year={2024},<br>month={Jan},<br>date={7},<br>url={\url{<a href="https://www.limoncc.com/post/7a80f1e682c4de99}}">https://www.limoncc.com/post/7a80f1e682c4de99}}</a>,<br>}</td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/大语言模型/" rel="tag">#大语言模型</a>
+          
+            <a href="/tags/AI/" rel="tag">#AI</a>
+          
+            <a href="/tags/聊天格式/" rel="tag">#聊天格式</a>
+          
+            <a href="/tags/Chat-Format/" rel="tag">#Chat Format,</a>
+          
+            <a href="/tags/使用工具/" rel="tag">#使用工具</a>
+          
+            <a href="/tags/调用函数/" rel="tag">#调用函数</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/bd7e41e00dc8afad/" rel="next" title="如何训练——大语言模型研究02">
+                <i class="fa fa-chevron-left"></i> 如何训练——大语言模型研究02
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/deccb10c05fc1681/" rel="prev" title="大模型使用工具原理——大模型CPU部署系列04">
+                大模型使用工具原理——大模型CPU部署系列04 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+<!--           </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div> -->
+        <div id="vcomments"></div>
+        <script>new Valine({
+          el: "#vcomments",
+      appId: "BVjuNRCpkVSkz82jFmadIvY8-gzGzoHsz",
+    appKey: "bRjXPp55dop7RTC2xgunGdiP"})
+  </script>'
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="引线小白" />
+          <p class="site-author-name" itemprop="name">引线小白</p>
+          <p class="site-description motion-element" itemprop="description">小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">49</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">93</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="" target="_blank" title="Design">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Design
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.behance.net/limoncc" target="_blank" title="Behance">
+                  
+                    <i class="fa fa-fw fa-behance"></i>
+                  
+                  Behance
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.pinterest.com/aegeanfan/" target="_blank" title="Pinterest">
+                  
+                    <i class="fa fa-fw fa-pinterest"></i>
+                  
+                  Pinterest
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/limoncc" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://weibo.com/3483157951" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://www.zhihu.com/people/limoncc" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              设计不止，折腾不息。
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://chuangzaoshi.com" title="创造狮" target="_blank">创造狮</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、使用tool-llama来使得开源模型调用工具"><span class="nav-number">1.</span> <span class="nav-text">一、使用tool_llama来使得开源模型调用工具</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1、安装"><span class="nav-number">1.1.</span> <span class="nav-text">1.1、安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2、AutoGen的使用模式"><span class="nav-number">1.2.</span> <span class="nav-text">1.2、AutoGen的使用模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3、OpenAI的使用模式"><span class="nav-number">1.3.</span> <span class="nav-text">1.3、OpenAI的使用模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-4、OpenAI的使用模式不使用工具"><span class="nav-number">1.4.</span> <span class="nav-text">1.4、OpenAI的使用模式不使用工具</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、原理探索"><span class="nav-number">2.</span> <span class="nav-text">二、原理探索</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、大模型使用工具原理"><span class="nav-number">3.</span> <span class="nav-text">三、大模型使用工具原理</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">引线小白&nbsp &nbsp |&nbsp &nbsp  一个理想主义者，再造自我，以期未来。</span>
+</div>
+
+<div class="powered-by">
+  由 <a rel="external nofollow" class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a rel="external nofollow" class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>&nbsp &nbsp| &nbsp &nbsp Hosted by  <a href="https://github.com" style="font-weight: bold">Github Pages</a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+<!--   
+   
+  
+
+  
+
+ -->
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+<!--   <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+     showMathMenu: false,
+     showMathMenuMSIE: false,
+     tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+          processEscapes: true
+        },
+        TeX: {
+          equationNumbers: {autoNumber: 'AMS'},
+          Macros: {bm: "\\boldsymbol"}
+        },
+        'HTML-CSS': {
+          imageFont: null
+        }
+    });
+  </script> -->
+<!--     MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    }); -->
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+    processEscapes: true,
+    tags: 'ams',
+    macros: {
+                                            bm: "\\boldsymbol",
+					    T:"\\intercal",
+                                            oiint: "{\\iint\\kern{-20mu}{\\unicode{x2B2D}}}",
+                                            oiiint: "{\\iiint\\kern{-24.5mu}\\large{\\unicode{x2B2D}}}"
+                                },
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+  <script type="text/x-mathjax-config">
+MathJax.texReset();
+MathJax.typeset();
+  </script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_SVG-full"></script> -->
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Es7wAnqi0QiGhMLoyl7mkrQo-gzGzoHsz", "BxPXaoPFp3PzWqBTSe6VUuQS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</body>
+</html>

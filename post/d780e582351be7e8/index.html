@@ -1,0 +1,1174 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="弱大数定律,大数定律,概率论" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="概率论的真正历史开始于极限定理的研究。我们发现在大量的重复实验中，一个随机事件有明显的规律性，即它出现的频率在某个固定数的附近摆动。同时我们也观测到，大量随机现象的平均结果也一般具有稳定性：在大量随机现象共同作用时，由于这些随机偏差相互抵消、补偿和拉平，致使总的平均结果趋于稳定。本回顾了弱大数定律主要结论，若有错误，请大家指正。">
+<meta name="keywords" content="弱大数定律,大数定律,概率论">
+<meta property="og:type" content="article">
+<meta property="og:title" content="弱大数定律——百年大数定律系列01">
+<meta property="og:url" content="https://www.limoncc.com/post/d780e582351be7e8/index.html">
+<meta property="og:site_name" content="柠檬CC">
+<meta property="og:description" content="概率论的真正历史开始于极限定理的研究。我们发现在大量的重复实验中，一个随机事件有明显的规律性，即它出现的频率在某个固定数的附近摆动。同时我们也观测到，大量随机现象的平均结果也一般具有稳定性：在大量随机现象共同作用时，由于这些随机偏差相互抵消、补偿和拉平，致使总的平均结果趋于稳定。本回顾了弱大数定律主要结论，若有错误，请大家指正。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.limoncc.com/images/cc.png">
+<meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
+<meta property="og:updated_time" content="2023-10-24T02:26:40.962Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="弱大数定律——百年大数定律系列01">
+<meta name="twitter:description" content="概率论的真正历史开始于极限定理的研究。我们发现在大量的重复实验中，一个随机事件有明显的规律性，即它出现的频率在某个固定数的附近摆动。同时我们也观测到，大量随机现象的平均结果也一般具有稳定性：在大量随机现象共同作用时，由于这些随机偏差相互抵消、补偿和拉平，致使总的平均结果趋于稳定。本回顾了弱大数定律主要结论，若有错误，请大家指正。">
+<meta name="twitter:image" content="https://www.limoncc.com/images/cc.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <title> 弱大数定律——百年大数定律系列01 | 柠檬CC </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-73837972-3', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d225b8f8559eb2eb6a8bd8792e01ebb9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=60130136";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">柠檬CC</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">小白爱吃柠檬O(∩_∩)O</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-poetry">
+          <a href="/poetry" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-leaf"></i> <br />
+            
+            诗集
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                弱大数定律——百年大数定律系列01
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2019-01-02T11:45:17+08:00" content="2019-01-02">
+              2019-01-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/概率论/" itemprop="url" rel="index">
+                    <span itemprop="name">概率论</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/post/d780e582351be7e8/" class="leancloud_visitors" data-flag-title="弱大数定律——百年大数定律系列01">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作者: <a href="https://www.limoncc.com">引线小白</a>-本文永久链接：httpss://<a href="http://www.limoncc.com/post/d780e582351be7e8/">www.limoncc.com/post/d780e582351be7e8/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+<blockquote>
+</blockquote>
+<p>或然之事是很可能发生之事。<br>—— 亚里士多德，《修辞学》</p>
+<h4 id="一、简要回顾"><a href="#一、简要回顾" class="headerlink" title="一、简要回顾"></a>一、简要回顾</h4><p>在瑞士巴塞尔出生于1654年12月7日的雅各布• 伯努利，他在1705年8 月16 日年去世，在这前两年的时间里写作了《猜度术》。提出了第一个大数定律：伯努利大数定律。距今已有300多年[^1]</p>
+<p>概率论的真正历史开始于极限定理的研究。我们发现在大量的重复实验中，一个随机事件有明显的规律性，即它出现的频率在某个固定数的附近摆动。同时我们也观测到，大量随机现象的平均结果也一般具有稳定性：在大量随机现象共同作用时，由于这些随机偏差相互抵消、补偿和拉平，致使总的平均结果趋于稳定。</p>
+<p>同时也发现，独立随机变量之和的极限分布是正态分布。这被称为中心极限定理。下面我们用数学语言来表达和探索上述思想。</p>
+<p>若 $ x_1,x_2,\cdots,x_n,\cdots$是随机变量序列，令</p>
+<p>$$\begin{align}<br>\xi_n=\frac{x_1+x_2+\cdots+x_n}{n}<br>\end{align}$$</p>
+<p>如果存在一个常数序列 $ a_1,a_2,\cdots,a_n,\cdots$，对任意的 $ \varepsilon&gt;0$恒有</p>
+<p>$$\begin{align}<br>\lim_{n\to \infty}p \big(|\xi_n-a_n|&lt;\varepsilon\big)=1<br>\end{align}$$</p>
+<p>则称序列 $ {\xi_n}$服从大数定律。</p>
+<p>如果存在 $ \mathrm{E}[x_i]$和 $ \mathrm{var}[x_i]$，令</p>
+<p>$$\begin{align}<br>\zeta_n=\frac{\sum_{i=1}^n x_i- \sum_{i=1}^n \mathrm{E}[x_i]}{\sqrt{\sum_{i=1}^n \mathrm{var}[x_i]}}<br>\end{align}$$</p>
+<p>我们的目的是寻找使得</p>
+<p>$$\begin{align}<br>\lim_{n\to \infty}p \big(\zeta_n&lt;x\big)=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^x \mathrm{e}^{-\frac{1}{2}t^2}dt<br>\end{align}$$</p>
+<p>成立的条件。一般的若随机序列 $ {x_i}$的标准化和 $ \zeta_n$使得上述成立，则我们称 $ \{x_i\}$服从中心极限定理。</p>
+<h4 id="二、随机变量序列收敛性"><a href="#二、随机变量序列收敛性" class="headerlink" title="二、随机变量序列收敛性"></a>二、随机变量序列收敛性</h4><h5 id="2-1、依概率1收敛"><a href="#2-1、依概率1收敛" class="headerlink" title="2.1、依概率1收敛"></a>2.1、依概率1收敛</h5><p>称随机变量序列 $ x_1(\omega),x_2(\omega),\cdots $ <a style="font-family:微软雅黑;font-size:13px;font-weight:bold;color:2570cc">依概率1收敛</a>于某随机变量 $ x(\omega)$，如果</p>
+<p>$$\begin{align}<br>p \big(\{\omega\mid \lim_{n\to \infty}x_n(\omega)=x(\omega)\}\big)=1<br>\end{align}$$</p>
+<p>又记为 $\displaystyle x_n \mathop{\longrightarrow}^{\mathrm{a.e.}} x$。就是说随机变量序列 $\displaystyle \{x_i(\omega)\}$ <a style="font-family:微软雅黑;font-size:13px;font-weight:bold;color:2570cc">几乎处处收敛</a>于随机变量 $ x(\omega)$。</p>
+<p>另外一个表示为</p>
+<p>$$\begin{align}<br>p \bigg(\bigcap_{m=1}^{\infty}\bigcup_{N=1}^{\infty}\bigcap_{n=N}^{\infty}\big\{\omega\mid\big| x_n(\omega)-x(\omega)\big|&lt; \frac{1}{m}\big\}\bigg)=1<br>\end{align}$$</p>
+<h5 id="2-2、依概率收敛"><a href="#2-2、依概率收敛" class="headerlink" title="2.2、依概率收敛"></a>2.2、依概率收敛</h5><p>称随机变量序列 $ x_1(\omega),x_2(\omega),\cdots $ <a style="font-family:微软雅黑;font-size:13px;font-weight:bold;color:2570cc">依概率收敛</a>于某随机变量 $ x(\omega)$，如果对于任意的 $ \varepsilon&gt;0$，有</p>
+<p>$$\begin{align}<br>\lim_{n\to \infty}p \big(\{\omega\mid |x_n(\omega)-x(\omega)|\geqslant \varepsilon\}\big)=0<br>\end{align}$$</p>
+<p>又记为 $\displaystyle x_n \mathop{\longrightarrow}^{\mathrm{P}} x$。就是说随机变量序列 $\displaystyle \{x_i(\omega)\}$ <a style="font-family:微软雅黑;font-size:13px;font-weight:bold;color:2570cc">依概率收敛</a>于随机变量 $ x(\omega)$。</p>
+<h5 id="2-3、依分布收敛"><a href="#2-3、依分布收敛" class="headerlink" title="2.3、依分布收敛"></a>2.3、依分布收敛</h5><p>称随机变量序列 $ x_1(\omega),x_2(\omega),\cdots $ <a style="font-family:微软雅黑;font-size:13px;font-weight:bold;color:2570cc">依分布收敛</a>于某随机变量 $ x(\omega)$，如果相应的分布函数序列 $ F_1(x),F_2(x),\cdots$弱收敛于 $ x(\omega)$的分布函数 $ F(x)$。</p>
+<p>$$\begin{align}<br>\forall x\in \{x\mid \lim_{t\to x}F(t)=F(x)\}\to \lim_{n\to \infty}F_n(x)=F(x)<br>\end{align}$$</p>
+<p>又记为 $\displaystyle x_n \mathop{\longrightarrow}^{\mathrm{W}} x$。就是说随机变量序列 $\displaystyle \{x_i(\omega)\}$ <a style="font-family:微软雅黑;font-size:13px;font-weight:bold;color:2570cc">依分布收敛</a>于随机变量 $ x(\omega)$。</p>
+<h5 id="2-4、依矩收敛"><a href="#2-4、依矩收敛" class="headerlink" title="2.4、依矩收敛"></a>2.4、依矩收敛</h5><p>假设对于 $ r&gt;0$， $\displaystyle \mathrm{E}[|x|^r]&lt;\infty$ 和 $\displaystyle \mathrm{E}[|x_n|^r]&lt;\infty$。称随机变量序列 $ x_1(\omega),x_2(\omega),\cdots $ <a style="font-family:微软雅黑;font-size:13px;font-weight:bold;color:2570cc">依$ r $阶矩收敛</a>于某随机变量 $ x(\omega)$，如果有</p>
+<p>$$\begin{align}<br>\lim_{n\to \infty}\mathrm{E}[|x_n-x|^r]=0<br>\end{align}$$</p>
+<p>又记为 $\displaystyle x_n \mathop{\longrightarrow}^{\mathrm{r}} x$。就是说随机变量序列 $\displaystyle \{x_i(\omega)\}$ <a style="font-family:微软雅黑;font-size:13px;font-weight:bold;color:2570cc">依 $ r $阶矩收敛</a>于随机变量 $ x(\omega)$。</p>
+<h4 id="三、概率不等式"><a href="#三、概率不等式" class="headerlink" title="三、概率不等式"></a>三、概率不等式</h4><h5 id="3-1、随机变量不等式引理"><a href="#3-1、随机变量不等式引理" class="headerlink" title="3.1、随机变量不等式引理"></a>3.1、随机变量不等式引理</h5><p>【概率不等式引理】<br>设$ g(x)$在 $ (0,+\infty)$上是一个非负单调不减函数。且有一随机变量$ \xi$使得 $ \mathrm{E}[g(\xi)]&lt;\infty$。则对于任意的 $ \varepsilon&gt;0$，有：</p>
+<p>$$\begin{align}<br>p \big(|\xi|\geqslant \varepsilon\big)\leqslant \frac{\mathrm{E}\big[g(\xi)\big]}{g(\varepsilon)}<br>\end{align}$$</p>
+<p>证明：<br>有对任意的 $ \varepsilon&gt;0$，当 $ \xi\geqslant\varepsilon$时，有 $ g(\xi)\geqslant g(\varepsilon)$。我们根据数学期望的性质有</p>
+<p>$$\begin{align}<br>p(|\xi|\geqslant \varepsilon)<br>=\mathrm{E}\big[I_{\{\omega\mid \xi(\omega)\geqslant \varepsilon\}}\big]<br>\leqslant \mathrm{E}\bigg[\frac{g(\xi)}{g(\varepsilon)}I_{\{\omega\mid \xi(\omega)\geqslant \varepsilon\}}\bigg]<br>\leqslant \mathrm{E}\bigg[\frac{g(\xi)}{g(\varepsilon)}\bigg]<br>= \frac{\mathrm{E}[g(\xi)]}{g(\varepsilon)}<br>\end{align}$$</p>
+<p>其中 $ I_{\{\omega\mid \xi(\omega)\geqslant \varepsilon\}}$是集合 $ \{\omega\mid \xi(\omega)\geqslant \varepsilon\}$的示性函数。同时我们利用任意事件的概率等于它的示性函数的数学期望 $\displaystyle p(A)=\mathrm{E}[I_A]=\int_{\Omega}I_A dF(x)$，和定积分不等式性质。当然我们也可以反向思考，用积分第二中值定理得到：</p>
+<p>$$\begin{align}<br>\mathrm{E}\big[g(\xi)\big]<br>&amp;=\int_{\Omega}g(\xi)d F(\xi)\\<br>&amp;\geqslant \int_{\Omega}g(\varepsilon)d F(\xi)<br>\geqslant \int_{\Omega}g(\varepsilon)d F(\xi)-\int_{|\xi|\leqslant \varepsilon} g(\xi)dF(\xi)\\<br>&amp;=g(\varepsilon)\big[1-p \big( \varepsilon&lt;\xi &lt;\delta\big)\big]\,,\delta\in[-\varepsilon,+\varepsilon]\\<br>&amp;\geqslant g(\varepsilon)p \big(|\xi|\geqslant \varepsilon\big)<br>\end{align}$$</p>
+<p>通过非负随机变量 $ x$构造简单随机变量序列 $ x_n$，来实现勒贝格积分。</p>
+<p>$$\begin{align}<br>x_n(\omega)=<br>\begin{cases}<br>\displaystyle\frac{k}{2^n}, &amp; \displaystyle \omega\in \big\{\frac{k}{2^n}\leqslant x(\omega)&lt;\frac{k+1}{2^n}\big\}\\<br>\displaystyle n, &amp;\displaystyle \omega\in \{x(\omega)\geqslant n\}<br>\end{cases}<br>\end{align}$$</p>
+<h5 id="3-2、马尔可夫不等式"><a href="#3-2、马尔可夫不等式" class="headerlink" title="3.2、马尔可夫不等式"></a>3.2、马尔可夫不等式</h5><p>令 $ g(x)=x^r$ 得</p>
+<p>$$\begin{align}<br>p \big(|\xi|\geqslant \varepsilon\big)\leqslant \frac{\mathrm{E}[|\xi|^r]}{\varepsilon^r}<br>\end{align}$$</p>
+<h6 id="3-2-1、切比雪夫不等式"><a href="#3-2-1、切比雪夫不等式" class="headerlink" title="3.2.1、切比雪夫不等式"></a>3.2.1、切比雪夫不等式</h6><p>将马尔可夫不等式的随机变量变为 $ \xi- \mathrm{E}[\xi]$，令 $ r=2$ 有</p>
+<p>$$\begin{align}<br>p \big(|\xi- \mathrm{E}[\xi]|\geqslant \varepsilon\big)\leqslant \frac{\mathrm{var}[\xi]}{\varepsilon^2}<br>\end{align}$$</p>
+<h6 id="3-2-2、其他矩不等式"><a href="#3-2-2、其他矩不等式" class="headerlink" title="3.2.2、其他矩不等式"></a>3.2.2、其他矩不等式</h6><p>【施瓦茨不等式】对于任意随机变量 $ \xi$ 和 $ \eta$有有穷二阶矩，那么</p>
+<p>$$\begin{align}<br>\mathrm{E}^2[\xi\eta]<br>\leqslant \mathrm{E}[\xi^2]\mathrm{E}[\eta^2]<br>\end{align}$$其中等式成立，当且仅当存在一常数 $ \lambda$，使得 $ p(\xi= \lambda \eta)=1$。</p>
+<p>证明：</p>
+<p>首先证明 $ \mathrm{E}[\xi\eta]$有穷<br>$$\begin{align}<br> &amp;\xi^2+\eta^2-2|\xi||\eta|=\big(|\xi|-|\eta|\big)^2\geqslant 0\\<br> &amp;\to |\xi\eta|\leqslant \frac{1}{2}\big(\xi^2+\eta^2\big)\\<br> &amp;\to \mathrm{E}\big[|\xi\eta|\big]\leqslant \frac{1}{2}\big(\mathrm{E}[\xi^2]+\mathrm{E}[\eta^2]\big)&lt;\infty<br>\end{align}$$</p>
+<p>其次有</p>
+<p>$$\begin{align}<br>0\leqslant \mathrm{E} \big[(\xi+t\eta)^2\big]=\mathrm{E}[\xi^2]+2t \mathrm{E}[\xi\eta]+t^2 \mathrm{E}[\eta^2]<br>\end{align}$$</p>
+<p>由此可见此式关于 $ t$的二次三项式不可能有两个不同实根，因而由其判别式知道</p>
+<p>$$\begin{align}<br>\Delta<br>=4 \mathrm{E}^2[\xi\eta]- 4 \mathrm{E}[\xi^2]\mathrm{E}[\eta^2]<br>\leqslant 0\to \mathrm{E}^2[\xi\eta]<br>\leqslant \mathrm{E}[\xi^2]\mathrm{E}[\eta^2]<br>\end{align}$$</p>
+<p>再次，若 $ \Delta=0$，则存在 $ t$，使得 $ \mathrm{E}\big[(\xi+t\eta)^2\big]=0$，由于</p>
+<p>$$\begin{align}<br> &amp;0\leqslant \mathrm{var}\big[\xi+t\eta\big]\leqslant  \mathrm{E}\big[(\xi+t\eta)^2\big]=0\\<br> &amp;\iff \mathrm{var}\big[\xi+t\eta\big]=0\\<br> &amp;\iff p(\xi+t\eta=0)=1 \text{ or } p(\xi=\lambda t)=1<br> \end{align}$$<br>该不等式告诉我们，若随机变量的方差存在，则它们的协方差也存在。</p>
+<p>【赫德不等式】</p>
+<p>假设 $ \mathrm{E}\big[|\xi|^\alpha\big]&lt;\infty$， $ \mathrm{E}\big[|\eta|^\beta\big]&lt;\infty$，其中 $ \alpha&gt;1,\beta&gt;1, \frac{1}{\alpha}+\frac{1}{\beta}=1$，那么</p>
+<p>$$\begin{align}<br>\mathrm{E}\big[|\xi\eta|\big]<br>\leqslant \mathrm{E}^{\frac{1}{\alpha}}\big[|\xi|^\alpha\big]\mathrm{E}^{\frac{1}{\beta}}\big[|\eta|^\beta\big]<br>\end{align}$$<br>特别的，当 $ \alpha=\beta=2$时，得施瓦茨不等式。</p>
+<p>【证明】<br>考虑曲线 $ y=x^{\alpha-1}$，任取 $ a&gt;0,b&gt;0$，有点 $ D(a,a^{\alpha-1})$， $ A(a,0)$， $ B(0,b)$， $ C(b^{\frac{1}{\alpha-1}},b)$。画图有</p>
+<p>$$\begin{align}<br>ab\leqslant S_{AOD}+S_{BOC}<br>\end{align}$$同时我们有<br>$$\begin{align}<br>S_{AOD}=\int_0^ax^{\alpha-1}dx=\frac{1}{\alpha}a^\alpha\quad S_{BOC}=\int_0^by^{\beta-1}dy=\frac{1}{\beta}b^\beta<br>\end{align}$$于是有<br>$$\begin{align}<br>ab\leqslant \frac{1}{\alpha}a^\alpha+\frac{1}{\beta}b^\beta<br>\end{align}$$现在令</p>
+<p>$$\begin{align}<br>a=\frac{|\xi|}{\mathrm{E}^{\frac{1}{\alpha}}\big[|\xi|^\alpha\big]}\quad b=\frac{|\eta|}{\mathrm{E}^{\frac{1}{\beta}}\big[|\eta|^\beta\big]}<br>\end{align}$$代入在不等式两边去期望有<br>$$\begin{align}<br>\mathrm{E}[ab]\leqslant \frac{1}{\alpha}+\frac{1}{\beta}<br>\end{align}$$整理即是结论。</p>
+<p>【闵可夫斯基不等式】<br>假设 $ r\leqslant 1$， $ \mathrm{E}\big[|\xi|^r\big]&lt;\infty$， $ \mathrm{E}\big[|\eta|^r\big]&lt;\infty$，那么</p>
+<p>$$\begin{align}<br>\mathrm{E}^{\frac{1}{r}}\big[(\xi+\eta)^r\big]<br>\leqslant \mathrm{E}^{ \frac{1}{r}}\big[|\xi|^r\big]+\mathrm{E}^{\frac{1}{r}}\big[|\eta|^r\big]<br>\end{align}$$</p>
+<p>【证明】<br>当 $ r=1$时，有 $ |\xi+\eta|\leqslant |\xi|+|\eta|$得结论</p>
+<p>当 $ r&gt;1$时，若 $ \mathrm{E}\big[|\xi+\eta|^r\big]=0$，则结论显然成立</p>
+<p>当 $ r&gt;1$时，且 $ \mathrm{E}\big[|\xi+\eta|^r\big]\neq0$，同时我们考虑赫德不等式 $\frac{1}{r}+\frac{1}{s}=1 \Longrightarrow s(r-1)=r\geqslant 1$有</p>
+<p>$$\begin{align}<br>&amp;|\xi+\eta|^r\leqslant |\xi|\cdot|\xi+\eta|^{r-1}+|\eta|\cdot|\xi+\eta|^{r-1}\\<br>\Longrightarrow&amp; \mathrm{E}\big[|\xi+\eta|^r\big]\leqslant \mathrm{E}\big[|\xi|\cdot|\xi+\eta|^{r-1}\big]+\mathrm{E}\big[|\eta|\cdot|\xi+\eta|^{r-1}\big]\\<br>\Longrightarrow&amp;\mathrm{E}\big[|\xi+\eta|^r\big]\leqslant \bigg[E^{\frac{1}{r}}\big[|\xi|^{r}\big]+\mathrm{E}^{\frac{1}{r}}\big[|\eta|^r\big]\bigg] \mathrm{E}^{\frac{1}{s}}\big[|\xi+\eta|^{s(r-1)}\big]\\<br>\Longrightarrow&amp;\mathrm{E}^{\frac{1}{r}}\big[(\xi+\eta)^r\big]<br>\leqslant \mathrm{E}^{ \frac{1}{r}}\big[|\xi|^r\big]+\mathrm{E}^{\frac{1}{r}}\big[|\eta|^r\big]<br>\end{align}$$</p>
+<p>当 $ 0&lt;r&lt;1$时有</p>
+<p>$$\begin{align}<br>&amp;|\xi+\eta|^r\leqslant |\xi|^r+|\eta|^r\\<br>\Longrightarrow&amp; \mathrm{E}\big[|\xi+\eta|^r\big]\leqslant \mathrm{E}\big[|\xi|^r\big]+\mathrm{E}\big[|\eta|^r\big]<br>\end{align}$$</p>
+<p>由此可见如果随机变量有又穷 $ r$阶绝对矩，那么他们的和也有又穷 $ r$阶绝对矩：</p>
+<p>$$\begin{align}<br>\mathrm{E}\big[|\xi|^r\big]&lt;\infty,\mathrm{E}\big[|\eta|^r\big]&lt;\infty \Longrightarrow \mathrm{E}\big[|\xi+\eta|^r\big]&lt;\infty<br>\end{align}$$</p>
+<p>【詹森不等式】<br>假设 $ \xi$是一随机变量，取值区间 $ (a,b)$, $ -\infty \leqslant a &lt;b \leqslant +\infty$； $ g(x),x\in(a,b) $ 是连续的凹函数，如果 $ \mathrm{E}[\xi]$和 $ \mathrm{E}[g(\xi)]$存在，则</p>
+<p>$$\begin{align}<br>\mathrm{E}\big[g(\xi)\big]\geqslant g \big(\mathrm{E}[\xi]\big)<br>\end{align}$$</p>
+<p>证明<br>如果函数 $ g(x)$在 $ (a,b)$上是凹的，那么对于任意的 $ x_1,x_2\in (a,b)$有</p>
+<p>$$\begin{align}<br>\frac{1}{2}\big[g(x_1)+g(x_2)\big]\geqslant g \big(\frac{x_1+x_2}{2}\big)<br>\end{align}$$那么根据这性质，对个 $ g(x)$上一点 $ (x_0,g(x_0))$，有切点斜率 $ k(x_0)$我们有</p>
+<p>$$\begin{align}<br>g(x)\geqslant k(x_0)(x-x_0)+g(x_0)<br>\end{align}$$现在取 $ x_0=\mathrm{E}[\xi]$，令 $ x=\xi$有</p>
+<p>$$\begin{align}<br>g(\xi)\geqslant k(\mathrm{E}[\xi])\big(\xi- \mathrm{E}[\xi]\big)+g \big(\mathrm{E}[\xi]\big)<br>\end{align}$$再两边取期望有结论</p>
+<p>【李雅普诺夫不等式】<br>对于任意实数 $ 0&lt;r&lt; s$， 如果 $ \mathrm{E}\big[|\xi|^s\big]&lt;\infty$，则</p>
+<p>$$\begin{align}<br>\mathrm{E}^{\frac{1}{r}}\big[|\xi|^r\big]<br>\leqslant \mathrm{E}^{\frac{1}{s}}\big[|\xi|^s\big]<br>\end{align}$$</p>
+<p>证明</p>
+<p>考虑詹森不等式，令 $ g(x)=|x|^t$，当 $ t\geqslant 1$时是凹函数，设 $ t= \frac{s}{r}&gt;1$有<br>$$\begin{align}<br>&amp;\mathrm{E}^\frac{s}{r}\big[|\xi|^r\big]= g \big(\mathrm{E}[|\xi|^r]\big)\leqslant\mathrm{E}\big[g(\xi)\big]=\mathrm{E}\big[|\xi|^s\big]\\<br>\Longrightarrow&amp;\mathrm{E}^{\frac{1}{r}}\big[|\xi|^r\big]<br>\leqslant \mathrm{E}^{\frac{1}{s}}\big[|\xi|^s\big]<br>\end{align}$$</p>
+<h4 id="四、弱大数定律"><a href="#四、弱大数定律" class="headerlink" title="四、弱大数定律"></a>四、弱大数定律</h4><p>定义：如果随机变量序列 $\displaystyle \{x_i\}$  服从弱大数定律，那么对于任意的 $ \varepsilon&gt;0$，有</p>
+<p>$$\begin{align}<br>\lim_{n\to \infty}p \bigg(\frac{1}{n}\bigg|\sum_{i=1}^n\big(x_i- \mathrm{E}[x_i]\big)\bigg|\geqslant \varepsilon\big)=0<br>\end{align}$$<br>成立。下面叙述一下常用的弱大数定律</p>
+<h5 id="4-1、马尔可夫大数定律"><a href="#4-1、马尔可夫大数定律" class="headerlink" title="4.1、马尔可夫大数定律"></a>4.1、马尔可夫大数定律</h5><p>若有随机变量序列 $ \{x_i\}_{i=1}^n$，对于 $ n\geqslant 1$满足下列条件：<br>1、 $\displaystyle \mathrm{E}\big[|\xi_n|\big]&lt;\infty$<br>2、 $\displaystyle \mathrm{var}\big[\sum_{i=1}^n x_i\big]&lt;\infty$<br>3、 $\displaystyle \lim_{n\to \infty} \frac{1}{n^2}\mathrm{var}\big[\sum_{i=1}^n x_i\big]=0$<br>那么随机变量序列 $ \{x_i\}$服从大数定律：<br>$$\begin{align}<br>\lim_{n\to \infty}p \bigg(\frac{1}{n}\bigg|\sum_{i=1}^n\big(x_i- \mathrm{E}[x_i]\big)\bigg|\geqslant \varepsilon\big)=0<br>\end{align}$$</p>
+<p>证明</p>
+<p>对任意的 $ \varepsilon&gt;0$， 由马尔可夫不等式知道</p>
+<p>$$\begin{align}<br>p \bigg(\bigg|\sum_{i=1}^n\big(x_i- \mathrm{E}[x_i]\big)\bigg|\geqslant n\varepsilon\big)<br>\leqslant \frac{\mathrm{var}\big[\sum_{i=1}^nx_i\big]}{n^2 \varepsilon^2}<br>\end{align}$$</p>
+<p>再由条件三即可得出结论。</p>
+<h6 id="4-1-1、切比雪夫大数定律"><a href="#4-1-1、切比雪夫大数定律" class="headerlink" title="4.1.1、切比雪夫大数定律"></a>4.1.1、切比雪夫大数定律</h6><p>若有随机变量序列 $ \{x_i\}_{i=1}^n$ 两两独立，对于任意的 $ n\geqslant 1$， 有 $ \mathrm{var}[x_n]\leqslant C$，那么随机变量序列 $ \{x_i\}$服从大数定律：</p>
+<p>$$\begin{align}<br>\lim_{n\to \infty}p \bigg(\frac{1}{n}\bigg|\sum_{i=1}^n\big(x_i- \mathrm{E}[x_i]\big)\bigg|\geqslant \varepsilon\big)=0<br>\end{align}$$</p>
+<p>证明<br>随机变量序列 $ \{x_i\}_{i=1}^n$ 两两独立，且对于任意的 $ n\geqslant 1$，有 $ \mathrm{var}[x_n]\leqslant C$。所有</p>
+<p>$$\begin{align}<br>\lim_{n\to \infty} \frac{1}{n^2}\mathrm{var}\big[\sum_{i=1}^nx_i\big]<br>=\lim_{n\to \infty} \frac{1}{n^2}\sum_{i=1}^n \mathrm{var}[x_i]<br>\leqslant \lim_{n\to \infty} \frac{C}{n}=0<br>\end{align}$$</p>
+<p>再由马尔可夫大数定律即可得出结论。</p>
+<h6 id="4-1-2、伯努利大数数定律"><a href="#4-1-2、伯努利大数数定律" class="headerlink" title="4.1.2、伯努利大数数定律"></a>4.1.2、伯努利大数数定律</h6><p>有 $ k_n$是 $ n$重伯努利实验中某事件 $ A$出现的次数，已知 $ A$出的概率为 $ \mu$，那么</p>
+<p>$$\begin{align}<br>\lim_{n\to \infty} p \bigg(\bigg|\frac{k_n}{n}-\mu\bigg|\geqslant \varepsilon\bigg)=0<br>\end{align}$$</p>
+<p>证明：<br>有$\displaystyle x_i\sim \mathrm{Ber}\big(x_i\mid \mu\big)=\mu^{x_i}(1-\mu)^{1-x_i},x_i\in\{0,1\}$，于是有<br>1、$ k_n=\sum_{i=1}^n x_i$，<br>2、而其中随机变量序列 $ \{x_i\}$是独立同分布的。 且有 $ \mathrm{E}[x_i]=\mu, \mathrm{var}[x_i]=\mu(1-\mu)\leqslant \frac{1}{4}$。</p>
+<p>由切比雪夫大数定律即可得出结论。</p>
+<h6 id="4-1-3、泊松大数数定律"><a href="#4-1-3、泊松大数数定律" class="headerlink" title="4.1.3、泊松大数数定律"></a>4.1.3、泊松大数数定律</h6><p>对于伯努利实验，有随机变量序列 $ \{x_i\}_{i=1}^n$，且有有$\displaystyle x_i\sim \mathrm{Ber}\big(x_i\mid \mu_i\big)=\mu_i^{x_i}(1-\mu_i)^{1-x_i},x_i\in\{0,1\}$。某事件 $ A$出现的次数 $ k_n=\sum_{i=1}^nx_i$，则</p>
+<p>$$\begin{align}<br>\lim_{n\to \infty }p \bigg(\bigg|\frac{k_n}{n}-\frac{1}{n}\sum_{i=1}^n \mu_i\bigg|\geqslant  \varepsilon\bigg)=0<br>\end{align}$$</p>
+<p>证明<br>令 </p>
+<p>$$\begin{align}<br>\xi_i=<br>\begin{cases}<br>1\, \text{在第i 次试验中A 出现}\\<br>0\, \text{在第i 次试验中A 不出现}<br>\end{cases}<br>\end{align}$$<br>由定律条件知道随机序列 $ \{\xi_i\}$相互独立，且有 $ p(\xi_i=1)=\mu_i,p(\xi_i=0)=1-\mu_i$</p>
+<p>又有 $ \mathrm{E}[\xi_i]=\mu_i, \mathrm{var}[\xi_i]=\mu_i(1-\mu_i)\leqslant \frac{1}{4}$</p>
+<p>于是由切比雪夫大数定律知道结论成立。</p>
+<p>评述 泊松大数定律是伯努利大数定律的推广，伯努利大数定律证明了事件在完全相同的条件下，在重复进行随机试验中频率的稳定性，而泊松定理表明，当独立进行的随机试验的条件变化时，频率仍然具有稳定性：随着 $ n$的无限增大，在 $ n$次独立试验中，事件 $ A$的频率趋于稳定在各次试验中事件 $ A$出现概率的算术平均值。</p>
+<p>上面几种大数定律一般不要求随机序列 $ \{\xi_i\}$有相同分布，但是却要求方差满足一定条件，而下面的定律表明对于独立同分布随机变量，只要数学期望又穷就够了。</p>
+<h5 id="4-2、辛钦大数数定律"><a href="#4-2、辛钦大数数定律" class="headerlink" title="4.2、辛钦大数数定律"></a>4.2、辛钦大数数定律</h5><p>对于独立同分布的随机变量序列 $ \{x_i\}_{i=1}^n$，如果数学期望 $ \mathrm{E}[x_i]=\mu&lt;\infty$，则</p>
+<p>$$\begin{align}<br>\lim_{n\to \infty}p\bigg(\big|\frac{1}{n}\sum_{i=1}^n x_i-\mu\big|\geqslant \varepsilon\bigg)=o<br>\end{align}$$</p>
+<p>证明</p>
+<p>由于随机序列 $ \{x_i\}_{i=1}^n$同分布，故它们有相同的特征函数 $ \varphi(t)$。同时为简洁记 $ \xi_n=\frac{1}{n}\sum_{i=1}^n x_i$。同时知道随机序列 $ \{x_i\}_{i=1}^n$相互独立，根据特征函数性质易得</p>
+<p>$$\begin{align}<br>\varphi_{\xi_n}(t)<br>&amp;=\varphi_n(t)<br>=\mathrm{E}\big[\mathrm{e}^{\rm{i}t \xi_n}\big]<br>=\bigg[\varphi \big(\frac{t}{n}\big)\bigg]^n<br>=\bigg[\varphi(0)+\dot{\varphi}(0)\frac{t}{n}+o \big(\frac{t}{n}\big)\bigg]^n\\<br>&amp;=\bigg[1+\mathrm{i}\mu \frac{t}{n}+o \big(\frac{t}{n}\big)\bigg]^2<br>\end{align}$$</p>
+<p>对于任意的 $ t\in (-\infty,+\infty)$，有</p>
+<p>$$\begin{align}<br>\lim_{n\to \infty} \varphi_n(t)=\lim_{n\to \infty} \bigg[1+\mathrm{i}\mu \frac{t}{n}+o \big(\frac{t}{n}\big)\bigg]^2=\mathrm{e}^{\mathrm{i}\mu t}<br>\end{align}$$</p>
+<p>这样 $ \xi_n$的特征函数 $ \varphi_n(t)$服从退化分布的特征函数，所以有</p>
+<p>$$\begin{align}<br>\lim_{n\to \infty}p(\xi_n\leqslant x)=F(x)=\begin{cases}<br>0,x&lt;\mu\\<br>1,x\geqslant \mu<br>\end{cases}<br>\end{align}$$<br>于是对于任意的 $ \varepsilon&gt;0$有</p>
+<p>$$\begin{align}<br>\lim_{n\to \infty} \big(\big|\xi_n-\mu\big|&lt;\varepsilon\big)<br>&amp;=\lim_{n\to\infty}p \big(\mu- \varepsilon&lt;\xi_n&lt;\mu- \varepsilon\big)\\<br>&amp;=\lim_{n\to \infty}\big[p \big(\xi_n&lt;\mu+\varepsilon\big)- p \big(\xi_n\leqslant \mu- \varepsilon\big)\big]\\<br>&amp;=F(\mu+\varepsilon)- F(\mu- \varepsilon)\\<br>&amp;=1-0=1<br>\end{align}$$</p>
+<p>显然伯努利大数定律是辛钦大数定律的特殊情形。</p>
+<h4 id="五、大数定律的应用"><a href="#五、大数定律的应用" class="headerlink" title="五、大数定律的应用"></a>五、大数定律的应用</h4><p>统计试验计算，要求积分 $\displaystyle \int_a^bg(x)dx$，令 $ \xi_i\sim \mathrm{U}(a,b)$，有随机变量序列 $ \{\xi_i\}_{i=1}^n$。由大数定律有<br>$$\begin{align}<br>p \Bigg(\lim_{n\to \infty} \bigg|\frac{1}{n}\sum_{i=1}^n g(\xi_i)- \frac{1}{b-a}\int_a^bg(x)dx\bigg|=0\Bigg)=1<br>\end{align}$$也就是说有：</p>
+<p>$$\begin{align}<br>\int_{a}^bg(x)dx\approx \frac{b-a}{n}\sum_{i=1}^n g(\xi_i)<br>\end{align}$$</p>
+<h4 id="六、评述"><a href="#六、评述" class="headerlink" title="六、评述"></a>六、评述</h4><h5 id="6-1、一个哲学的说法"><a href="#6-1、一个哲学的说法" class="headerlink" title="6.1、一个哲学的说法"></a>6.1、一个哲学的说法</h5><p>大数定律实质是哲学上可知论的证明。即人类能够正确认识世界。怎么样才能正确的认识世界，毛同志在认识论实践论中说到：</p>
+<blockquote>
+</blockquote>
+<p>1、占有十分丰富和合乎实际的感性材料<br>2、运用科学思维方法对感性材料进行去粗取精、去伪存真、由此及彼、由表及里分析与综合的加工制作。</p>
+<p>大数定律符合这两条规律，但是它是一种归纳综合方法，缺乏演绎逻辑。补上这一缺陷的是后来的因果推断理论的兴起。<br>按照贝叶斯的观点,人类是可以从客观世界观察的数据 $\mathcal{D}$ 中学习到真理  $\theta^*$的：$p(\theta\mid \mathcal{D})\propto p(\mathcal{D}\mid \theta)p(\theta)$  。</p>
+<p>当我们观察到的数据足够多时，足够真实的时候，$\displaystyle \lim_{\mathcal{D}\to reality } p(\theta=\theta^*\mid \mathcal{D})=1$  ，人类的估计应该足够接近真理。概率论这一理论应该要能证明这一点：人类能够认识世界，或者说这个世界能够被正确认识。或者更进一步说，神经元组成的大脑，或者有类似人工神经网络的智能体。在大数定律的保证下他们能够正确认识世界。而这也是我们回顾百年大数定律的现实意义之一。</p>
+<h5 id="6-2、矩方法"><a href="#6-2、矩方法" class="headerlink" title="6.2、矩方法"></a>6.2、矩方法</h5><p>证明弱大数定理中，矩不等式占据重要地位。首先矩是观测随机变量重要的工具。为什么矩对随机变量如此重要，我们回归一下矩对定义</p>
+<p>$$\begin{align}<br>\mathbb{M}[n]=\int x^n dF(x)=\int x^np(x)dx<br>\end{align}$$</p>
+<p>简而言之矩反应了概率密度函数的形状。容易证明k阶矩是特征函数k阶导数(t=0)。<br>由于特征函数与概率分布等价。当我们知道特征函数所有阶导数时候的，按泰勒展开也就是可以无限逼近了。所以我们一定可以通过矩知道分布的一些性质。</p>
+<p>待续</p>
+<p>^[1] Seneta, E. (2013). A Tricentenary history of the Law of Large Numbers. Bernoulli, 19(4). <a href="https://doi.org/10.3150/12-BEJSP12" target="_blank" rel="noopener">https://doi.org/10.3150/12-BEJSP12</a></p>
+<p><hr></p>
+<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="https://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="https://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="https://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="https://www.limoncc.com">[ https://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%">httpss://<a href="http://www.limoncc.com/post/d780e582351be7e8/">www.limoncc.com/post/d780e582351be7e8/</a></td></tr></table><table border="0" width="100%" style="display:inline !important;font-size:14px !important;color:#555555;"><tr><td align="left" width="100%" style="font-family:helvetica;font-size:14px !important;font-weight:bold;">如果您需要引用本文，请参考：</td></tr><tr><td align="left" width="100%">引线小白. (Jan. 2, 2019). 《弱大数定律——百年大数定律系列01》[Blog post]. Retrieved from <a href="https://www.limoncc.com/post/d780e582351be7e8">https://www.limoncc.com/post/d780e582351be7e8</a></td></tr><tr><td align="left" width="100%">@online{limoncc-d780e582351be7e8,<br>title={弱大数定律——百年大数定律系列01},<br>author={引线小白},<br>year={2019},<br>month={Jan},<br>date={2},<br>url={\url{<a href="https://www.limoncc.com/post/d780e582351be7e8}}">https://www.limoncc.com/post/d780e582351be7e8}}</a>,<br>}</td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/概率论/" rel="tag">#概率论</a>
+          
+            <a href="/tags/弱大数定律/" rel="tag">#弱大数定律</a>
+          
+            <a href="/tags/大数定律/" rel="tag">#大数定律</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/52e9ed9ae74c99f3b483237533c8c708/" rel="next" title="测度论与革命一">
+                <i class="fa fa-chevron-left"></i> 测度论与革命一
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/71f28c676a518f5f/" rel="prev" title="弱收敛与连续定理——百年大数定律系列02">
+                弱收敛与连续定理——百年大数定律系列02 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+<!--           </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div> -->
+        <div id="vcomments"></div>
+        <script>new Valine({
+          el: "#vcomments",
+      appId: "BVjuNRCpkVSkz82jFmadIvY8-gzGzoHsz",
+    appKey: "bRjXPp55dop7RTC2xgunGdiP"})
+  </script>'
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="引线小白" />
+          <p class="site-author-name" itemprop="name">引线小白</p>
+          <p class="site-description motion-element" itemprop="description">小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">49</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">93</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="" target="_blank" title="Design">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Design
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.behance.net/limoncc" target="_blank" title="Behance">
+                  
+                    <i class="fa fa-fw fa-behance"></i>
+                  
+                  Behance
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.pinterest.com/aegeanfan/" target="_blank" title="Pinterest">
+                  
+                    <i class="fa fa-fw fa-pinterest"></i>
+                  
+                  Pinterest
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/limoncc" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://weibo.com/3483157951" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://www.zhihu.com/people/limoncc" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              设计不止，折腾不息。
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://chuangzaoshi.com" title="创造狮" target="_blank">创造狮</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、简要回顾"><span class="nav-number">1.</span> <span class="nav-text">一、简要回顾</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、随机变量序列收敛性"><span class="nav-number">2.</span> <span class="nav-text">二、随机变量序列收敛性</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1、依概率1收敛"><span class="nav-number">2.1.</span> <span class="nav-text">2.1、依概率1收敛</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2、依概率收敛"><span class="nav-number">2.2.</span> <span class="nav-text">2.2、依概率收敛</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3、依分布收敛"><span class="nav-number">2.3.</span> <span class="nav-text">2.3、依分布收敛</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4、依矩收敛"><span class="nav-number">2.4.</span> <span class="nav-text">2.4、依矩收敛</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、概率不等式"><span class="nav-number">3.</span> <span class="nav-text">三、概率不等式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1、随机变量不等式引理"><span class="nav-number">3.1.</span> <span class="nav-text">3.1、随机变量不等式引理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2、马尔可夫不等式"><span class="nav-number">3.2.</span> <span class="nav-text">3.2、马尔可夫不等式</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#3-2-1、切比雪夫不等式"><span class="nav-number">3.2.1.</span> <span class="nav-text">3.2.1、切比雪夫不等式</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-2-2、其他矩不等式"><span class="nav-number">3.2.2.</span> <span class="nav-text">3.2.2、其他矩不等式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、弱大数定律"><span class="nav-number">4.</span> <span class="nav-text">四、弱大数定律</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1、马尔可夫大数定律"><span class="nav-number">4.1.</span> <span class="nav-text">4.1、马尔可夫大数定律</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#4-1-1、切比雪夫大数定律"><span class="nav-number">4.1.1.</span> <span class="nav-text">4.1.1、切比雪夫大数定律</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4-1-2、伯努利大数数定律"><span class="nav-number">4.1.2.</span> <span class="nav-text">4.1.2、伯努利大数数定律</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4-1-3、泊松大数数定律"><span class="nav-number">4.1.3.</span> <span class="nav-text">4.1.3、泊松大数数定律</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2、辛钦大数数定律"><span class="nav-number">4.2.</span> <span class="nav-text">4.2、辛钦大数数定律</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#五、大数定律的应用"><span class="nav-number">5.</span> <span class="nav-text">五、大数定律的应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#六、评述"><span class="nav-number">6.</span> <span class="nav-text">六、评述</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#6-1、一个哲学的说法"><span class="nav-number">6.1.</span> <span class="nav-text">6.1、一个哲学的说法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-2、矩方法"><span class="nav-number">6.2.</span> <span class="nav-text">6.2、矩方法</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">引线小白&nbsp &nbsp |&nbsp &nbsp  一个理想主义者，再造自我，以期未来。</span>
+</div>
+
+<div class="powered-by">
+  由 <a rel="external nofollow" class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a rel="external nofollow" class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>&nbsp &nbsp| &nbsp &nbsp Hosted by  <a href="https://github.com" style="font-weight: bold">Github Pages</a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+<!--   
+   
+  
+
+  
+
+ -->
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+<!--   <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+     showMathMenu: false,
+     showMathMenuMSIE: false,
+     tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+          processEscapes: true
+        },
+        TeX: {
+          equationNumbers: {autoNumber: 'AMS'},
+          Macros: {bm: "\\boldsymbol"}
+        },
+        'HTML-CSS': {
+          imageFont: null
+        }
+    });
+  </script> -->
+<!--     MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    }); -->
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+    processEscapes: true,
+    tags: 'ams',
+    macros: {
+                                            bm: "\\boldsymbol",
+					    T:"\\intercal",
+                                            oiint: "{\\iint\\kern{-20mu}{\\unicode{x2B2D}}}",
+                                            oiiint: "{\\iiint\\kern{-24.5mu}\\large{\\unicode{x2B2D}}}"
+                                },
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+  <script type="text/x-mathjax-config">
+MathJax.texReset();
+MathJax.typeset();
+  </script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_SVG-full"></script> -->
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Es7wAnqi0QiGhMLoyl7mkrQo-gzGzoHsz", "BxPXaoPFp3PzWqBTSe6VUuQS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</body>
+</html>
