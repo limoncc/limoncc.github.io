@@ -94,7 +94,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2023-12-12T10:30:58.346Z">
+<meta property="og:updated_time" content="2024-02-19T14:07:08.245Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何训练——大语言模型研究02">
 <meta name="twitter:description" content="本文主要介绍了如何训练大语言模型与人类对齐一些理论问题，最近发现RLFT实质是一个贝叶斯推断，本文基于贝叶斯推断提出了一个类似多脑区的多模型多模态训练构想。如有错误请指正。">
@@ -395,8 +395,8 @@
 <p>构造一个对话数据集 $\mathcal{D}=\{(x_i,y_i)\}$，其中 $x_i$表示指令， $y_i$是预训练的语言模型的输出。 $\pi_0(y\mid x)$是从指令到输出的概率分布。</p>
 <p>当前有两条研究路线可以使预训练语言模型与人类对齐，这包括监督微调和基于人类反馈的强化学习微调。</p>
 <p>$$\begin{align}<br>J_{\mathrm{SFT}}(\theta)=\mathbb{E}_{(x,y)\sim \mathcal{D}}\big[\log \pi_{\theta}(y\mid x)\big]<br>\end{align}$$</p>
-<p>$$\begin{align}<br>J_{\mathrm{RLFT}}(\theta)=\mathbb{E}_{y\sim \pi_{\theta}}\big[ r(x,y)\big]-\beta\mathbb{KL}[\pi_{\theta}\parallel \pi_{0}]<br>\end{align}$$</p>
-<h4 id="二、RLFT实质是一个贝叶斯推断"><a href="#二、RLFT实质是一个贝叶斯推断" class="headerlink" title="二、RLFT实质是一个贝叶斯推断"></a>二、RLFT实质是一个贝叶斯推断</h4><p>RLFT实质是一个贝叶斯推断[^3]，$\pi$在强化学习中是策略的意思，这里我们不妨理解为大语言模型，或者说就是一个概率分布。一开始我们通过语料训练了一个预训练模型 $\pi_{\text{PT}}$，然后有得到一个 $\pi_{\text{SFT}}$模型，接下来通过RLHF我们要得到一个 $\pi_{\text{RLHF}}$的模型。这其实是什么？是不断调整分布的过程，或者说是语言模型不断调整信念的过程。</p>
+<p>$$\begin{align}<br>J_{\mathrm{RLHF}}(\theta)=\mathbb{E}_{y\sim \pi_{\theta}}\big[ r(x,y)\big]-\beta\mathbb{KL}[\pi_{\theta}\parallel \pi_{0}]<br>\end{align}$$</p>
+<h4 id="二、RLHF实质是一个贝叶斯推断"><a href="#二、RLHF实质是一个贝叶斯推断" class="headerlink" title="二、RLHF实质是一个贝叶斯推断"></a>二、RLHF实质是一个贝叶斯推断</h4><p>RLHF实质是一个贝叶斯推断[^3]，$\pi$在强化学习中是策略的意思，这里我们不妨理解为大语言模型，或者说就是一个概率分布。一开始我们通过语料训练了一个预训练模型 $\pi_{\text{PT}}$，然后有得到一个 $\pi_{\text{SFT}}$模型，接下来通过RLHF我们要得到一个 $\pi_{\text{RLHF}}$的模型。这其实是什么？是不断调整分布的过程，或者说是语言模型不断调整信念的过程。</p>
 <p>符号说明$\mathcal{D}=\{(x_i,y_i)\}$，其中 $x_i$表示指令， $y_i$是预训练的语言模型的输出。 $\pi(y\mid x)$是从指令到输出的概率分布。</p>
 <p>1、首先一开始有一个在大规模语料上训练的语言模型 $\pi_0(y\mid x)$, 目前它表现欠佳，它的世界和人类的世界差别有点大，说起话来前言不搭后语。<br>2、好了现在有一个对话语料 $\mathcal{D}=\{(x_i,y_i)\}$，这个对话预料的特点就是真实反应了人类世界的情况，或者说基于此我们能生成一个评分函数 $r(x,y)$这个函数能给语言模型基于指令 $x$生成的 $y$打分。既然如此不如这样思考</p>
 <p>$$\begin{align}<br>q(r\mid y,x )\propto \exp\bigg(\frac{1}{\beta}r(x,y)\bigg)<br>\end{align}$$</p>
@@ -406,7 +406,7 @@
 <p>$$\begin{align}<br>\pi_{\text{KL-RL}}(y\mid x, r)<br>\propto q(r\mid y,x )\pi_0(y\mid x)<br>=\exp\bigg(\frac{1}{\beta}r(x,y)\bigg)\pi_0(y\mid x)<br>\end{align}$$</p>
 <p>或者加上归一参数或者说证据$Z(y,x,r)$<br>$$\begin{align}<br>\pi_{\text{KL-RL}}(y\mid x, r)  = \frac{1}{Z}\exp\bigg(\frac{1}{\beta}r(x,y)\bigg)\pi_0(y\mid x)<br>\end{align}$$<br>其中 $\displaystyle  Z(y,x,r)=\int \exp\bigg(\frac{1}{\beta}r(x,y)\bigg)\pi_0(y\mid x)dy$</p>
 <p>现在我们是无法直接得到 $\pi_{\text{KL-RL}}(y\mid x, r)$，计算证据$Z(y,x,r)$计算是巨大的。但是我们可以让一个分布接进它，或者最好的方式就是就地取材微调 $\pi_0(y\mid x,\theta)$得到 $\pi_{\theta}(y\mid x)$使得它接近。 我们的后验$\pi_{\text{KL-RL}}(y\mid x, r)$，这样我们就得到了对齐后的模型。我们自然就使用到了计算分布相似度的 $\mathbb{KL}$散度。于是问题就变为了</p>
-<p>$$\begin{align}<br>\min_{\theta}\mathbb{KL}\bigg[\pi_{\theta}(y\mid x)\parallel\pi_{\text{KL-RL}}(y\mid x, r)\bigg]<br>\end{align}$$<br>不难证明它与RLFT是等价的。</p>
+<p>$$\begin{align}<br>\min_{\theta}\mathbb{KL}\bigg[\pi_{\theta}(y\mid x)\parallel\pi_{\text{KL-RL}}(y\mid x, r)\bigg]<br>\end{align}$$<br>不难证明它与RLHF是等价的。</p>
 <p>证明：</p>
 <p>$$\begin{align}<br>&amp;\min_{\theta}\mathbb{KL}\bigg[\pi_{\theta}(y\mid x)\parallel\pi_{\text{KL-RL}}(y\mid x, r)\bigg]=\min_{\theta}\int \pi_\theta \log \frac{\pi_\theta}{\pi_{\text{KL-RL}}}dy\\<br>&amp;=\min_{\theta}\int \pi_\theta [\log \pi_\theta -\log\pi_{\text{KL-RL}} ]dy\\<br>&amp;=-\max_{\theta}\int \pi_\theta \Bigg[\log\Big[\frac{1}{Z}\exp\bigg(\frac{1}{\beta}r(x,y)\bigg)\pi_0(y\mid x)\Big] -\log \pi_\theta\Bigg]dy\\<br>&amp;=-\max_{\theta}\mathbb{E}_{(x,y)\sim\pi_{\theta}}\bigg[\frac{1}{\beta}r(x,y)-\log Z+\log \frac{\pi_0}{\pi_\theta}\bigg]\\<br>&amp;=-\max_{\theta}\frac{1}{\beta}\mathbb{E}_{(x,y)\sim\pi_{\theta}}\bigg[r(x,y)-\log Z+\log \frac{\pi_0}{\pi_\theta}\bigg]\\<br>&amp;=-\max_{\theta}\frac{1}{\beta}\mathbb{E}_{(x,y)\sim\pi_{\theta}}\big[r(x,y)\big]-\mathbb{E}_{(x,y)\sim\pi_{\theta}}\bigg[\log \frac{\pi_0}{\pi_\theta}\bigg]+C\\<br>&amp;=-\max_{\theta}\frac{1}{\beta}\mathbb{E}_{(x,y)\sim\pi_{\theta}}\big[r(x,y)\big]+\mathbb{KL}[\pi_\theta \parallel\pi_0]+C\\<br>&amp;= \min_{\theta} \mathbb{E}_{(x,y)\sim\pi_{\theta}}\big[r(x,y)\big]-\beta\mathbb{KL}[\pi_\theta \parallel\pi_0]<br>\end{align}$$</p>
 <h4 id="三、C-RLFT-条件强化学习微调"><a href="#三、C-RLFT-条件强化学习微调" class="headerlink" title="三、C-RLFT(条件强化学习微调)"></a>三、C-RLFT(条件强化学习微调)</h4><p>openchat3.5模型提出了C-RLFT(条件强化学习微调)[^1]，它充分利用了两类数据集 $\mathcal{D}_{sub}$, $\mathcal{D}_{exp}$，其中一类sub是成本比较低的，exp则是专家标注过的。这样我们得到一个综合的数据集$\displaystyle \mathcal{D}_c=\mathcal{D}_{sub}\cup \mathcal{D}_{exp}=\{x_i,y_i,c_i\},c_i\in \{exp,sub\}$，这样处理奖励</p>
@@ -420,10 +420,10 @@
 <p>求解这些方程为我们提供了最优策略 $\pi^*$</p>
 <p>$$\begin{align}<br>\pi^*(y\mid x,c ) &amp;= \frac{1}{Z(x,c)}\pi_c(y\mid x,c)\exp\bigg(\frac{1}{\beta}r_c(x,y)\bigg)\\<br>Z(x,c) &amp;= \int_{y}\pi_{c}(y\mid x,c)\exp\bigg(\frac{1}{\beta}r_c(x,y)\bigg)dy<br>\end{align}$$</p>
 <p>其中 $Z(x,c)$是归一化项，确保它是 $\pi^*(y\mid x,c ) $有效的概率分布。</p>
-<p>也可以基于「RLFT实质是一个贝叶斯推断」的思想重新表述问题</p>
+<p>也可以基于「RLHF实质是一个贝叶斯推断」的思想重新表述问题</p>
 <p>$$\begin{align}<br>\pi_{\theta} &amp; = \arg\min_{\theta}\mathbb{E}_{(x,c)\sim \mathcal{D}_c}\big[\mathbb{KL}[\pi^*(\cdot\mid x,c))\parallel  \pi_{\theta}(\cdot\mid x,c]\big]\\<br>&amp;=\arg\min_{\theta}\mathbb{E}_{(x,c)\sim \mathcal{D}_c}\big[\mathbb{E}_{y\sim \pi^*}[-\log\pi_{\theta}(y\mid x,c)]\big]\\<br>&amp;=\arg\max_{\theta}\mathbb{E}_{(x,y,c)\sim \mathcal{D}_c}\bigg[\exp\bigg(\frac{1}{\beta}r_c(x,y)\log \pi_{\theta}(y\mid x,c)\bigg)\bigg]<br>\end{align}$$</p>
 <p>也就是有：<br>$$\begin{align}<br>\pi^*(y\mid x,c)\propto \pi_c(y\mid x,c)\exp\bigg(\frac{1}{\beta}r_c(x,y)\bigg)<br>\end{align}$$</p>
-<h4 id="四、关于未来的多模态语言模型"><a href="#四、关于未来的多模态语言模型" class="headerlink" title="四、关于未来的多模态语言模型"></a>四、关于未来的多模态语言模型</h4><p>既然RLFT实质是一个贝叶斯推断，而且C-RLFT(条件强化学习微调)已经示范了证怎么充分利用数据集的信息来与人类对齐。那么我们是不是可以充分利率贝叶斯的思想来扩展大语言模型。</p>
+<h4 id="四、关于未来的多模态语言模型"><a href="#四、关于未来的多模态语言模型" class="headerlink" title="四、关于未来的多模态语言模型"></a>四、关于未来的多模态语言模型</h4><p>既然RLHF实质是一个贝叶斯推断，而且C-RLFT(条件强化学习微调)已经示范了证怎么充分利用数据集的信息来与人类对齐。那么我们是不是可以充分利率贝叶斯的思想来扩展大语言模型。</p>
 <p>如果我们有视觉、听觉、味觉、触觉的一个庞大数据集。如何训练它们与人类对齐呢？</p>
 <p>$\displaystyle \mathcal{D}_{\text{total}}=\mathcal{D}_{text}\cup \mathcal{D}_{audio}\cup \mathcal{D}_{image}\cup \mathcal{D}_{video}\cup \mathcal{D}_{smell}\cup \mathcal{D}_{tactus}=\{x_i,y_i,c_i\},c_i\in \{text,audio,image,video,smell,tactus\}$</p>
 <p>现在的做法是一个统一的大模型，个人认为未来一定是分开的小模型。理由如下，既然我们是训练一个对齐模型与结合先验和人类信念似然后的后验接近。那么为什么不能是多个模型呢？</p>
@@ -680,7 +680,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、引言"><span class="nav-number">1.</span> <span class="nav-text">一、引言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、RLFT实质是一个贝叶斯推断"><span class="nav-number">2.</span> <span class="nav-text">二、RLFT实质是一个贝叶斯推断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、C-RLFT-条件强化学习微调"><span class="nav-number">3.</span> <span class="nav-text">三、C-RLFT(条件强化学习微调)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、关于未来的多模态语言模型"><span class="nav-number">4.</span> <span class="nav-text">四、关于未来的多模态语言模型</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、引言"><span class="nav-number">1.</span> <span class="nav-text">一、引言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、RLHF实质是一个贝叶斯推断"><span class="nav-number">2.</span> <span class="nav-text">二、RLHF实质是一个贝叶斯推断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、C-RLFT-条件强化学习微调"><span class="nav-number">3.</span> <span class="nav-text">三、C-RLFT(条件强化学习微调)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、关于未来的多模态语言模型"><span class="nav-number">4.</span> <span class="nav-text">四、关于未来的多模态语言模型</span></a></li></ol></div>
             
           </div>
         </section>
