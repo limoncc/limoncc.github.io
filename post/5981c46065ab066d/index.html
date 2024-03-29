@@ -99,7 +99,7 @@
 <meta property="og:image" content="https://www.limoncc.com/images/loss02.png">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2024-03-29T04:45:53.598Z">
+<meta property="og:updated_time" content="2024-03-29T04:47:41.879Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="01解读技术报告初识书生.浦语2——internlm2系列">
 <meta name="twitter:description" content="本文主要总结了internlm2的一个大致印象，并结合internlm2点技术报告讨论了笔者感兴趣的内容，和我自己的一些体会，如有错误请指正。">
@@ -437,8 +437,9 @@
 <p>InternLM2 的训练过程从 4K 上下文语料库开始，随后过渡到具有 32K 上下文的语料库。50%的数据仍然短于4096个令牌，而不是只使用32k语料库。这个长上下文训练阶段约占总步骤的 9%。当适应这些较长的序列时，我们将旋转位置嵌入 （RoPE） 基数从 50,000 调整到 1,000,000，确保对长上下文进行更有效的位置编码。</p>
 <p>这里补充一下代码中的DynamicNTKScalingRotaryEmbedding是怎么回事？先看模型里面的配置文件</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"rope_scaling"</span>: &#123;</span><br><span class="line">    <span class="attr">"factor"</span>: <span class="number">3.0</span>,</span><br><span class="line">    <span class="attr">"type"</span>: <span class="string">"dynamic"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"rope_theta"</span>: <span class="number">1000000</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>总的来说，DynamicNTK的核心思想是<strong>推理长度小于等于训练长度时，不进行插值；推理长度大于训练长度时，放大base动态插值</strong>。具体来说当我们要计算某个token的嵌入向量的第$i$组的旋转位置编码的时候,我们需要计算 $m\theta_i=m*\text{base}^{-\frac{2i}{d}}$。为了使得这个原理变的显然，笔者稍微改变一下符号。<br>$$\begin{align}<br>\rho(\text{position},\text{dim_index})=\cos\big(\text{position}\times\text{base}^{-\frac{2\times \text{dim_index}}{\text{dim}}}\big)-\mathrm{i}\times\sin\big(\text{position}\times\text{base}^{-\frac{2\times \text{dim_index}}{\text{dim}}}\big)<br>\end{align}$$</p>
-<p>我们知道旋转位置编码有一个特点就是如果我们固定维度的索引$\text{dim_index}$, 单独观察位置编码和token位置的关系。</p>
+<p>总的来说，DynamicNTK的核心思想是<strong>推理长度小于等于训练长度时，不进行插值；推理长度大于训练长度时，放大base动态插值</strong>。具体来说当我们要计算某个token的嵌入向量的第$i$组的旋转位置编码的时候,我们需要计算 $m\theta_i=m*\text{base}^{-\frac{2i}{d}}$。为了使得这个原理变的显然，笔者稍微改变一下符号。</p>
+<p>$$\begin{align}<br>\rho(\text{position},\text{dim_index})=\cos\big(\text{position}\times\text{base}^{-\frac{2\times \text{dim_index}}{\text{dim}}}\big)-\mathrm{i}\times\sin\big(\text{position}\times\text{base}^{-\frac{2\times \text{dim_index}}{\text{dim}}}\big)<br>\end{align}$$</p>
+<p>我们知道旋转位置编码有一个特点就是如果我们固定维度的索引 $\text{dim_index}$, 单独观察位置编码和token位置的关系。</p>
 <div align="center"><img src="/images/位置编码.png" width="600" ==""><br></div>
 
 <p>对于嵌入向量的第一组编码，观察如果该嵌入向量对应token在第1位到100位的位置编码$sin$值。这个值震荡的很厉害，或者说在嵌入向量低维度位置编码是高频信息。在观察嵌入向量的第200组编码，震荡明显减少，或者说在嵌入向量高维度位置编码是低频信息。也可以这么说：</p>
