@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="引线小白, limoncc, 柠檬CC, 设计, 数据分析, 数据挖掘, 大数据, 数学, 机器学习" />
+  <meta name="keywords" content="大语言模型,LLM,如何微调,LoRA,QLoRA,ORPO" />
 
 
 
@@ -84,16 +84,23 @@
 
 
 
-<meta name="description" content="小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="柠檬CC">
-<meta property="og:url" content="https://www.limoncc.com/tags/大语言模型/index.html">
+<meta name="description" content="本文主要介绍了如何微调大语言模型常见的十个问题。如有错误请指正。">
+<meta name="keywords" content="大语言模型,LLM,如何微调,LoRA,QLoRA,ORPO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何微调十问——大语言模型研究03">
+<meta property="og:url" content="https://www.limoncc.com/post/8d670d28c70bf231/index.html">
 <meta property="og:site_name" content="柠檬CC">
-<meta property="og:description" content="小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。">
+<meta property="og:description" content="本文主要介绍了如何微调大语言模型常见的十个问题。如有错误请指正。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.limoncc.com/imags/lora-expimage4.jpg">
+<meta property="og:image" content="https://www.limoncc.com/imags/RAG研究.png">
+<meta property="og:image" content="https://www.limoncc.com/images/cc.png">
+<meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
+<meta property="og:updated_time" content="2024-06-22T04:44:40.454Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="柠檬CC">
-<meta name="twitter:description" content="小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。">
+<meta name="twitter:title" content="如何微调十问——大语言模型研究03">
+<meta name="twitter:description" content="本文主要介绍了如何微调大语言模型常见的十个问题。如有错误请指正。">
+<meta name="twitter:image" content="https://www.limoncc.com/imags/lora-expimage4.jpg">
 
 
 
@@ -112,7 +119,7 @@
 </script>
 
   <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
-  <title> 标签: 大语言模型 | 柠檬CC </title>
+  <title> 如何微调十问——大语言模型研究03 | 柠檬CC </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -161,7 +168,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -292,302 +299,189 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        大语言模型
-        <small>标签</small>
-      </h2>
-    </div>
-
+  <div id="posts" class="posts-expand">
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/8d670d28c70bf231/" itemprop="url">
-              
-                <span itemprop="name">如何微调十问——大语言模型研究03</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2024-06-21T17:16:10+08:00"
-              content="2024-06-21" >
-          06-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/5981c46065ab066d/" itemprop="url">
-              
-                <span itemprop="name">01解读技术报告初识书生.浦语2——internlm2系列</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2024-03-27T19:23:52+08:00"
-              content="2024-03-27" >
-          03-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/cbc3dd8ffe60158f/" itemprop="url">
-              
-                <span itemprop="name">如何使用llama.cpp部署InternLM2——大模型CPU部署系列05</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2024-01-21T11:14:56+08:00"
-              content="2024-01-21" >
-          01-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/7a80f1e682c4de99/" itemprop="url">
-              
-                <span itemprop="name">大模型使用工具原理——大模型CPU部署系列04</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2024-01-07T14:39:55+08:00"
-              content="2024-01-07" >
-          01-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/bd7e41e00dc8afad/" itemprop="url">
-              
-                <span itemprop="name">如何训练——大语言模型研究02</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2023-12-07T17:16:10+08:00"
-              content="2023-12-07" >
-          12-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/14476f03eace0cbc/" itemprop="url">
-              
-                <span itemprop="name">不得不说的Chat Format——大模型CPU部署系列03</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2023-10-25T20:30:08+08:00"
-              content="2023-10-25" >
-          10-25
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/360dc16c61c8a0a9/" itemprop="url">
-              
-                <span itemprop="name">gguf的原理和使用——大模型CPU部署系列02</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2023-10-24T10:30:08+08:00"
-              content="2023-10-24" >
-          10-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/9971336748ed0b5b/" itemprop="url">
-              
-                <span itemprop="name">一些信息总结——大模型量化与CPU部署系列01</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2023-10-24T10:28:00+08:00"
-              content="2023-10-24" >
-          10-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/66ccaec741608007/" itemprop="url">
-              
-                <span itemprop="name">一个简单例子——Run AI In Rust系列01</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2023-10-19T15:03:19+08:00"
-              content="2023-10-19" >
-          10-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/post/b6e87fb18befa699/" itemprop="url">
-              
-                <span itemprop="name">大模型时代的交互语言——Autogen系列03</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2023-10-14T21:07:23+08:00"
-              content="2023-10-14" >
-          10-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-  </div>
 
   
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/tags/大语言模型/page/2/">2</a><a class="extend next" rel="next" href="/tags/大语言模型/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  
 
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                如何微调十问——大语言模型研究03
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2024-06-21T17:16:10+08:00" content="2024-06-21">
+              2024-06-21
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/post/8d670d28c70bf231/" class="leancloud_visitors" data-flag-title="如何微调十问——大语言模型研究03">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作者: <a href="https://www.limoncc.com">引线小白</a>-本文永久链接：httpss://<a href="http://www.limoncc.com/post/8d670d28c70bf231/">www.limoncc.com/post/8d670d28c70bf231/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+<blockquote>
+<p><strong>摘要</strong>: 本文意在理清如何微调大语言模型的十个问题。若有错误，请大家指正。<br><strong>关键词</strong>: <code>如何微调大语言模型</code>,<code>LoRA</code>,<code>QLoRA</code></p>
+</blockquote>
+<p>[TOC]</p>
+<p><strong>Q1: 超参数如何设定？</strong><br>简单任务rank=16，alpha=32一般就ok了，Lightning AI有一篇技术分享专门讨论了，lora的参数设定问题。</p>
+<p><a href="https://lightning.ai/pages/community/lora-insights/" target="_blank" rel="noopener">Finetuning LLMs with LoRA and QLoRA: Insights from Hundreds of Experiments</a></p>
+<div align="center"><img src="/imags/lora-expimage4.jpg" width="100"><br>LoRA超参数设定</div>
+
+
+<p><strong>Q2：sft微调需要多少数据</strong><br>根据任务难度，设定。这句话有点废。具体点，任务难度可以根据模型计算困惑度来衡量。你可以和一般任务对比，自行摸索一个阀值。这是定量。定性，如果提示词能够解决，难度较低，如果通过提示词不能解决，难度是有点，是中等，还是高根据模型已有的先验知识来定。所以一般难度100-300条数据就ok了，中等，困难问题一般需要1000以上，这个以上可能是3000，8000，1w或者10w加。你说任务难度和数据量有没有定性关系, 如果你算力够，又想搞研究写论文，你可以探索一下任务难度指标如何定义，已经和特定模型需要的sft数据量是什么关系。也许已经有论文了，我没看到</p>
+<p><strong>Q3: 学习率如何调整</strong><br>一般lora微调学习率都设定为1e-4，其实很多时候，你要根据loss的情况，调高，或者调低，震荡比较大就调低，太慢就调高。根据任务酌情设定。</p>
+<p><strong>Q4: 总是学不会，怎么办</strong><br>如果你在各种超参数后，效果还是不理想。你第一个反思的应该是你的数据集和你想要的结果是否真的匹配，或者你的指令是否是模型友好的（困惑度比较低），或者你的数据存在不平衡。对，没错大模型时代数据平衡也还是很重要的。所以所谓高质量数据集并不是客户场景，或者业务场景有很多数据就够了。最后一公里其实是针对任务模型友好的数据集，能让模型快速学会。这就像一个好老师，一点就通。而差老师怎么教，你还是不会。</p>
+<p><strong>Q5: 听说sft微调的越多，遗忘的越多</strong><br>是的，不过对于小任务，rank比较低（例如8，16）的任务，影响还是有有限的。一般很少掉点明显。如果有你可以混合一些你想保留的原子能力的数据进去。</p>
+<p><strong>Q6: 如何才能一次性微调想要模型学习到多个能力</strong><br>肯定是可以的，注意相关性和比例，数据集必须是一个好老师，然后还要注意到我提到的以上内容。另外你也可以通过多阶段sft的方式学习多个能力。</p>
+<p><strong>Q7: 微调需要很久么，需要多少GPU，普通企业能不能玩</strong><br>Qlora微调7b模型并不需要很多GPU，也不需要很久。一台12G显存的GPU即可，30分钟-2小时，对于中等任务而言。现在市面是4090租赁价格不过2元/小时。所以硬性成本不高。高的是针对特定能力的高质量数据集如果构建，以及能做微调的人才。我甚至和同时开玩笑说，我失业了我就去卖高质量数据集，我的广告词就是<br>买我的数据集，微调一小时，能力全都有！主要一个省心省力，按能力大小和数据集制作成本收费。</p>
+<p><strong>Q8: 处理sft微调，还能做其他微调么</strong><br>有的，我们都知道RLHF，这个成本比较高，但是DPO和ORPO，针对偏好微调成本就低很多了。尤其ORPO和sft的成本几乎一样。唯一不同的是数据集需要有偏好对。而且偏好微调一个重要的特点是可以克服遗忘，sft是微调参数越多，遗忘越大。所以如果你想保留通用能力，偏好微调是比指令微调更好的选择。缺点就是数据集的制作成本高。偏好对要做到高质量是有难度的。</p>
+<p><strong>Q9: 微调用什么框架</strong><br>如果你是大神，自己手搓trainer，如果是你高手，对模型比较懂，那就自己写peft，trl的trainer。如果你是专门做落地的，高应用的，没那么多时间手搓代码，你可以用诸如LLaMA-Factory、阿里的swift，书生xtuner、Firefly等，有很多。</p>
+<p><strong>Q10: 在实践中如何选择做提示词工程、RAG知识库、微调</strong><br>一张图解决你的困惑</p>
+<div align="center"><img src="/imags/RAG研究.png" width="100"><br>提示词工程、RAG知识库、微调</div>
+
+
+
+
+
+
+
+
+<p><hr></p>
+<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="https://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="https://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="https://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="https://www.limoncc.com">[ https://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%">httpss://<a href="http://www.limoncc.com/post/8d670d28c70bf231/">www.limoncc.com/post/8d670d28c70bf231/</a></td></tr></table><table border="0" width="100%" style="display:inline !important;font-size:14px !important;color:#555555;"><tr><td align="left" width="100%" style="font-family:helvetica;font-size:14px !important;font-weight:bold;">如果您需要引用本文，请参考：</td></tr><tr><td align="left" width="100%">引线小白. (Jun. 21, 2024). 《如何微调十问——大语言模型研究03》[Blog post]. Retrieved from <a href="https://www.limoncc.com/post/8d670d28c70bf231">https://www.limoncc.com/post/8d670d28c70bf231</a></td></tr><tr><td align="left" width="100%">@online{limoncc-8d670d28c70bf231,<br>title={如何微调十问——大语言模型研究03},<br>author={引线小白},<br>year={2024},<br>month={Jun},<br>date={21},<br>url={\url{<a href="https://www.limoncc.com/post/8d670d28c70bf231}}">https://www.limoncc.com/post/8d670d28c70bf231}}</a>,<br>}</td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/生成模型/" rel="tag">#生成模型</a>
+          
+            <a href="/tags/大语言模型/" rel="tag">#大语言模型</a>
+          
+            <a href="/tags/LLM/" rel="tag">#LLM</a>
+          
+            <a href="/tags/LoRA/" rel="tag">#LoRA</a>
+          
+            <a href="/tags/QLoRA/" rel="tag">#QLoRA</a>
+          
+            <a href="/tags/ORPO/" rel="tag">#ORPO</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/5981c46065ab066d/" rel="next" title="01解读技术报告初识书生.浦语2——internlm2系列">
+                <i class="fa fa-chevron-left"></i> 01解读技术报告初识书生.浦语2——internlm2系列
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
 <!--           </div>
@@ -595,6 +489,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div> -->
         <div id="vcomments"></div>
@@ -620,8 +518,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -742,6 +649,17 @@
       </section>
 
       
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
 
     </div>
   </aside>
@@ -837,6 +755,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
