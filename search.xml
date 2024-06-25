@@ -8,10 +8,10 @@
         <category>机器学习</category>
       </categories>
       <tags>
-        <tag>生成模型</tag>
         <tag>大语言模型</tag>
-        <tag>LLM</tag>
+        <tag>生成模型</tag>
         <tag>LoRA</tag>
+        <tag>LLM</tag>
         <tag>QLoRA</tag>
         <tag>ORPO</tag>
       </tags>
@@ -70,10 +70,10 @@
         <category>机器学习</category>
       </categories>
       <tags>
-        <tag>生成模型</tag>
         <tag>大语言模型</tag>
-        <tag>条件强化学习微调</tag>
+        <tag>生成模型</tag>
         <tag>LLM</tag>
+        <tag>条件强化学习微调</tag>
         <tag>C-RLFT</tag>
         <tag>RLFT</tag>
         <tag>多模态学习</tag>
@@ -146,13 +146,13 @@
         <category>大模型应用开发</category>
       </categories>
       <tags>
-        <tag>生成模型</tag>
         <tag>大语言模型</tag>
+        <tag>生成模型</tag>
         <tag>AI-Agent</tag>
         <tag>autogen</tag>
+        <tag>工作流</tag>
         <tag>交互语言</tag>
         <tag>领域特定语言</tag>
-        <tag>工作流</tag>
         <tag>自适应UI</tag>
       </tags>
   </entry>
@@ -166,11 +166,11 @@
       <tags>
         <tag>生成模型</tag>
         <tag>AI-Agent</tag>
-        <tag>autogen</tag>
-        <tag>工作流</tag>
         <tag>大模型</tag>
+        <tag>autogen</tag>
         <tag>管理系统</tag>
         <tag>基本框架</tag>
+        <tag>工作流</tag>
       </tags>
   </entry>
   <entry>
@@ -181,8 +181,8 @@
         <category>大模型应用开发</category>
       </categories>
       <tags>
-        <tag>生成模型</tag>
         <tag>大语言模型</tag>
+        <tag>生成模型</tag>
         <tag>AI-Agent</tag>
         <tag>autogen</tag>
       </tags>
@@ -195,8 +195,8 @@
         <category>大模型应用开发</category>
       </categories>
       <tags>
-        <tag>生成模型</tag>
         <tag>大语言模型</tag>
+        <tag>生成模型</tag>
         <tag>AI-Agent</tag>
         <tag>autogen</tag>
       </tags>
@@ -209,9 +209,9 @@
         <category>机器学习</category>
       </categories>
       <tags>
+        <tag>大语言模型</tag>
         <tag>生成模型</tag>
         <tag>RWKV模型</tag>
-        <tag>大语言模型</tag>
       </tags>
   </entry>
   <entry>
@@ -686,10 +686,10 @@
         <category>伤感</category>
       </categories>
       <tags>
+        <tag>诗集</tag>
         <tag>初夏里</tag>
         <tag>引线小白</tag>
         <tag>诗词</tag>
-        <tag>诗集</tag>
       </tags>
   </entry>
   <entry>
