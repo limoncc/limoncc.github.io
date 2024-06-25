@@ -96,7 +96,7 @@
 <meta property="og:image" content="https://www.limoncc.com/images/RAG研究.png">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2024-06-25T02:54:05.408Z">
+<meta property="og:updated_time" content="2024-06-25T02:56:16.763Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何微调十问——大语言模型研究03">
 <meta name="twitter:description" content="本文主要介绍了如何微调大语言模型常见的十个问题。如有错误请指正。">
@@ -395,7 +395,7 @@
 <p>[TOC]</p>
 <p><strong>Q1: 超参数如何设定？</strong><br>简单任务rank=16，alpha=32一般就ok了，Lightning AI有一篇技术分享专门讨论了，lora的参数设定问题。</p>
 <p><a href="https://lightning.ai/pages/community/lora-insights/" target="_blank" rel="noopener">Finetuning LLMs with LoRA and QLoRA: Insights from Hundreds of Experiments</a></p>
-<div align="center"><img src="/images/lora-expimage4.jpg" width="100"><br>LoRA超参数设定</div>
+<div align="center"><img src="/images/lora-expimage4.jpg" width="900"><br>LoRA超参数设定</div>
 
 
 <p><strong>Q2：sft微调需要多少数据</strong><br>根据任务难度，设定。这句话有点废。具体点，任务难度可以根据模型计算困惑度来衡量。你可以和一般任务对比，自行摸索一个阀值。这是定量。定性，如果提示词能够解决，难度较低，如果通过提示词不能解决，难度是有点，是中等，还是高根据模型已有的先验知识来定。所以一般难度100-300条数据就ok了，中等，困难问题一般需要1000以上，这个以上可能是3000，8000，1w或者10w加。你说任务难度和数据量有没有定性关系, 如果你算力够，又想搞研究写论文，你可以探索一下任务难度指标如何定义，已经和特定模型需要的sft数据量是什么关系。也许已经有论文了，我没看到</p>
@@ -407,7 +407,7 @@
 <p><strong>Q8: 处理sft微调，还能做其他微调么</strong><br>有的，我们都知道RLHF，这个成本比较高，但是DPO和ORPO，针对偏好微调成本就低很多了。尤其ORPO和sft的成本几乎一样。唯一不同的是数据集需要有偏好对。而且偏好微调一个重要的特点是可以克服遗忘，sft是微调参数越多，遗忘越大。所以如果你想保留通用能力，偏好微调是比指令微调更好的选择。缺点就是数据集的制作成本高。偏好对要做到高质量是有难度的。</p>
 <p><strong>Q9: 微调用什么框架</strong><br>如果你是大神，自己手搓trainer，如果是你高手，对模型比较懂，那就自己写peft，trl的trainer。如果你是专门做落地的，高应用的，没那么多时间手搓代码，你可以用诸如LLaMA-Factory、阿里的swift，书生xtuner、Firefly等，有很多。</p>
 <p><strong>Q10: 在实践中如何选择做提示词工程、RAG知识库、微调</strong><br>一张图解决你的困惑</p>
-<div align="center"><img src="/images/RAG研究.png" width="100"><br>提示词工程、RAG知识库、微调</div>
+<div align="center"><img src="/images/RAG研究.png" width="900"><br>提示词工程、RAG知识库、微调</div>
 
 
 
