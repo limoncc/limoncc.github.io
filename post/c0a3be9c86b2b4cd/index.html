@@ -96,7 +96,7 @@
 <meta property="og:image" content="https://www.limoncc.com/images/强化学习1.png">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2025-02-03T16:10:36.158Z">
+<meta property="og:updated_time" content="2025-02-03T16:14:27.086Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="大模型中的强化学习——大语言模型研究05">
 <meta name="twitter:description" content="本文主要总结了大语言模型中的强化学习的若干基本问题，和我自己的一些体会。">
@@ -457,10 +457,11 @@
 <p>如果我们没有观测到任何值<br>$$\begin{align}<br>\mathbb{E}[s_n] = \mu,\mathrm{var}[s_n] = \frac{\sigma^2}{n}<br>\end{align}$$</p>
 <p>如果观测到k组值,通常假设观测存在偏差 $\mathring{x}_i=\mu+\delta_i$</p>
 <p>那么均值有<br>$$\begin{align}<br>\mathbb{E}[s_n] = \frac{1}{n}\big[\sum_i^k \mathring{x}_i +(n-k)\mu\big] = \mu+ \frac{\sum_i^k\delta_i}{n} \geqslant \mu<br>\end{align}$$</p>
-<p>那么误差有<br>$$\begin{align}<br>\mathrm{var}[s_n] = \frac{(n-k)\sigma^2}{n^2} \leqslant  \frac{\sigma^2}{n}<br>\end{align}$$</p>
+<p>那么误差有</p>
+<p>$$\begin{align}<br>\mathrm{var}[s_n] = \frac{(n-k)\sigma^2}{n^2} \leqslant  \frac{\sigma^2}{n}<br>\end{align}$$</p>
 <p>也就是说方差变小，偏差变大。如果我们给观测值加一个超参数 $\lambda\in [0,1]$，$\mathring{x}_i=\lambda\mu+\lambda\delta_i$, 来平衡偏差和误差</p>
 <p>那么均值有</p>
-<p>$$\begin{align}<br>\mathbb{E}<a href="\lambda">s_n</a><br>=\frac{1}{n}\big[\sum_i^k \mathring{x}_i +(n-k)\mu\big]<br>=\frac{n-k(1-\lambda)}{n}\mu+ \frac{\sum_i^k \lambda\delta_i}{n}<br>\leqslant \mu+ \frac{\sum_i^k\delta_i}{n}<br>\end{align}$$</p>
+<p>$$\begin{align}\mathbb{E}<a href="\lambda">s_n</a><br>=\frac{1}{n}\big[\sum_i^k \mathring{x}_i +(n-k)\mu\big]<br>=\frac{n-k(1-\lambda)}{n}\mu+ \frac{\sum_i^k \lambda\delta_i}{n}<br>\leqslant \mu+ \frac{\sum_i^k\delta_i}{n}<br>\end{align}$$</p>
 <p>相信通过这个例子，应该会有所感觉。</p>
 <h4 id="二、PPO近端策略优化"><a href="#二、PPO近端策略优化" class="headerlink" title="二、PPO近端策略优化"></a>二、PPO近端策略优化</h4><h5 id="2-1、代理目标函数"><a href="#2-1、代理目标函数" class="headerlink" title="2.1、代理目标函数"></a>2.1、代理目标函数</h5><p>网络上很多文章，写的多有错误，本文笔者将尽可能用清晰的数学符号，澄清各类问题。经过前期铺垫，终于可以谈论PPO了。为了使用自动微分，不太可能使用强化学习的原始目标函数 $\mathcal{J}(\bm{\theta}) = \mathbb{E}_{s\sim \rho}[V_{\pi}(s)]$, 因为需要对个步骤对状态和动作求积分或求和，这是非常困难的，这里引入了一个代理目标函数(surrogate objective)，只要确保代理目标函数的梯度和原始目标函数一致即可。回顾一下策略梯度</p>
 <p>$$\begin{align}<br>\nabla_{\bm{\theta}} \mathcal{J}(\bm{\theta})<br>= \mathbb{E}_{s_t\sim \rho,a_t\sim \pi}\Big[\nabla_{\bm{\theta}}\log\pi_{\bm{\theta}}(a_t\mid s_t) \cdot A_{\pi}(s_t,a_t)\Big]<br>\end{align}$$</p>
