@@ -96,7 +96,7 @@
 <meta property="og:image" content="https://www.limoncc.com/images/强化学习1.png">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2025-02-03T15:58:35.512Z">
+<meta property="og:updated_time" content="2025-02-03T16:06:55.316Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="大模型中的强化学习——大语言模型研究05">
 <meta name="twitter:description" content="本文主要总结了大语言模型中的强化学习的若干基本问题，和我自己的一些体会。">
@@ -399,12 +399,15 @@
 <p>5、$\pi$: 策略(policy) 是指如何根据观测到的状态做出决策。随机策略函数是一个概率密度函数$\pi:\mathcal{S}\times \mathcal{A}\to [0,1]$ 记为 $\pi(a\mid s)$。对于策略函数的参数 $\bm{\theta}$，这样也记做 $\displaystyle \pi_{\bm{\theta}}(a\mid s)$, $\displaystyle \pi(a\mid s,\bm{\theta})$</p>
 <p>价值函数是回报的期望，即未来期望获得的奖励之和。价值函数反应了现状的好坏，价值函数越大说明现状越有利，知道 $U_t$的随机性来自奖励 $\{R_i\}_{i\geqslant t}$，奖励 $R_t$的随机性来自 $S_t$、 $A_t$、 $S_{t+1}$。</p>
 <p>6、动作价值函数(action-value function)</p>
-<p>$$\begin{align}<br>Q_{\pi}(s_t,a_t) = \mathbb{E}_{\mathcal{S}_{t+1:},\mathcal{A}_{t+1:}}\left[U_t\mid S_t=s_t,A_t=a_t\right]<br>\end{align}$$<br>其中：</p>
+<p>$$\begin{align}<br>Q_{\pi}(s_t,a_t) = \mathbb{E}_{\mathcal{S}_{t+1:},\mathcal{A}_{t+1:}}\left[U_t\mid S_t=s_t,A_t=a_t\right]<br>\end{align}$$</p>
+<p>其中：</p>
 <p>$\displaystyle \mathcal{S}_{t+1:}=\{S_{t+1},S_{t+2},\cdots\}$<br>$\displaystyle \mathcal{A}_{t+1:}=\{A_{t+1},A_{t+2},\cdots\}$</p>
 <p>有时候也用下面简写表示，以节约符号：</p>
 <p>$$\begin{align}<br>Q_{\pi}(s_t,a_t)<br>= \mathbb{E}_{t+1:}\left[u_t\mid s_t,a_t\right]<br>= \mathbb{E}_{\mathcal{S}_{t+1:},\mathcal{A}_{t+1:}}\left[U_t\mid s_t,a_t\right]<br>\end{align}$$</p>
 <p>7、最优动作价值函数(optimal action-value function)</p>
-<p>$$\begin{align}<br>Q_<em>(s_t,a_t)= \max_{\pi}Q_{\pi}(s_t,a_t) \qquad \forall s_t \in \mathcal{S}, a_t \in \mathcal{A}<br>\end{align}$$<br>含义就是有多种策略函数 $\pi$可供选择，选择最好的策略函数：<br>$$\begin{align}<br>\pi^</em> =\arg\max_{\pi}Q_\pi(s_t,a_t) \qquad \forall s_t \in \mathcal{S}, a_t \in \mathcal{A}<br>\end{align}$$</p>
+<p>$$\begin{align}<br>Q_*(s_t,a_t)= \max_{\pi}Q_{\pi}(s_t,a_t) \qquad \forall s_t \in \mathcal{S}, a_t \in \mathcal{A}<br>\end{align}$$</p>
+<p>含义就是有多种策略函数 $\pi$可供选择，选择最好的策略函数：</p>
+<p>$$\begin{align}<br>\pi^* =\arg\max_{\pi}Q_\pi(s_t,a_t) \qquad \forall s_t \in \mathcal{S}, a_t \in \mathcal{A}<br>\end{align}$$</p>
 <p>8、状态价值函数(sata-value function)</p>
 <p>$$\begin{align}<br>V_{\pi}(s_t)<br>&amp;= \mathbb{E}_{A_t\sim \pi(\cdot\mid s_t)}\left[Q_{\pi}\left(s_t,A_t\right)\right]\\<br>&amp;= \sum_{a\in \mathcal{A}}\pi(a\mid s_t)\cdot Q_{\pi}(s_t,a)<br>\end{align}$$</p>
 <p>也就是说</p>
@@ -456,7 +459,8 @@
 <p>那么均值有<br>$$\begin{align}<br>\mathbb{E}[s_n] = \frac{1}{n}\big[\sum_i^k \mathring{x}_i +(n-k)\mu\big] = \mu+ \frac{\sum_i^k\delta_i}{n} \geqslant \mu<br>\end{align}$$</p>
 <p>那么误差有<br>$$\begin{align}<br>\mathrm{var}[s_n] = \frac{(n-k)\sigma^2}{n^2} \leqslant  \frac{\sigma^2}{n}<br>\end{align}$$</p>
 <p>也就是说方差变小，偏差变大。如果我们给观测值加一个超参数 $\lambda\in [0,1]$，$\mathring{x}_i=\lambda\mu+\lambda\delta_i$, 来平衡偏差和误差</p>
-<p>那么均值有<br>$$\begin{align}<br>\mathbb{E}<a href="\lambda">s_n</a><br>= \frac{1}{n}\big[\sum_i^k \mathring{x}_i +(n-k)\mu\big]<br>=  \frac{n-k(1-\lambda)}{n}\mu+ \frac{\sum_i^k \lambda\delta_i}{n}<br>\leqslant \mu+ \frac{\sum_i^k\delta_i}{n}<br>\end{align}$$</p>
+<p>那么均值有</p>
+<p>$$\begin{align}<br>\mathbb{E}<a href="\lambda">s_n</a><br>= \frac{1}{n}\big[\sum_i^k \mathring{x}_i +(n-k)\mu\big]<br>=  \frac{n-k(1-\lambda)}{n}\mu+ \frac{\sum_i^k \lambda\delta_i}{n}<br>\leqslant \mu+ \frac{\sum_i^k\delta_i}{n}<br>\end{align}$$</p>
 <p>相信通过这个例子，应该会有所感觉。</p>
 <h4 id="二、PPO近端策略优化"><a href="#二、PPO近端策略优化" class="headerlink" title="二、PPO近端策略优化"></a>二、PPO近端策略优化</h4><h5 id="2-1、代理目标函数"><a href="#2-1、代理目标函数" class="headerlink" title="2.1、代理目标函数"></a>2.1、代理目标函数</h5><p>网络上很多文章，写的多有错误，本文笔者将尽可能用清晰的数学符号，澄清各类问题。经过前期铺垫，终于可以谈论PPO了。为了使用自动微分，不太可能使用强化学习的原始目标函数 $\mathcal{J}(\bm{\theta}) = \mathbb{E}_{s\sim \rho}[V_{\pi}(s)]$, 因为需要对个步骤对状态和动作求积分或求和，这是非常困难的，这里引入了一个代理目标函数(surrogate objective)，只要确保代理目标函数的梯度和原始目标函数一致即可。回顾一下策略梯度</p>
 <p>$$\begin{align}<br>\nabla_{\bm{\theta}} \mathcal{J}(\bm{\theta})<br>= \mathbb{E}_{s_t\sim \rho,a_t\sim \pi}\Big[\nabla_{\bm{\theta}}\log\pi_{\bm{\theta}}(a_t\mid s_t) \cdot A_{\pi}(s_t,a_t)\Big]<br>\end{align}$$</p>
@@ -487,8 +491,10 @@
 <p>$$\begin{align}<br>\mathcal{L}^{\text{PPO}}(\bm{\theta})<br>&amp;=\mathbb{E}_{q\sim \rho(Q),o_t\sim \pi_{\bm{\theta}_\text{old}}}\bigg[\min\left[\frac{\pi_{\bm{\theta}}(o_t\mid q,o_{:t})}{\pi_{\bm{\theta}_\text{old}}(o_t\mid q,o_{:t})},\mathrm{\text{clip}}\left[\frac{\pi_{\bm{\theta}}(o_t\mid q,o_{:t})}{\pi_{\bm{\theta}_\text{old}}(o_t\mid q,o_{:t})},1-\epsilon,1+\epsilon\right]\right]\cdot A_{\pi}(q,o_t)\bigg]<br>\end{align}$$</p>
 <h5 id="2-3、PPO中的KL散度"><a href="#2-3、PPO中的KL散度" class="headerlink" title="2.3、PPO中的KL散度"></a>2.3、PPO中的KL散度</h5><p>为减轻奖励模型的过度优化，PPO还会引入参考模型的 $\text{KL}$散度,在计算每个token奖励时，减去 $\{o_1,\cdots,o_t\}$上的散度,</p>
 <p>$$\begin{align}<br>r_t=\pi_{\bm{\theta}_{\textit{rm}}}(q,o_{:t})-\beta \mathbb{KL}\big[\pi_{\bm{\theta}} ||\pi_{\bm{\theta}_\textit{ref}}\big]<br>\end{align}$$</p>
-<p>其中<br>$\pi_{\bm{\theta}_{\textit{rm}}}$是奖励模型(reward model)<br>$\displaystyle \mathbb{KL}\big[\pi_{\bm{\theta}} ||\pi_{\bm{\theta}_\textit{ref}}\big] = \log \frac{\pi_{\bm{\theta}}(o_t\mid q,o_{:t})}{\pi_{\bm{\theta}_\textit{ref}}(o_t\mid q,o_{:t})}$</p>
-<p>在这个地方，肯定有人会问为啥是把这个所谓的KL在计算token奖励时加入，而不是基于正则的方式加入到损失函数或者目标函数里面：<br>$$\begin{align}<br>\mathcal{L}^{\text{PPO}}(\bm{\theta})<br>&amp;=\mathbb{E}_{q\sim \rho,o_t\sim \pi_{\bm{\theta}_\text{old}}}\bigg[\min\left[\frac{\pi_{\bm{\theta}}(o_t,\mid q,o_{:t})}{\pi_{\bm{\theta}_\text{old}}(o_t\mid q,o_{:t})},\mathrm{\text{clip}}\left[\frac{\pi_{\bm{\theta}}(o_t\mid q,o_{:t})}{\pi_{\bm{\theta}_\text{old}}(o_t\mid q,o_{:t})},1-\epsilon,1+\epsilon\right]\right]\cdot A_{\pi}(q,o_t)\bigg]-\beta \mathbb{\hat{KL}}\big[\pi_{\bm{\theta}} ||\pi_{\bm{\theta}_\textit{ref}}\big]<br>\end{align}$$</p>
+<p>其中 </p>
+<p>$\pi_{\bm{\theta}_{\textit{rm}}}$是奖励模型(reward model)， $\displaystyle \mathbb{KL}\big[\pi_{\bm{\theta}} ||\pi_{\bm{\theta}_\textit{ref}}\big] = \log \frac{\pi_{\bm{\theta}}(o_t\mid q,o_{:t})}{\pi_{\bm{\theta}_\textit{ref}}(o_t\mid q,o_{:t})}$</p>
+<p>在这个地方，肯定有人会问为啥是把这个所谓的KL在计算token奖励时加入，而不是基于正则的方式加入到损失函数或者目标函数里面：</p>
+<p>$$\begin{align}<br>\mathcal{L}^{\text{PPO}}(\bm{\theta})<br>&amp;=\mathbb{E}_{q\sim \rho,o_t\sim \pi_{\bm{\theta}_\text{old}}}\bigg[\min\left[\frac{\pi_{\bm{\theta}}(o_t,\mid q,o_{:t})}{\pi_{\bm{\theta}_\text{old}}(o_t\mid q,o_{:t})},\mathrm{\text{clip}}\left[\frac{\pi_{\bm{\theta}}(o_t\mid q,o_{:t})}{\pi_{\bm{\theta}_\text{old}}(o_t\mid q,o_{:t})},1-\epsilon,1+\epsilon\right]\right]\cdot A_{\pi}(q,o_t)\bigg]-\beta \mathbb{\hat{KL}}\big[\pi_{\bm{\theta}} ||\pi_{\bm{\theta}_\textit{ref}}\big]<br>\end{align}$$</p>
 <p>这样才是更加常规做法。奈何GPT2，GPT3相关论文代码确实是这么写的，可以参考知乎上的讨论<a href="https://www.zhihu.com/question/629107126" target="_blank" rel="noopener">在强化学习 PPO 算法中，为什么可以把 KL 散度直接放进负奖励？</a></p>
 <p>PPO技术要点差不多已经理清，这里再全局回顾一下：<br>1、有两个可以训练的模型:策略模型 $\pi_{\bm{\theta}}$、 价值模型$v_{\bm{w}}$<br>2、有一已经训练好的奖励模型 $\pi_{\bm{\theta}_{\textit{rm}}}$<br>3、还有一个冻结参数的参考模型 $\pi_{\bm{\theta}_\textit{ref}}$</p>
 <p>deepseek math的论文图画的很好，笔者略微修改一下，并添加注释，以便更加清晰理解：</p>
