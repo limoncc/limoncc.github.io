@@ -8,11 +8,11 @@
         <category>机器学习</category>
       </categories>
       <tags>
-        <tag>大语言模型</tag>
         <tag>生成模型</tag>
+        <tag>大语言模型</tag>
+        <tag>强化学习</tag>
         <tag>LLM</tag>
         <tag>RLFT</tag>
-        <tag>强化学习</tag>
       </tags>
   </entry>
   <entry>
@@ -23,8 +23,8 @@
         <category>机器学习</category>
       </categories>
       <tags>
-        <tag>大语言模型</tag>
         <tag>生成模型</tag>
+        <tag>大语言模型</tag>
         <tag>Bone微调</tag>
       </tags>
   </entry>
@@ -36,8 +36,8 @@
         <category>机器学习</category>
       </categories>
       <tags>
-        <tag>大语言模型</tag>
         <tag>生成模型</tag>
+        <tag>大语言模型</tag>
         <tag>LLM</tag>
         <tag>LoRA</tag>
         <tag>QLoRA</tag>
@@ -98,12 +98,12 @@
         <category>机器学习</category>
       </categories>
       <tags>
-        <tag>大语言模型</tag>
         <tag>生成模型</tag>
-        <tag>条件强化学习微调</tag>
+        <tag>大语言模型</tag>
         <tag>LLM</tag>
-        <tag>C-RLFT</tag>
         <tag>RLFT</tag>
+        <tag>条件强化学习微调</tag>
+        <tag>C-RLFT</tag>
         <tag>多模态学习</tag>
       </tags>
   </entry>
@@ -174,11 +174,11 @@
         <category>大模型应用开发</category>
       </categories>
       <tags>
-        <tag>大语言模型</tag>
         <tag>生成模型</tag>
         <tag>AI-Agent</tag>
         <tag>autogen</tag>
         <tag>工作流</tag>
+        <tag>大语言模型</tag>
         <tag>交互语言</tag>
         <tag>领域特定语言</tag>
         <tag>自适应UI</tag>
@@ -209,10 +209,10 @@
         <category>大模型应用开发</category>
       </categories>
       <tags>
-        <tag>大语言模型</tag>
         <tag>生成模型</tag>
         <tag>AI-Agent</tag>
         <tag>autogen</tag>
+        <tag>大语言模型</tag>
       </tags>
   </entry>
   <entry>
@@ -223,10 +223,10 @@
         <category>大模型应用开发</category>
       </categories>
       <tags>
-        <tag>大语言模型</tag>
         <tag>生成模型</tag>
         <tag>AI-Agent</tag>
         <tag>autogen</tag>
+        <tag>大语言模型</tag>
       </tags>
   </entry>
   <entry>
@@ -237,8 +237,8 @@
         <category>机器学习</category>
       </categories>
       <tags>
-        <tag>大语言模型</tag>
         <tag>生成模型</tag>
+        <tag>大语言模型</tag>
         <tag>RWKV模型</tag>
       </tags>
   </entry>
@@ -302,8 +302,8 @@
       </categories>
       <tags>
         <tag>概率论</tag>
-        <tag>弱收敛</tag>
         <tag>大数定律</tag>
+        <tag>弱收敛</tag>
         <tag>连续定理</tag>
       </tags>
   </entry>
@@ -316,8 +316,8 @@
       </categories>
       <tags>
         <tag>概率论</tag>
-        <tag>大数定律</tag>
         <tag>弱大数定律</tag>
+        <tag>大数定律</tag>
       </tags>
   </entry>
   <entry>
