@@ -87,7 +87,7 @@
 <meta name="description" content="本文主要介绍了Bone微调的方法，该方法超越了LoRA系列方法。如有错误请指正。">
 <meta name="keywords" content="大语言模型,LLM,如何微调,LoRA,Bone,Bat">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Bone微调,超越LoRA系列的高效微调方法——大语言模型研究03">
+<meta property="og:title" content="Bone微调,超越LoRA系列的高效微调方法——大语言模型研究04">
 <meta property="og:url" content="https://www.limoncc.com/post/d9321405ef13c11b/index.html">
 <meta property="og:site_name" content="柠檬CC">
 <meta property="og:description" content="本文主要介绍了Bone微调的方法，该方法超越了LoRA系列方法。如有错误请指正。">
@@ -100,9 +100,9 @@
 <meta property="og:image" content="https://www.limoncc.com/images/bat原理.png">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2024-12-13T13:29:21.246Z">
+<meta property="og:updated_time" content="2025-02-03T15:59:48.303Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Bone微调,超越LoRA系列的高效微调方法——大语言模型研究03">
+<meta name="twitter:title" content="Bone微调,超越LoRA系列的高效微调方法——大语言模型研究04">
 <meta name="twitter:description" content="本文主要介绍了Bone微调的方法，该方法超越了LoRA系列方法。如有错误请指正。">
 <meta name="twitter:image" content="https://www.limoncc.com/images/bone微调.png">
 
@@ -123,7 +123,7 @@
 </script>
 
   <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
-  <title> Bone微调,超越LoRA系列的高效微调方法——大语言模型研究03 | 柠檬CC </title>
+  <title> Bone微调,超越LoRA系列的高效微调方法——大语言模型研究04 | 柠檬CC </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -324,7 +324,7 @@
             
             
               
-                Bone微调,超越LoRA系列的高效微调方法——大语言模型研究03
+                Bone微调,超越LoRA系列的高效微调方法——大语言模型研究04
               
             
           </h1>
@@ -370,7 +370,7 @@
 
           
           
-             <span id="/post/d9321405ef13c11b/" class="leancloud_visitors" data-flag-title="Bone微调,超越LoRA系列的高效微调方法——大语言模型研究03">
+             <span id="/post/d9321405ef13c11b/" class="leancloud_visitors" data-flag-title="Bone微调,超越LoRA系列的高效微调方法——大语言模型研究04">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -438,7 +438,7 @@
 <p>PEFT的代码实现<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># peft/tuners/bone/layer.py 225-230</span></span><br><span class="line">w = (orig_weight.reshape(orig_weight.size(<span class="number">0</span>) // r, r, orig_weight.size(<span class="number">1</span>) // r, r).permute(<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">    @ weight_bone</span></span><br><span class="line">    + weight_bone)</span><br><span class="line">output_tensor = w.permute(<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">3</span>).reshape(*orig_weight.shape)</span><br></pre></td></tr></table></figure></p>
 <p>[^1]: Kang, J. (2024, November 28). Bone: Block-Affine Adaptation of Large Language Models. arXiv. <a href="https://doi.org/10.48550/arXiv.2409.15371" target="_blank" rel="noopener">https://doi.org/10.48550/arXiv.2409.15371</a></p>
 <p><hr></p>
-<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="https://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="https://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="https://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="https://www.limoncc.com">[ https://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%">httpss://<a href="http://www.limoncc.com/post/d9321405ef13c11b/">www.limoncc.com/post/d9321405ef13c11b/</a></td></tr></table><table border="0" width="100%" style="display:inline !important;font-size:14px !important;color:#555555;"><tr><td align="left" width="100%" style="font-family:helvetica;font-size:14px !important;font-weight:bold;">如果您需要引用本文，请参考：</td></tr><tr><td align="left" width="100%">引线小白. (Dec. 12, 2024). 《Bone微调,超越LoRA系列的高效微调方法——大语言模型研究03》[Blog post]. Retrieved from <a href="https://www.limoncc.com/post/d9321405ef13c11b">https://www.limoncc.com/post/d9321405ef13c11b</a></td></tr><tr><td align="left" width="100%">@online{limoncc-d9321405ef13c11b,<br>title={Bone微调,超越LoRA系列的高效微调方法——大语言模型研究03},<br>author={引线小白},<br>year={2024},<br>month={Dec},<br>date={12},<br>url={\url{<a href="https://www.limoncc.com/post/d9321405ef13c11b}}">https://www.limoncc.com/post/d9321405ef13c11b}}</a>,<br>}</td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
+<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="https://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="https://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="https://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="https://www.limoncc.com">[ https://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%">httpss://<a href="http://www.limoncc.com/post/d9321405ef13c11b/">www.limoncc.com/post/d9321405ef13c11b/</a></td></tr></table><table border="0" width="100%" style="display:inline !important;font-size:14px !important;color:#555555;"><tr><td align="left" width="100%" style="font-family:helvetica;font-size:14px !important;font-weight:bold;">如果您需要引用本文，请参考：</td></tr><tr><td align="left" width="100%">引线小白. (Dec. 12, 2024). 《Bone微调,超越LoRA系列的高效微调方法——大语言模型研究04》[Blog post]. Retrieved from <a href="https://www.limoncc.com/post/d9321405ef13c11b">https://www.limoncc.com/post/d9321405ef13c11b</a></td></tr><tr><td align="left" width="100%">@online{limoncc-d9321405ef13c11b,<br>title={Bone微调,超越LoRA系列的高效微调方法——大语言模型研究04},<br>author={引线小白},<br>year={2024},<br>month={Dec},<br>date={12},<br>url={\url{<a href="https://www.limoncc.com/post/d9321405ef13c11b}}">https://www.limoncc.com/post/d9321405ef13c11b}}</a>,<br>}</td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
 <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 
       
