@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.limoncc.com/about/index.html</loc>
+    
+    <lastmod>2025-02-05T06:34:55.803Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.limoncc.com/post/c0a3be9c86b2b4cd/</loc>
     
-    <lastmod>2025-02-05T06:30:42.156Z</lastmod>
+    <lastmod>2025-02-05T06:34:47.052Z</lastmod>
     
   </url>
   
@@ -376,13 +383,6 @@
     <loc>https://www.limoncc.com/poetry/index.html</loc>
     
     <lastmod>2019-04-21T13:43:37.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.limoncc.com/about/index.html</loc>
-    
-    <lastmod>2018-01-24T04:02:07.000Z</lastmod>
     
   </url>
   
