@@ -12,13 +12,13 @@
         <title>大模型中的强化学习——大语言模型研究05</title>
         <pubTime>2025-01-31T10:30:56.000Z</pubTime>
         
-        <tag>生成模型</tag>
-         
         <tag>大语言模型</tag>
          
-        <tag>LLM</tag>
+        <tag>生成模型</tag>
          
         <tag>强化学习</tag>
+         
+        <tag>LLM</tag>
          
         <tag>RLFT</tag>
          
@@ -40,11 +40,11 @@
         <title>Bone微调,超越LoRA系列的高效微调方法——大语言模型研究04</title>
         <pubTime>2024-12-12T09:10:49.000Z</pubTime>
         
+        <tag>大语言模型</tag>
+         
         <tag>生成模型</tag>
          
         <tag>Bone微调</tag>
-         
-        <tag>大语言模型</tag>
          
          
            
@@ -64,13 +64,13 @@
         <title>如何微调十问——大语言模型研究03</title>
         <pubTime>2024-06-21T09:16:10.000Z</pubTime>
         
-        <tag>生成模型</tag>
-         
         <tag>大语言模型</tag>
          
-        <tag>LoRA</tag>
+        <tag>生成模型</tag>
          
         <tag>LLM</tag>
+         
+        <tag>LoRA</tag>
          
         <tag>QLoRA</tag>
          
@@ -122,9 +122,9 @@
         <title>如何训练——大语言模型研究02</title>
         <pubTime>2023-12-07T09:16:10.000Z</pubTime>
         
-        <tag>生成模型</tag>
-         
         <tag>大语言模型</tag>
+         
+        <tag>生成模型</tag>
          
         <tag>LLM</tag>
          
@@ -212,6 +212,8 @@
         <title>大模型时代的交互语言——Autogen系列03</title>
         <pubTime>2023-10-14T13:07:23.000Z</pubTime>
         
+        <tag>大语言模型</tag>
+         
         <tag>生成模型</tag>
          
         <tag>AI-Agent</tag>
@@ -219,8 +221,6 @@
         <tag>autogen</tag>
          
         <tag>工作流</tag>
-         
-        <tag>大语言模型</tag>
          
         <tag>交互语言</tag>
          
@@ -246,9 +246,9 @@
         <title>理解RWKV模型一_大语言模型研究01</title>
         <pubTime>2023-05-18T12:40:02.000Z</pubTime>
         
-        <tag>生成模型</tag>
-         
         <tag>大语言模型</tag>
+         
+        <tag>生成模型</tag>
          
         <tag>RWKV模型</tag>
          
@@ -332,13 +332,13 @@
          
         <tag>AI</tag>
          
-        <tag>聊天格式</tag>
-         
-        <tag>Chat Format,</tag>
-         
         <tag>gguf原理</tag>
          
         <tag>gguf</tag>
+         
+        <tag>聊天格式</tag>
+         
+        <tag>Chat Format,</tag>
          
          
            
@@ -462,13 +462,13 @@
         <title>致敬一个新时代：AI-Agent</title>
         <pubTime>2023-10-13T02:06:10.000Z</pubTime>
         
+        <tag>大语言模型</tag>
+         
         <tag>生成模型</tag>
          
         <tag>AI-Agent</tag>
          
         <tag>autogen</tag>
-         
-        <tag>大语言模型</tag>
          
          
            
@@ -488,13 +488,13 @@
         <title>初见AI-Agent——Autogen系列01</title>
         <pubTime>2023-10-13T02:07:23.000Z</pubTime>
         
+        <tag>大语言模型</tag>
+         
         <tag>生成模型</tag>
          
         <tag>AI-Agent</tag>
          
         <tag>autogen</tag>
-         
-        <tag>大语言模型</tag>
          
          
            
@@ -1002,9 +1002,9 @@
         <title>矩阵高斯分布</title>
         <pubTime>2017-01-11T03:45:17.000Z</pubTime>
         
-        <tag>统计学</tag>
-         
         <tag>机器学习</tag>
+         
+        <tag>统计学</tag>
          
         <tag>矩阵高斯分布</tag>
          
