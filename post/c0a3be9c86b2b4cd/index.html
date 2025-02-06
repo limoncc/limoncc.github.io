@@ -94,9 +94,10 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.limoncc.com/images/强化学习2.png">
 <meta property="og:image" content="https://www.limoncc.com/images/强化学习1.png">
+<meta property="og:image" content="https://www.limoncc.com/images/强化学习3.png">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2025-02-05T06:34:47.052Z">
+<meta property="og:updated_time" content="2025-02-06T02:56:44.269Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="大模型中的强化学习——大语言模型研究05">
 <meta name="twitter:description" content="本文主要总结了大语言模型中的强化学习的若干基本问题，和我自己的一些体会。">
@@ -499,7 +500,7 @@
 <p>这样才是更加常规做法。奈何GPT2，GPT3相关论文代码确实是这么写的，可以参考知乎上的讨论<a href="https://www.zhihu.com/question/629107126" target="_blank" rel="noopener">在强化学习 PPO 算法中，为什么可以把 KL 散度直接放进负奖励？</a></p>
 <p>PPO技术要点差不多已经理清，这里再全局回顾一下：<br>1、有两个可以训练的模型:策略模型 $\pi_{\bm{\theta}}$、 价值模型$v_{\bm{w}}$<br>2、有一已经训练好的奖励模型 $\pi_{\bm{\theta}_{\textit{rm}}}$<br>3、还有一个冻结参数的参考模型 $\pi_{\bm{\theta}_\textit{ref}}$</p>
 <p>deepseek math的论文图画的很好，笔者略微修改一下，并添加注释，以便更加清晰理解：</p>
-<div align="center"><img src="/images/强化学习2.png" width="600" ==""><br></div>
+<div align="center"><img src="/images/强化学习2.png" width="1000" ==""><br></div>
 
 <h4 id="三、GRPO组相对策略优化"><a href="#三、GRPO组相对策略优化" class="headerlink" title="三、GRPO组相对策略优化"></a>三、GRPO组相对策略优化</h4><h5 id="3-1、GRPO的目标函数"><a href="#3-1、GRPO的目标函数" class="headerlink" title="3.1、GRPO的目标函数"></a>3.1、GRPO的目标函数</h5><p>注意到PPO中有四个模型，实属非常浪费资源。GRPO[^4]提出了更加节约资源的版本。对于PPO，deepseek math给出了更加明晰的公式, 适合照着公式写代码。明确加入了 $\frac{1}{|\bm{o}|}\sum_{t=1}^{|\bm{o}|}$，对于一个问题 $q$的输出 $\bm{o}=[o_1,o_2,\cdots,o_t,\cdots,o_T]$, 明确了处理方式。之前的目标函数代码实现的时候默认如此，但是并没有显示的写出来。</p>
 <p>$$\begin{align}<br>\mathcal{L}_{\textit{PPO}}(\bm{\theta})<br>&amp;=\mathbb{E}_{q\sim \rho(Q),\bm{o}\sim \pi_{\bm{\theta}_\text{old}}}\frac{1}{|\bm{o}|}\sum_{t=1}^{|\bm{o}|}\bigg[\min\left[\frac{\pi_{\bm{\theta}}(o_t\mid q,o_{:t})}{\pi_{\bm{\theta}_\text{old}}(o_t\mid q,o_{:t})},\mathrm{\text{clip}}\left[\frac{\pi_{\bm{\theta}}(o_t\mid q,o_{:t})}{\pi_{\bm{\theta}_\text{old}}(o_t\mid q,o_{:t})},1-\epsilon,1+\epsilon\right]\right]\cdot A_{\pi}(q,o_t)\bigg]<br>\end{align}$$</p>
@@ -526,7 +527,11 @@
 <p>其中<br>$\displaystyle \hat{A}_{i}=\hat{A}_{\pi}(q,\bm{o}_{i}) = \frac{r(\bm{o}_{i})-\text{mean}(\bm{R})}{\text{std}(\bm{R})}$</p>
 <p>$\displaystyle \mathbb{\hat{KL}}\big[\pi_{\bm{\theta}} ||\pi_{\bm{\theta}_\textit{ref}}\big]<br>=\frac{\pi_{\bm{\theta}_\textit{ref}}(\bm{o}_{i}\mid q)}{\pi_{\bm{\theta}}(\bm{o}_{i}\mid q)}- \log \frac{\pi_{\bm{\theta}_\textit{ref}}(\bm{o}_{i}\mid q)}{\pi_{\bm{\theta}}(\bm{o}_{i}\mid q)}-1$</p>
 <p>$\displaystyle \pi_{\bm{\theta}}(\bm{o}_{i}\mid q) = \prod_{t=1}^T\pi_{\bm{\theta}}(o_{i,t}\mid q,o_{i,:t})$</p>
-<div align="center"><img src="/images/强化学习1.png" width="600" ==""><br></div>
+<div align="center"><img src="/images/强化学习1.png" width="1000" ==""><br></div>
+
+<p>R1的训练流程经过了三个阶段，下面是笔者绘制的流程图，并标注了关键节点的一些注意要点。注意在最后阶段其实是有奖励模型参与的。第三阶段的生成600k的推理数据在使用拒绝采样时也使用了奖励模型。注意在deepseekv3的奖励模型中是同时输出奖励理由的思维链和奖励分数的。</p>
+<div align="center"><img src="/images/强化学习3.png" width="1000" ==""><br></div>
+
 
 <h4 id="四、大语言模型中强化学习的统一范式"><a href="#四、大语言模型中强化学习的统一范式" class="headerlink" title="四、大语言模型中强化学习的统一范式"></a>四、大语言模型中强化学习的统一范式</h4><p>deepseek math论文中对各类RLHF(SFT、RFT、DPO、PPO、GRPO)提出了一个统一强化学习框架，下面是统一的策略梯度公式：</p>
 <p>$$\begin{align}<br>\nabla_{\bm{\theta}}\mathcal{J}_{\mathcal{\textcolor{red}{A}}}<br>=\underbrace{\mathbb{E}_{(q,o)\sim \textcolor{red}{\mathcal{D}}}}_{\textit{Data Source}}<br>\Bigg[\frac{1}{|\bm{o}|}\sum_{t=1}^{|\bm{o}|}\underbrace{\textit{GC}_{\mathcal{A}}(q,o,r,\textcolor{red}{\pi_{\bm{\theta}_\textit{rm}}}}_{\textit{Gradient Coefficient}})\nabla_{\bm{\theta}}\log\pi_{\bm{\theta}}(o_t\mid q,o_{:t})\Bigg]<br>\end{align}$$</p>
