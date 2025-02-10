@@ -390,9 +390,9 @@
         
         <tag>概率论</tag>
          
-        <tag>弱大数定律</tag>
-         
         <tag>大数定律</tag>
+         
+        <tag>弱大数定律</tag>
          
          
            
@@ -438,9 +438,9 @@
         
         <tag>概率论</tag>
          
-        <tag>大数定律</tag>
-         
         <tag>弱收敛</tag>
+         
+        <tag>大数定律</tag>
          
         <tag>连续定理</tag>
          
@@ -1002,9 +1002,9 @@
         <title>矩阵高斯分布</title>
         <pubTime>2017-01-11T03:45:17.000Z</pubTime>
         
-        <tag>机器学习</tag>
-         
         <tag>统计学</tag>
+         
+        <tag>机器学习</tag>
          
         <tag>矩阵高斯分布</tag>
          

@@ -302,8 +302,8 @@
       </categories>
       <tags>
         <tag>概率论</tag>
-        <tag>大数定律</tag>
         <tag>弱收敛</tag>
+        <tag>大数定律</tag>
         <tag>连续定理</tag>
       </tags>
   </entry>
@@ -316,8 +316,8 @@
       </categories>
       <tags>
         <tag>概率论</tag>
-        <tag>弱大数定律</tag>
         <tag>大数定律</tag>
+        <tag>弱大数定律</tag>
       </tags>
   </entry>
   <entry>
@@ -531,8 +531,8 @@
         <category>统计学</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>统计学</tag>
+        <tag>机器学习</tag>
         <tag>矩阵高斯分布</tag>
       </tags>
   </entry>
