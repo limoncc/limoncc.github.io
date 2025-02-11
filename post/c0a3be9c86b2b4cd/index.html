@@ -97,7 +97,7 @@
 <meta property="og:image" content="https://www.limoncc.com/images/强化学习3.png">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2025-02-10T14:40:25.576Z">
+<meta property="og:updated_time" content="2025-02-11T01:11:08.776Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="大模型中的强化学习——大语言模型研究05">
 <meta name="twitter:description" content="本文主要总结了大语言模型中的强化学习的若干基本问题，和我自己的一些体会。">
@@ -522,12 +522,10 @@
 </ul>
 <p>$$\begin{align}<br>\hat{A}_{i,t}=\hat{A}_{\pi}(q,\bm{o}_{i}) = \frac{r(\bm{o}_{i})-\text{mean}(\bm{R})}{\text{std}(\bm{R})}<br>\end{align}$$</p>
 <p>其中 $\displaystyle \bm{R} = \{r(\bm{o}_1),\cdots,r(\bm{o}_i),\cdots,r(\bm{o}_G)\}$</p>
-<h5 id="3-4、deepseek-R1模型的目标函数"><a href="#3-4、deepseek-R1模型的目标函数" class="headerlink" title="3.4、deepseek R1模型的目标函数"></a>3.4、deepseek R1模型的目标函数</h5><p>deepseek R1模型的目标函数[^1]和deepseek math中的目标函数稍微不太一样。deepseek的思维链模型，没有使用过程奖励。目标函数中可以看到是整体计算整个输出。而且R1除了没有价值模型，还没有奖励模型。奖励的计算基于规则、代码验证器、格式验证来计算的。这大大节约了资源，也减少了学习难度。</p>
-<p>$$\begin{align}<br>&amp;\mathcal{L}_{\textit{GRPO}}(\bm{\theta})<br>=\mathbb{E}_{q\sim \rho(Q),\{\bm{o}_i\}_{i=1}^G\sim \pi_{\bm{\theta}_\text{old}}}\\<br>&amp;\frac{1}{G}\sum_{i=1}^G<br>\bigg[\min\left[\frac{\pi_{\bm{\theta}}(\bm{o}_{i}\mid q)}{\pi_{\bm{\theta}_\text{old}}(\bm{o}_{i}\mid q)},\mathrm{\text{clip}}\left[\frac{\pi_{\bm{\theta}}(\bm{o}_{i}\mid q)}{\pi_{\bm{\theta}_\text{old}}(\bm{o}_{i}\mid q)},1-\epsilon,1+\epsilon\right]\right]\cdot A_{\pi}(q,\bm{o}_i)-\beta \mathbb{\hat{KL}}\big[\pi_{\bm{\theta}} ||\pi_{\bm{\theta}_\textit{ref}}\big]\bigg]<br>\end{align}$$</p>
-<p>其中<br>$\displaystyle \hat{A}_{i}=\hat{A}_{\pi}(q,\bm{o}_{i}) = \frac{r(\bm{o}_{i})-\text{mean}(\bm{R})}{\text{std}(\bm{R})}$</p>
-<p>$\displaystyle \mathbb{\hat{KL}}\big[\pi_{\bm{\theta}} ||\pi_{\bm{\theta}_\textit{ref}}\big]<br>=\frac{\pi_{\bm{\theta}_\textit{ref}}(\bm{o}_{i}\mid q)}{\pi_{\bm{\theta}}(\bm{o}_{i}\mid q)}- \log \frac{\pi_{\bm{\theta}_\textit{ref}}(\bm{o}_{i}\mid q)}{\pi_{\bm{\theta}}(\bm{o}_{i}\mid q)}-1$</p>
-<p>$\displaystyle \pi_{\bm{\theta}}(\bm{o}_{i}\mid q)$</p>
-<p>这里的计算逻辑在trl的GRPO中似乎是求平均，具体笔者也还在看源码，有空在更新。初步看了一眼应该把是按token计算求平均。</p>
+<h5 id="3-4、deepseek-R1模型的目标函数"><a href="#3-4、deepseek-R1模型的目标函数" class="headerlink" title="3.4、deepseek R1模型的目标函数"></a>3.4、deepseek R1模型的目标函数</h5><p>deepseek R1模型的目标函数[^1]和deepseek math中的目标函数稍微不太一样。deepseek的思维链模型，没有使用过程奖励。目标函数中可以看到是整体计算整个输出求平均。而且R1除了没有价值模型，还没有奖励模型。奖励的计算基于规则、代码验证器、格式验证来计算的。这大大节约了资源，也减少了学习难度。</p>
+<p>$$\begin{align}<br>&amp;\mathcal{L}_{\textit{GRPO}}(\bm{\theta})<br>=\mathbb{E}_{q\sim \rho(Q),\{\bm{o}_i\}_{i=1}^G\sim \pi_{\bm{\theta}_\text{old}}}\\<br>&amp;\frac{1}{G}\sum_{i=1}^G<br>\frac{1}{|\bm{o}_i|}\sum_{t=1}^{\bm{|\bm{o}_i|}}<br>\bigg[\min\left[\frac{\pi_{\bm{\theta}}(o_{i,t}\mid q,o_{i,:t})}{\pi_{\bm{\theta}_\text{old}}(o_{i,t}\mid q,o_{i,:t})},\mathrm{\text{clip}}\left[\frac{\pi_{\bm{\theta}}(o_{i,t}\mid q,o_{i,:t})}{\pi_{\bm{\theta}_\text{old}}(o_{i,t}\mid q,o_{i,:t})},1-\epsilon,1+\epsilon\right]\right]\cdot A_{\pi}(q,\bm{o}_i)-\beta \mathbb{\hat{KL}}\big[\pi_{\bm{\theta}} ||\pi_{\bm{\theta}_\textit{ref}}\big]\bigg]<br>\end{align}$$</p>
+<p>其中<br>$\displaystyle \hat{A}_{i,t}=\hat{A}_{\pi}(q,\bm{o}_{i}) = \frac{r(\bm{o}_{i})-\text{mean}(\bm{R})}{\text{std}(\bm{R})}$</p>
+<p>$\displaystyle \mathbb{\hat{KL}}\big[\pi_{\bm{\theta}} ||\pi_{\bm{\theta}_\textit{ref}}\big]<br>=\frac{\pi_{\bm{\theta}_\textit{ref}}(o_{i,t}\mid q,o_{i,:t})}{\pi_{\bm{\theta}}(o_{i,t}\mid q,o_{i,:t})}- \log \frac{\pi_{\bm{\theta}_\textit{ref}}(o_{i,t}\mid q,o_{i,:t})}{\pi_{\bm{\theta}}(o_{i,t}\mid q,o_{i,:t})}-1$</p>
 <div align="center"><img src="/images/强化学习2.png" width="1000" ==""><br></div>
 
 <p>R1的训练流程经过了三个阶段，下面是笔者绘制的流程图，并标注了关键节点的一些注意要点。注意在最后阶段其实是有奖励模型参与的。第三阶段的生成600k的推理数据在使用拒绝采样时也使用了奖励模型。注意在deepseekv3的奖励模型中是同时输出奖励理由的思维链和奖励分数的。</p>
