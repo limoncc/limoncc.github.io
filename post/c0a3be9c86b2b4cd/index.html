@@ -97,7 +97,7 @@
 <meta property="og:image" content="https://www.limoncc.com/images/强化学习3.png">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2025-02-11T01:11:08.776Z">
+<meta property="og:updated_time" content="2025-02-11T01:18:38.759Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="大模型中的强化学习——大语言模型研究05">
 <meta name="twitter:description" content="本文主要总结了大语言模型中的强化学习的若干基本问题，和我自己的一些体会。">
@@ -472,6 +472,7 @@
 <p>$$\begin{align}<br>\nabla_{\bm{\theta}} \mathcal{L}^{PG}(\bm{\theta})<br>=\nabla_{\bm{\theta}} \mathcal{J}(\bm{\theta})<br>\end{align}$$</p>
 <p>优化方向上就能在理论上保证和原始的强化学习目标是一致的。然后实践证明这个最明显的目标函数表现并不好。PPO论文[^3]使用了TRPO(trus region policy optimuization,置信域策略优化中提出的函数)，回到原始目标函数</p>
 <p>$$\begin{align}<br>\mathcal{J}(\bm{\theta})<br>&amp;= \mathbb{E}_{s_t\sim \rho}[V_{\pi}(s_t)]\\<br>&amp;= \mathbb{E}_{s_t\sim \rho}\bigg[\mathbb{E}_{a_t\sim \pi}\big[Q_{\pi}(s_t, a_t)\big]\bigg]\\<br>&amp;= \mathbb{E}_{s_t\sim \rho}\bigg[\sum_{a_t\in \mathcal{A}}\pi_{\bm{\theta}}(a_t\mid s_t)\cdot Q_{\pi}(s_t, a_t)\bigg]\\<br>&amp;= \mathbb{E}_{s_t\sim \rho}\bigg[\sum_{a_t\in \mathcal{A}}\pi_{\bm{\theta}_\text{old}}(a_t\mid s_t)\frac{\pi_{\bm{\theta}}(a_t\mid s_t)}{\pi_{\bm{\theta}_\text{old}}(a_t\mid s_t)}\cdot Q_{\pi}(s_t, a_t)\bigg]\\<br>&amp; = \mathbb{E}_{s_t\sim \rho,a_t\sim \pi_{\bm{\theta}_\text{old}}}\bigg[\frac{\pi_{\bm{\theta}}(a_t\mid s_t)}{\pi_{\bm{\theta}_\text{old}}(a_t\mid s_t)}\cdot Q_{\pi}(s_t, a_t)\bigg]\\<br>\end{align}$$</p>
+<p>这里变化为新旧策略比例的原因是为了纳入重要性采样的trick提高学习效率。如果不熟悉重要性采样的同学，请找本书看，这里推荐Sheldon M. Ross的《Simulation》。</p>
 <p>使用优势函数$A_{\pi}(s_t,a_t) = Q_{\pi}(s_t,a_t) - V_{\pi}(s_t) $ ，在这个基础上PPO提出了裁剪版的代理目标函数</p>
 <p>$$\begin{align}<br>\mathcal{L}^{\text{CLIP}}(\bm{\theta})<br>=\mathbb{E}_{s_t\sim \rho,a_t\sim \pi_{\bm{\theta}_\text{old}}}\bigg[\min\left[\frac{\pi_{\bm{\theta}}(a_t\mid s_t)}{\pi_{\bm{\theta}_\text{old}}(a_t\mid s_t)},\mathrm{\text{clip}}\left[\frac{\pi_{\bm{\theta}}(a_t\mid s_t)}{\pi_{\bm{\theta}_\text{old}}(a_t\mid s_t)},1-\epsilon,1+\epsilon\right]\right]\cdot A_{\pi}(s_t,a_t)\bigg]<br>\end{align}$$</p>
 <p>其中令 $\displaystyle \eta_t(\bm{\theta})=\frac{\pi_{\bm{\theta}}(a_t\mid s_t)}{\pi_{\bm{\theta}_\text{old}}(a_t\mid s_t)}$</p>
