@@ -94,7 +94,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2025-02-13T02:12:18.223Z">
+<meta property="og:updated_time" content="2025-02-13T02:15:53.683Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="大模型中的强化学习实战1——大语言模型研究06">
 <meta name="twitter:description" content="本文主要总结了大语言模型中的强化学习的若干基本问题，和我自己的一些体会。">
@@ -390,7 +390,7 @@
 <blockquote>
 <p><strong>摘要</strong>: 本文意在理清RLHF代码实战的关键问题。若有错误，请大家指正。<br><strong>关键词</strong>: <code>RLHF</code>,<code>GRPO</code>,<code>REINFORCE+++</code></p>
 </blockquote>
-<h4 id="一、DeepSeek-R1推理模型的复现浪潮"><a href="#一、DeepSeek-R1推理模型的复现浪潮" class="headerlink" title="一、DeepSeek-R1推理模型的复现浪潮"></a>一、DeepSeek-R1推理模型的复现浪潮</h4><p>基于人类反馈的强化学习在deepseek-r1模型横空出世后，deepseek-r1的开源引发了大家都争先恐后的的复现浪潮。unsloth的基于Llama 3.1 8B Instruct<a href="https://colab.research.google.com/github/unslothai/notebooks/blob/main/nb/Llama3.1_(8B)-GRPO.ipynb#scrollTo=R8-SLRUB2gwM" target="_blank" rel="noopener">^1</a>、UC伯克利研究团队的DeepScaleR<a href="https://github.com/agentica-project/deepscaler" target="_blank" rel="noopener">^2</a>、huggingface的openR1<a href="https://github.com/huggingface/open-r1" target="_blank" rel="noopener">^3</a>、mini-deepseek-r1<a href="https://github.com/philschmid/deep-learning-pytorch-huggingface/blob/main/training/mini-deepseek-r1-aha-grpo.ipynb" target="_blank" rel="noopener">^5</a>、TinyZero<a href="https://github.com/Jiayi-Pan/TinyZero" target="_blank" rel="noopener">^6</a>、simpleRL-reason<a href="https://github.com/hkust-nlp/simpleRL-reason" target="_blank" rel="noopener">^7</a>、RAGEN<a href="https://github.com/ZihanWang314/RAGEN" target="_blank" rel="noopener">^8</a>、oat-zero<a href="https://github.com/sail-sg/oat-zero" target="_blank" rel="noopener">^9</a>、李飞飞的s1<a href="https://github.com/simplescaling/s1" target="_blank" rel="noopener">^12</a>、Qwen 0.5b on GRPO<a href="https://colab.research.google.com/drive/1bfhs1FMLW3FGa8ydvkOZyBNxLYOu0Hev?usp=sharing" target="_blank" rel="noopener">^15</a>，国内的：皓天<a href="https://zhuanlan.zhihu.com/p/13872128423" target="_blank" rel="noopener">^4</a>、skydownacai<a href="https://zhuanlan.zhihu.com/p/22517127574" target="_blank" rel="noopener">^10</a>、Logic-RL<a href="https://zhuanlan.zhihu.com/p/21290410831" target="_blank" rel="noopener">^11</a>。这是截止2025年2月11日16:30前的数据，如果还有遗漏欢迎大家补充。</p>
+<h4 id="一、DeepSeek-R1推理模型的复现浪潮"><a href="#一、DeepSeek-R1推理模型的复现浪潮" class="headerlink" title="一、DeepSeek-R1推理模型的复现浪潮"></a>一、DeepSeek-R1推理模型的复现浪潮</h4><p>基于人类反馈的强化学习在deepseek-r1模型横空出世后，deepseek-r1的开源引发了大家都争先恐后的的复现浪潮。unsloth的基于Llama 3.1 8B Instruct[^1]、UC伯克利研究团队的DeepScaleR[^2]、huggingface的openR1[^3]、mini-deepseek-r1[^5]、TinyZero<a href="https://github.com/Jiayi-Pan/TinyZero" target="_blank" rel="noopener">^6</a>、simpleRL-reason<a href="https://github.com/hkust-nlp/simpleRL-reason" target="_blank" rel="noopener">^7</a>、RAGEN<a href="https://github.com/ZihanWang314/RAGEN" target="_blank" rel="noopener">^8</a>、oat-zero<a href="https://github.com/sail-sg/oat-zero" target="_blank" rel="noopener">^9</a>、李飞飞的s1<a href="https://github.com/simplescaling/s1" target="_blank" rel="noopener">^12</a>、Qwen 0.5b on GRPO<a href="https://colab.research.google.com/drive/1bfhs1FMLW3FGa8ydvkOZyBNxLYOu0Hev?usp=sharing" target="_blank" rel="noopener">^15</a>，国内的：皓天[^4]、skydownacai<a href="https://zhuanlan.zhihu.com/p/22517127574" target="_blank" rel="noopener">^10</a>、Logic-RL<a href="https://zhuanlan.zhihu.com/p/21290410831" target="_blank" rel="noopener">^11</a>。这是截止2025年2月11日16:30前的数据，如果还有遗漏欢迎大家补充。</p>
 <p>浏览下来的一个初步观感：复现项目大多基于huggingface的trl、OpenRLHF两个项目，还有手动自己写trainer。对于分布式训练，一般都是基于Ray和deepspeed。他们大都采用的蒸馏部分数据sft+RL的方式。</p>
 <p>2025年推理模型必将大行其道，在实战层面系统性掌握大模型下的强化学习十分必要。这也是笔者写这个系列文章的原因。先说一个简单的规划：</p>
 <p><strong>RLHF代码-初见01</strong></p>
@@ -508,65 +508,11 @@
 <p>6、选择base模型犹如找到好苗子，强化学习犹如是一个因材施教，循循善诱的过程。教废了，还是天才养成记这确实是个问题。</p>
 <p>7、解决RLFH代码实践的框架问题，和关键Trick技巧，接下来就是整数据实操了，敬请期待。</p>
 <p>最近笔者也弄了一个公众号: limoncc-ai 欢迎关注。</p>
-<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><!-- [1]:https://colab.research.google.com/github/unslothai/notebooks/blob/main/nb/Llama3.1_(8B)-GRPO.ipynb#scrollTo=R8-SLRUB2gwM
-
-[2]:https://github.com/agentica-project/deepscaler
-
-[3]:https://github.com/huggingface/open-r1
-
-[4]:https://zhuanlan.zhihu.com/p/13872128423
-
-[5]:https://github.com/philschmid/deep-learning-pytorch-huggingface/blob/main/training/mini-deepseek-r1-aha-grpo.ipynb
-
-[6]:https://github.com/Jiayi-Pan/TinyZero
-
-[7]:https://github.com/hkust-nlp/simpleRL-reason
-
-[8]:https://github.com/ZihanWang314/RAGEN
-
-[9]:https://github.com/sail-sg/oat-zero
-
-[10]:https://zhuanlan.zhihu.com/p/22517127574
-
-[11]:https://zhuanlan.zhihu.com/p/21290410831
-
-[12]:https://github.com/simplescaling/s1
-
-[13]:https://limoncc.com/post/c0a3be9c86b2b4cd/
-
-[14]:https://github.com/OpenRLHF/OpenRLHF
-
-[15]:https://colab.research.google.com/drive/1bfhs1FMLW3FGa8ydvkOZyBNxLYOu0Hev?usp=sharing
-
-[16]:Huang, S., Noukhovitch, M., Hosseini, A., Rasul, K., Wang, W., & Tunstall, L. (2024, March 24). The N+ Implementation Details of RLHF with PPO: A Case Study on TL;DR Summarization. arXiv. https://doi.org/10.48550/arXiv.2403.17031
-
-[17]:https://huggingface.co/blog/the_n_implementation_details_of_rlhf_with_ppo
-
-[18]:https://zhuanlan.zhihu.com/p/622134699
-
-[19]:https://zhuanlan.zhihu.com/p/14888098807
-
-[20]:https://zhuanlan.zhihu.com/p/18510331097
-
-[21]:https://zhuanlan.zhihu.com/p/14520940716
-
-[22]:https://zhuanlan.zhihu.com/p/714364995
-
-[23]:Hu, J. (2025, January 4). REINFORCE++: A Simple and Efficient Approach for Aligning Large Language Models. arXiv. https://doi.org/10.48550/arXiv.2501.03262
-
-[24]:Hu, J., Wu, X., Zhu, Z., Xianyu, Wang, W., Zhang, D., & Cao, Y. (2024, November 24). OpenRLHF: An Easy-to-use, Scalable and High-performance RLHF Framework. arXiv. https://doi.org/10.48550/arXiv.2405.11143
-
-[25]:Schulman, J., Wolski, F., Dhariwal, P., Radford, A., & Klimov, O. (2017, August 28). Proximal Policy Optimization Algorithms. arXiv. https://doi.org/10.48550/arXiv.1707.06347
-
-[26]:Korbak, T., Perez, E., & Buckley, C. L. (2022, October 21). RL with KL penalties is better viewed as Bayesian inference. arXiv. http://arxiv.org/abs/2205.11275. Accessed 7 December 2023
-
-[27]:https://www.limoncc.com/post/bd7e41e00dc8afad
-
-[28]:https://zhuanlan.zhihu.com/p/22288441283
-
-[29]:J. Schulman. Approximating kl divergence, 2020. URL http://joschu.net/blog/kl-approx.html.
-
-[30]:Liu, H., Zaharia, M., & Abbeel, P. (2023, November 27). Ring Attention with Blockwise Transformers for Near-Infinite Context. arXiv. https://doi.org/10.48550/arXiv.2310.01889 -->
+<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p>[^1]:unslothai <a href="https://colab.research.google.com/github/unslothai/notebooks/blob/main/nb/Llama3.1_(8B)-GRPO.ipynb#scrollTo=R8-SLRUB2gwM" target="_blank" rel="noopener">https://colab.research.google.com/github/unslothai/notebooks/blob/main/nb/Llama3.1_(8B)-GRPO.ipynb#scrollTo=R8-SLRUB2gwM</a></p>
+<p>[^2]:deepscaler <a href="https://github.com/agentica-project/deepscaler" target="_blank" rel="noopener">https://github.com/agentica-project/deepscaler</a></p>
+<p>[^3]:open-r1 <a href="https://github.com/huggingface/open-r1" target="_blank" rel="noopener">https://github.com/huggingface/open-r1</a></p>
+<p>[^4]:皓天 <a href="https://zhuanlan.zhihu.com/p/13872128423" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/13872128423</a></p>
+<p>[^5]:mini-deepseek-r1 <a href="https://github.com/philschmid/deep-learning-pytorch-huggingface/blob/main/training/mini-deepseek-r1-aha-grpo.ipynb" target="_blank" rel="noopener">https://github.com/philschmid/deep-learning-pytorch-huggingface/blob/main/training/mini-deepseek-r1-aha-grpo.ipynb</a></p>
 <p>[^16]:Huang, S., Noukhovitch, M., Hosseini, A., Rasul, K., Wang, W., &amp; Tunstall, L. (2024, March 24). The N+ Implementation Details of RLHF with PPO: A Case Study on TL;DR Summarization. arXiv. <a href="https://doi.org/10.48550/arXiv.2403.17031" target="_blank" rel="noopener">https://doi.org/10.48550/arXiv.2403.17031</a></p>
 <p>[^23]:Hu, J. (2025, January 4). REINFORCE++: A Simple and Efficient Approach for Aligning Large Language Models. arXiv. <a href="https://doi.org/10.48550/arXiv.2501.03262" target="_blank" rel="noopener">https://doi.org/10.48550/arXiv.2501.03262</a></p>
 <p>[^24]:Hu, J., Wu, X., Zhu, Z., Xianyu, Wang, W., Zhang, D., &amp; Cao, Y. (2024, November 24). OpenRLHF: An Easy-to-use, Scalable and High-performance RLHF Framework. arXiv. <a href="https://doi.org/10.48550/arXiv.2405.11143" target="_blank" rel="noopener">https://doi.org/10.48550/arXiv.2405.11143</a></p>
