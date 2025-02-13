@@ -94,7 +94,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2025-02-13T01:53:12.522Z">
+<meta property="og:updated_time" content="2025-02-13T02:02:35.441Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="大模型中的强化学习实战1——大语言模型研究06">
 <meta name="twitter:description" content="本文主要总结了大语言模型中的强化学习的若干基本问题，和我自己的一些体会。">
@@ -390,7 +390,6 @@
 <blockquote>
 <p><strong>摘要</strong>: 本文意在理清RLHF代码实战的关键问题。若有错误，请大家指正。<br><strong>关键词</strong>: <code>RLHF</code>,<code>GRPO</code>,<code>REINFORCE+++</code></p>
 </blockquote>
-<p>[TOC]</p>
 <h4 id="一、DeepSeek-R1推理模型的复现浪潮"><a href="#一、DeepSeek-R1推理模型的复现浪潮" class="headerlink" title="一、DeepSeek-R1推理模型的复现浪潮"></a>一、DeepSeek-R1推理模型的复现浪潮</h4><p>基于人类反馈的强化学习在deepseek-r1模型横空出世后，deepseek-r1的开源引发了大家都争先恐后的的复现浪潮。unsloth的基于Llama 3.1 8B Instruct<a href="https://colab.research.google.com/github/unslothai/notebooks/blob/main/nb/Llama3.1_(8B)-GRPO.ipynb#scrollTo=R8-SLRUB2gwM" target="_blank" rel="noopener">^1</a>、UC伯克利研究团队的DeepScaleR<a href="https://github.com/agentica-project/deepscaler" target="_blank" rel="noopener">^2</a>、huggingface的openR1<a href="https://github.com/huggingface/open-r1" target="_blank" rel="noopener">^3</a>、mini-deepseek-r1<a href="https://github.com/philschmid/deep-learning-pytorch-huggingface/blob/main/training/mini-deepseek-r1-aha-grpo.ipynb" target="_blank" rel="noopener">^5</a>、TinyZero<a href="https://github.com/Jiayi-Pan/TinyZero" target="_blank" rel="noopener">^6</a>、simpleRL-reason<a href="https://github.com/hkust-nlp/simpleRL-reason" target="_blank" rel="noopener">^7</a>、RAGEN<a href="https://github.com/ZihanWang314/RAGEN" target="_blank" rel="noopener">^8</a>、oat-zero<a href="https://github.com/sail-sg/oat-zero" target="_blank" rel="noopener">^9</a>、李飞飞的s1<a href="https://github.com/simplescaling/s1" target="_blank" rel="noopener">^12</a>、Qwen 0.5b on GRPO<a href="https://colab.research.google.com/drive/1bfhs1FMLW3FGa8ydvkOZyBNxLYOu0Hev?usp=sharing" target="_blank" rel="noopener">^15</a>，国内的：皓天<a href="https://zhuanlan.zhihu.com/p/13872128423" target="_blank" rel="noopener">^4</a>、skydownacai<a href="https://zhuanlan.zhihu.com/p/22517127574" target="_blank" rel="noopener">^10</a>、Logic-RL<a href="https://zhuanlan.zhihu.com/p/21290410831" target="_blank" rel="noopener">^11</a>。这是截止2025年2月11日16:30前的数据，如果还有遗漏欢迎大家补充。</p>
 <p>浏览下来的一个初步观感：复现项目大多基于huggingface的trl、OpenRLHF两个项目，还有手动自己写trainer。对于分布式训练，一般都是基于Ray和deepspeed。他们大都采用的蒸馏部分数据sft+RL的方式。</p>
 <p>2025年推理模型必将大行其道，在实战层面系统性掌握大模型下的强化学习十分必要。这也是笔者写这个系列文章的原因。先说一个简单的规划：</p>
