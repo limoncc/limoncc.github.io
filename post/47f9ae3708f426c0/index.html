@@ -1,0 +1,1182 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="大语言模型,LLM,强化学习,GRPO,PPO,RLHF,REINFORCE+++,OpenRLHF" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本文主要总结了大语言模型中的强化学习的若干基本问题，和我自己的一些体会。">
+<meta name="keywords" content="大语言模型,LLM,强化学习,GRPO,PPO,RLHF,REINFORCE+++,OpenRLHF">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大模型中的强化学习实战1——大语言模型研究06">
+<meta property="og:url" content="https://www.limoncc.com/post/47f9ae3708f426c0/index.html">
+<meta property="og:site_name" content="柠檬CC">
+<meta property="og:description" content="本文主要总结了大语言模型中的强化学习的若干基本问题，和我自己的一些体会。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.limoncc.com/images/cc.png">
+<meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
+<meta property="og:updated_time" content="2025-02-13T01:53:12.522Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="大模型中的强化学习实战1——大语言模型研究06">
+<meta name="twitter:description" content="本文主要总结了大语言模型中的强化学习的若干基本问题，和我自己的一些体会。">
+<meta name="twitter:image" content="https://www.limoncc.com/images/cc.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <title> 大模型中的强化学习实战1——大语言模型研究06 | 柠檬CC </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-73837972-3', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d225b8f8559eb2eb6a8bd8792e01ebb9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=60130136";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">柠檬CC</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">小白爱吃柠檬O(∩_∩)O</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-poetry">
+          <a href="/poetry" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-leaf"></i> <br />
+            
+            诗集
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                大模型中的强化学习实战1——大语言模型研究06
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2025-02-11T15:43:15+08:00" content="2025-02-11">
+              2025-02-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/post/47f9ae3708f426c0/" class="leancloud_visitors" data-flag-title="大模型中的强化学习实战1——大语言模型研究06">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作者: <a href="https://www.limoncc.com">引线小白</a>-本文永久链接：httpss://<a href="http://www.limoncc.com/post/47f9ae3708f426c0/">www.limoncc.com/post/47f9ae3708f426c0/</a><br>知识共享许可协议: 本博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证</p>
+<blockquote>
+<p><strong>摘要</strong>: 本文意在理清RLHF代码实战的关键问题。若有错误，请大家指正。<br><strong>关键词</strong>: <code>RLHF</code>,<code>GRPO</code>,<code>REINFORCE+++</code></p>
+</blockquote>
+<p>[TOC]</p>
+<h4 id="一、DeepSeek-R1推理模型的复现浪潮"><a href="#一、DeepSeek-R1推理模型的复现浪潮" class="headerlink" title="一、DeepSeek-R1推理模型的复现浪潮"></a>一、DeepSeek-R1推理模型的复现浪潮</h4><p>基于人类反馈的强化学习在deepseek-r1模型横空出世后，deepseek-r1的开源引发了大家都争先恐后的的复现浪潮。unsloth的基于Llama 3.1 8B Instruct<a href="https://colab.research.google.com/github/unslothai/notebooks/blob/main/nb/Llama3.1_(8B)-GRPO.ipynb#scrollTo=R8-SLRUB2gwM" target="_blank" rel="noopener">^1</a>、UC伯克利研究团队的DeepScaleR<a href="https://github.com/agentica-project/deepscaler" target="_blank" rel="noopener">^2</a>、huggingface的openR1<a href="https://github.com/huggingface/open-r1" target="_blank" rel="noopener">^3</a>、mini-deepseek-r1<a href="https://github.com/philschmid/deep-learning-pytorch-huggingface/blob/main/training/mini-deepseek-r1-aha-grpo.ipynb" target="_blank" rel="noopener">^5</a>、TinyZero<a href="https://github.com/Jiayi-Pan/TinyZero" target="_blank" rel="noopener">^6</a>、simpleRL-reason<a href="https://github.com/hkust-nlp/simpleRL-reason" target="_blank" rel="noopener">^7</a>、RAGEN<a href="https://github.com/ZihanWang314/RAGEN" target="_blank" rel="noopener">^8</a>、oat-zero<a href="https://github.com/sail-sg/oat-zero" target="_blank" rel="noopener">^9</a>、李飞飞的s1<a href="https://github.com/simplescaling/s1" target="_blank" rel="noopener">^12</a>、Qwen 0.5b on GRPO<a href="https://colab.research.google.com/drive/1bfhs1FMLW3FGa8ydvkOZyBNxLYOu0Hev?usp=sharing" target="_blank" rel="noopener">^15</a>，国内的：皓天<a href="https://zhuanlan.zhihu.com/p/13872128423" target="_blank" rel="noopener">^4</a>、skydownacai<a href="https://zhuanlan.zhihu.com/p/22517127574" target="_blank" rel="noopener">^10</a>、Logic-RL<a href="https://zhuanlan.zhihu.com/p/21290410831" target="_blank" rel="noopener">^11</a>。这是截止2025年2月11日16:30前的数据，如果还有遗漏欢迎大家补充。</p>
+<p>浏览下来的一个初步观感：复现项目大多基于huggingface的trl、OpenRLHF两个项目，还有手动自己写trainer。对于分布式训练，一般都是基于Ray和deepspeed。他们大都采用的蒸馏部分数据sft+RL的方式。</p>
+<p>2025年推理模型必将大行其道，在实战层面系统性掌握大模型下的强化学习十分必要。这也是笔者写这个系列文章的原因。先说一个简单的规划：</p>
+<p><strong>RLHF代码-初见01</strong></p>
+<ul>
+<li>回顾PPO的代码实现，并介绍相关核心流程与概念</li>
+<li>理顺一些关键trick的理论基础与考量</li>
+<li>GRPO与PPO的不同</li>
+<li>REINFORCE+++</li>
+</ul>
+<p><strong>RLHF代码-实战02</strong></p>
+<ul>
+<li>OpenRLHF的REINFORCE+++实战</li>
+<li>OpenRLHF的GRPO实战</li>
+<li>trl的GRPO的实战</li>
+</ul>
+<p><strong>RLHF代码-s1的学习02</strong></p>
+<ul>
+<li>s1模型的数据工程</li>
+<li>s1的测试时扩展计算方法</li>
+<li>如何构建自己的领域模型</li>
+</ul>
+<h4 id="二、RLHF实现的核心流程"><a href="#二、RLHF实现的核心流程" class="headerlink" title="二、RLHF实现的核心流程"></a>二、RLHF实现的核心流程</h4><h5 id="2-1、损失函数"><a href="#2-1、损失函数" class="headerlink" title="2.1、损失函数"></a>2.1、损失函数</h5><p>我们先回顾一下PPO的损失函数，笔者将以PPO损失函数为例，通过OpenRLHF代码核心逻辑来说明大模型中强化学习实现的核心流程。这里为什么不是通过trl的PPO或者GRPO，因为OpenRLHF代码非常优雅简洁，不像trl抽象太多；然后大厂都在用。总之OpenRLHF 是一个基于 Ray、DeepSpeed 和 HF Transformers 构建的高性能 RLHF 框架。用就对了。</p>
+<p>$$\begin{align}<br>\mathcal{L}_{\textit{PPO}}(\bm{\theta})<br>&amp;=\mathbb{E}_{q\sim \rho(Q),\bm{o}\sim \pi_{\bm{\theta}_\text{old}}}\frac{1}{|\bm{o}|}\sum_{t=1}^{|\bm{o}|}\bigg[\min\left[\frac{\pi_{\bm{\theta}}(o_t\mid q,o_{:t})}{\pi_{\bm{\theta}_\text{old}}(o_t\mid q,o_{:t})},\mathrm{\text{clip}}\left[\frac{\pi_{\bm{\theta}}(o_t\mid q,o_{:t})}{\pi_{\bm{\theta}_\text{old}}(o_t\mid q,o_{:t})},1-\epsilon,1+\epsilon\right]\right]\cdot A_{\pi}(q,o_t)\bigg]<br>\end{align}$$</p>
+<p>其中</p>
+<ul>
+<li>数据集: $\mathcal{D}=\{(q_i,\bm{o}_i)\}_{i=1}^n$, 来自旧策略 $\pi_{\bm{\theta}_\text{old}}$的采样</li>
+<li>优势函数估计:<br>$\hat{A}_t(k)=\delta_t + \gamma\lambda\hat{A}_{t+1}(k-1)$<br>$\delta_t = r_t + \gamma v_{\bm{w}}(s_{t+1}) - v_{\bm{w}}(s_t)$<br>$r_t=\pi_{\bm{\theta}_{\textit{rm}}}(q,o_{:t})-\beta \mathbb{KL}\big[\pi_{\bm{\theta}} ||\pi_{\bm{\theta}_\textit{ref}}\big]$<br>$\displaystyle \mathbb{KL}\big[\pi_{\bm{\theta}} ||\pi_{\bm{\theta}_\textit{ref}}\big] = \log \frac{\pi_{\bm{\theta}}(o_t\mid q,o_{:t})}{\pi_{\bm{\theta}_\textit{ref}}(o_t\mid q,o_{:t})}$</li>
+<li>符号说明: 价值模型 $v_{\bm{w}}$、 奖励模型 $\pi_{\bm{\theta}_{\textit{rm}}}$、 策略模型 $\pi_{\bm{\theta}}$、 参考模型 $\pi_{\bm{\theta}_\textit{ref}}$</li>
+</ul>
+<p>如果你对理论不熟悉，可以参考笔者以前的文章<a href="https://limoncc.com/post/c0a3be9c86b2b4cd/" target="_blank" rel="noopener">^13</a>:<a href="https://zhuanlan.zhihu.com/p/21178712267" target="_blank" rel="noopener">大模型中的强化学习——大语言模型研究05</a></p>
+<p>PPO强化学习中的策略学习，且是异策略。策略训练的核心目标在于最大化生成响应所获价值的期望。在大模型强化学习中价值已经用优势估计取代，也是就带基线的策略梯度, 其训练架构涉及四个功能模块：<br>奖励模型：提供细粒度反馈信号<br>策略模型(演员模型)：持续优化的核心主体<br>参考模型：实施正则化约束<br>价值模型(评论模型)（可选）：通过价值函数估计提升训练稳定性</p>
+<h5 id="2-2、Trainer整体循环"><a href="#2-2、Trainer整体循环" class="headerlink" title="2.2、Trainer整体循环"></a>2.2、Trainer整体循环</h5><p>下面来理解 $\displaystyle \mathbb{E}_{q\sim \rho(Q),\bm{o}\sim \pi_{\bm{\theta}_\text{old}}}\frac{1}{|\bm{o}|}\sum_{t=1}^{|\bm{o}|}$的代码实现，即采样到底是如何实现的。一般机器学习的trainer中最外层一般叫epoch <strong>/ˈiːpɒk/</strong>, 在强化学习中叫做episode <strong>/ˈepɪsəʊd/</strong>。表示每个训练周期。是策略模型和价值模型参数更新的总步数。它直接控制策略优化的频率，是平衡经验收集（探索：Exploration）和策略优化（利用：Exploitation）的关键参数。PPO训练循环中有两个关键环节<strong>探索</strong>、<strong>利用</strong>。</p>
+<p>在整体层面理解OpenRLHF代码<a href="https://github.com/OpenRLHF/OpenRLHF" target="_blank" rel="noopener">^14</a>数据集流动路径的核心是给出各种 <strong>batch_size</strong>的解释:</p>
+<ul>
+<li>1、首先有一个高质量、多样性丰富、难度覆盖广泛的提示数据集 $\mathcal{D}=\{q_i\}_{i=1}^n$。或者带上参考答案的 $\mathcal{D}=\{(q_i,\bm{o}_i^{ref})\}_{i=1}^n$也可。对这个数据集遍历 <strong>episodes</strong> 遍。</li>
+<li>2、随机从数据集中取出 <strong>rollout_batch_size // world_size</strong> 个数据, 即从提示数据集中滚出多个数据探索(Exploration)。rollout_batch_size这词翻译为 <strong>滚出批量</strong> 还是比较形象的。 其中world_size这参数指的个GPU数量，来自torch的distributed.get_world_size()。个人理解滚出批量这个参数主要来调节数据处理的速度。</li>
+<li>3、有了滚出批量的数据, 下面就开始探索，即经验收集。在经验收集阶段会按照 <strong>micro_rollout_batch_size</strong>: <strong>微滚出批量</strong> 的大小来收集经验。为什么不是按照 <strong>滚出批量</strong> 来收集呢？因为在经验收集阶段要依次调用策略模型 $\pi_{\bm{\theta}}$、 参考模型 $\pi_{\bm{\theta}_\textit{ref}}$、 价值模型 $v_{\bm{w}}$、 奖励模型 $\pi_{\bm{\theta}_{\textit{rm}}}$来计算生成经验数据（状态-动作-奖励序列）奖励、价值、输出概率等指标。需要一个参数来调节资源消耗。</li>
+<li>4、有了经验数据后，经验数据会压入 <strong>回放缓存</strong> 里。这里称之为回放是不恰当的，因为PPO是异策略，在强化学习中的经验回放不是这个意思。不过在大模型强化学习领域，大家都这么叫了。在 <strong>回放缓存</strong> 中的数据会被重新整理批量大小，变为: <strong>micro_train_batch_size</strong>, 即是 <strong>微训练批量大小</strong>，是每次做后向传播的批量大小,等同于deepspeed的train_micro_batch_size_per_gpu。</li>
+</ul>
+<p>伪代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> episode <span class="keyword">in</span> episodes:</span><br><span class="line">    <span class="keyword">for</span> rand_prompts <span class="keyword">in</span> prompts_data:</span><br><span class="line">        <span class="comment"># 1. 经验收集阶段</span></span><br><span class="line">        <span class="comment">## 1.1 生成数据</span></span><br><span class="line">        <span class="comment"># rollout_batch_size: 滚出批量，即从提示数据集中推出多数据探索Exploration</span></span><br><span class="line">        <span class="comment"># len(rand_prompts) = rollout_batch_size//world_size</span></span><br><span class="line">        experiences = make_experience_list(rand_prompts)</span><br><span class="line">        <span class="comment">## 1.2 压入回放缓存</span></span><br><span class="line">        <span class="keyword">for</span> experience <span class="keyword">in</span> experiences:</span><br><span class="line">            <span class="comment"># len(experience) = micro_rollout_batch_size</span></span><br><span class="line">            replay_buffer.append(experience)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 2. 策略优化阶段</span></span><br><span class="line">        ppo_train(replay_buffer)  <span class="comment"># 执行PPO更新步骤</span></span><br></pre></td></tr></table></figure>
+<h5 id="2-3、经验收集循环"><a href="#2-3、经验收集循环" class="headerlink" title="2.3、经验收集循环"></a>2.3、经验收集循环</h5><p>在经验收集函数中需要做如下操作：</p>
+<ul>
+<li>1、扩充提示词书籍扩充 <strong>n_samples_per_prompt</strong>倍，即扩展倍数是 <strong>提示词采样数量</strong>，然后按照 <strong>微滚出批量</strong>生成经验。</li>
+<li>2、把目标函数需要的各个量计算出来, 按照公式写即可。</li>
+</ul>
+<p>伪代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># make_experience_list.py</span></span><br><span class="line"><span class="comment"># len(rand_prompts) = rollout_batch_size//world_size</span></span><br><span class="line">prompts = sum([[prompt] * n_samples_per_prompt <span class="keyword">for</span> prompt <span class="keyword">in</span> rand_prompts], [])</span><br><span class="line">experiences = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(prompts), micro_rollout_batch_size):</span><br><span class="line">    inputs = prompts[i:i + micro_rollout_batch_size]</span><br><span class="line">    <span class="comment"># 策略模型和参考模型、价值模型都使用推理框架vllm、SGlang实现推理加速</span></span><br><span class="line">    samples = actor_model.generate(inputs)</span><br><span class="line">    ref_samples = ref_model.generate(inputs)</span><br><span class="line">    kl = compute_kl(samples,ref_samples)</span><br><span class="line">    rewards = reward_model.generate(inputs) - kl <span class="comment"># 可远程部署调用API</span></span><br><span class="line">    values = critic_model.generate.generate(inputs) <span class="comment">#</span></span><br><span class="line">    advantages = estimate_advantages(rewards,values)</span><br><span class="line">    <span class="comment"># 收集经验</span></span><br><span class="line">    experience= Experience(samples,ref_samples,advantages)</span><br><span class="line">    experiences.append(experience)</span><br></pre></td></tr></table></figure>
+<h5 id="2-4、策略优化循环"><a href="#2-4、策略优化循环" class="headerlink" title="2.4、策略优化循环"></a>2.4、策略优化循环</h5><p>策略优化循环是在 <strong>rollout_batch_size//world_size</strong>的数据量上进行的，依然是在episodes和prompts_data的循环内。</p>
+<ul>
+<li>1、首先会在 <strong>滚出批量</strong>上学习 <strong>max_epochs</strong> 遍。</li>
+<li>2、接着会在 <strong>回放缓存</strong>中 按 <strong>微训练批量大小</strong> 做后向传播</li>
+<li>3、当累计 <strong>微训练批量大小</strong> 到 <strong>train_batch_size</strong> （<strong>训练批量大小</strong>）后就开始更新梯度。这里的train_batch_size和deepspeed中的train_batch_size是一个意思。具体的操作更新操作在OpenRLHF中是通过DeepspeedStrategy类实现的。</li>
+</ul>
+<p>伪代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ppo_train.py</span></span><br><span class="line">accumulate_train_batch_size = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> max_epochs:</span><br><span class="line">    <span class="keyword">for</span> experience <span class="keyword">in</span> replay_buffer:</span><br><span class="line">        <span class="comment"># len(experience) = micro_train_batch_size</span></span><br><span class="line">        loss = ppo.loss(experience)</span><br><span class="line">        loss.backward()</span><br><span class="line">        accumulate_train_batch_size += micro_train_batch_size</span><br><span class="line">        <span class="keyword">if</span> accumulate_train_batch_size == train_batch_size:</span><br><span class="line">            optimizer.step()</span><br><span class="line">            accumulate_train_batch_size = <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<h5 id="2-5、简单总结"><a href="#2-5、简单总结" class="headerlink" title="2.5、简单总结"></a>2.5、简单总结</h5><p>通过对探索和利用两个循环的简单回顾，相信已经大致了解了RLHF的基本流程的套路。如果还没看明白，那就多看几遍。下面来解决一个小问题。在总的循环中,经验收集循环到底用了几步？或者问策略优化循环总共用了几步。略作思考，来揭晓答案：</p>
+<ul>
+<li>在一个 <strong>episode</strong> 中策略优化循环用了几步:<br>num_update_steps_per_episodes = (len(prompts_data) <em> n_samples_per_prompt // train_batch_size </em> max_epochs)<br>策略优化循环总共有几步:<br>max_steps = math.ceil(num_episodes * num_update_steps_per_episodes)</li>
+<li>在一个 <strong>episode</strong> 中经验收集循环用了几步:<br>num_rollouts_per_episodes = (num_update_steps_per_episodes <em> train_batch_size<br>// max_epochs<br>// rollout_batch_size<br>// n_samples_per_prompt<br>)<br>= len(prompts_data) </em> n_samples_per_prompt // rollout_batch_size * max_epochs</li>
+</ul>
+<p>这个问题一般用来计量步骤和收集数据。</p>
+<h4 id="三、RLHF关键Trick"><a href="#三、RLHF关键Trick" class="headerlink" title="三、RLHF关键Trick"></a>三、RLHF关键Trick</h4><p>这里的Trick中主要参考的(Huang 2024)[^16]和huggingface的PPO的n种实现细节文章<a href="https://huggingface.co/blog/the_n_implementation_details_of_rlhf_with_ppo" target="_blank" rel="noopener">^17</a>、OpenRLHF[^24]。还有初七大佬的知乎文章<a href="https://zhuanlan.zhihu.com/p/622134699" target="_blank" rel="noopener">^18</a>、<a href="https://zhuanlan.zhihu.com/p/14888098807" target="_blank" rel="noopener">^19</a>、<a href="https://zhuanlan.zhihu.com/p/18510331097" target="_blank" rel="noopener">^20</a>、<a href="https://zhuanlan.zhihu.com/p/14520940716" target="_blank" rel="noopener">^21</a>、<a href="https://zhuanlan.zhihu.com/p/714364995" target="_blank" rel="noopener">^22</a>。初七大佬提出了REINFORCE+++，融合了PPO的Trick并去掉了价值网络(Jian Hu 2025)[^23]，文章中的实验表明比GRPO训练更加稳定。在多个复现R1的项目中都有REINFORCE+++身影。REINFORCE+++使用了如下技术</p>
+<p>1、token KL 惩罚<br>2、PPO-Clip 集成<br>3、Mini-Batch：<br>4、奖励标准化和裁剪<br>5、优势归⼀化</p>
+<p>下面按照笔者自己的理解进行了总结：</p>
+<h5 id="3-1、常见技巧"><a href="#3-1、常见技巧" class="headerlink" title="3.1、常见技巧"></a>3.1、常见技巧</h5><p>对于PPO的的技巧clip[^25] 这里就不在复述。重要性采样也很好理解、使用优势函数提替换动作价值函数也很好理解。这里就不在复述。</p>
+<h5 id="3-2、KL惩罚"><a href="#3-2、KL惩罚" class="headerlink" title="3.2、KL惩罚"></a>3.2、KL惩罚</h5><h6 id="3-2-1、对于KL是放在奖励函数里面，还是放在外面。"><a href="#3-2-1、对于KL是放在奖励函数里面，还是放在外面。" class="headerlink" title="3.2.1、对于KL是放在奖励函数里面，还是放在外面。"></a>3.2.1、对于KL是放在奖励函数里面，还是放在外面。</h6><p>PPO的 $r_t=\pi_{\bm{\theta}_{\textit{rm}}}(q,o_{:t})-\beta \mathbb{KL}\big[\pi_{\bm{\theta}} ||\pi_{\bm{\theta}_\textit{ref}}\big]$和GRPO $\displaystyle \mathcal{L}_{\textit{GRPO}}(\bm{\theta})<br>=\mathbb{E}_{q\sim \rho(Q),\{\bm{o}_i\}_{i=1}^G\sim \pi_{\bm{\theta}_\text{old}}}\\<br>\frac{1}{G}\sum_{i=1}^G<br>\frac{1}{|\bm{o}_i|}\sum_{t=1}^{\bm{|\bm{o}_i|}}<br>\bigg[\min\left[\frac{\pi_{\bm{\theta}}(o_{i,t}\mid q,o_{i,:t})}{\pi_{\bm{\theta}_\text{old}}(o_{i,t}\mid q,o_{i,:t})},\mathrm{\text{clip}}\left[\frac{\pi_{\bm{\theta}}(o_{i,t}\mid q,o_{i,:t})}{\pi_{\bm{\theta}_\text{old}}(o_{i,t}\mid q,o_{i,:t})},1-\epsilon,1+\epsilon\right]\right]\cdot A_{\pi}(q,\bm{o}_i)-\beta \mathbb{\hat{KL}}\big[\pi_{\bm{\theta}} ||\pi_{\bm{\theta}_\textit{ref}}\big]\bigg]$的做法都能解释的通,其实实质其实是一个贝叶斯推断[^26], 不想看文献，可以看笔者的写的[^27]<a href="https://www.limoncc.com/post/bd7e41e00dc8afad">介绍文章</a>。不过加入奖励函数里面控制粒度更细。训练应该更加稳定。但是皓天大佬用REINFORCE+++复现时候加入KL约束会限制模型探索空间<a href="https://zhuanlan.zhihu.com/p/22288441283" target="_blank" rel="noopener">^28</a>。皓天大佬的文章很有启发性，指出在base模型变强以后，其实现有的RL算法在规则奖励上应该都能work。更加应该探索如何基于强base模型来优化RL算法。不应拘泥于原来RL训练不稳定，难训练这种传统观念。</p>
+<p>下面还是略微来解释一下KL的作用实质到底是什么：<br>一开始我们通过语料训练了一个预训练模型 $\pi_{\text{PT}}$，然后有得到一个 $\pi_{\text{SFT}}$模型，接下来通过RLHF我们要得到一个 $\pi_{\text{RLHF}}$的模型。这其实是什么？是不断调整分布的过程，或者说是语言模型不断调整信念的过程。</p>
+<p>符号说明$\mathcal{D}=\{(x_i,y_i)\}$，其中 $x_i$表示指令， $y_i$是预训练的语言模型的输出。 $\pi(y\mid x)$是从指令到输出的概率分布。</p>
+<p>1、首先一开始有一个在大规模语料上训练的语言模型 $\pi_0(y\mid x)$, 目前它表现欠佳，它的世界和人类的世界差别有点大，说起话来前言不搭后语。<br>2、好了现在有一个对话语料 $\mathcal{D}=\{(x_i,y_i)\}$，这个对话预料的特点就是真实反应了人类世界的情况，或者说基于此我们能生成一个评分函数 $r(x,y)$这个函数能给语言模型基于指令 $x$生成的 $y$打分。既然如此不如这样思考</p>
+<p>$$\begin{align}<br>q(r\mid y,x )\propto \exp\bigg(\frac{1}{\beta}r(x,y)\bigg)<br>\end{align}$$</p>
+<p>给定 $x,y$对评分 $r$附上一个信念或者概率 $q$，这里的 $\beta$是一个信念可调整的超参数。比较是个比较主观的东西，加个可调整参数来调节，以便让大多数人满意。</p>
+<p>3、现在的问题就变成了如何根据初始模型 $\pi_0(y\mid x)$和人类的评分信念 $q(r\mid y,x )$来调整模型参数 $\theta$得到一个新的模型 $\pi_{\theta}(y\mid x)$</p>
+<p>如果说 $\pi_0(y\mid x)$是先验分布，那么人类的评分信念 $q(r\mid y,x )$就是似然函数，于是我们可以构造一个后验分布</p>
+<p>$$\begin{align}<br>\pi_{\text{KL-RL}}(y\mid x, r)<br>\propto q(r\mid y,x )\pi_0(y\mid x)<br>=\exp\bigg(\frac{1}{\beta}r(x,y)\bigg)\pi_0(y\mid x)<br>\end{align}$$</p>
+<p>或者加上归一参数或者说证据$Z(y,x,r)$<br>$$\begin{align}<br>\pi_{\text{KL-RL}}(y\mid x, r)  = \frac{1}{Z}\exp\bigg(\frac{1}{\beta}r(x,y)\bigg)\pi_0(y\mid x)<br>\end{align}$$<br>其中 $\displaystyle  Z(y,x,r)=\int \exp\bigg(\frac{1}{\beta}r(x,y)\bigg)\pi_0(y\mid x)dy$</p>
+<p>现在我们是无法直接得到 $\pi_{\text{KL-RL}}(y\mid x, r)$，计算证据$Z(y,x,r)$计算是巨大的。但是我们可以让一个分布接进它，或者最好的方式就是就地取材微调 $\pi_0(y\mid x,\theta)$得到 $\pi_{\theta}(y\mid x)$使得它接近。 我们的后验$\pi_{\text{KL-RL}}(y\mid x, r)$，这样我们就得到了对齐后的模型。我们自然就使用到了计算分布相似度的 $\mathbb{KL}$散度。于是问题就变为了</p>
+<p>$$\begin{align}<br>-\min_{\theta}\mathbb{KL}\bigg[\pi_{\theta}(y\mid x)\parallel\pi_{\text{KL-RL}}(y\mid x, r)\bigg]<br>\end{align}$$<br>不难证明它与RLFT是等价的。</p>
+<p>$$\begin{align}<br>-\min_{\theta}\mathbb{KL}\bigg[\pi_{\theta}(y\mid x)\parallel\pi_{\text{KL-RL}}(y\mid x, r)\bigg]<br>= \max_{\theta} \mathbb{E}_{(x,y)\sim\pi_{\theta}}\big[r(x,y)\big]-\beta\mathbb{KL}[\pi_\theta \parallel\pi_0]<br>\end{align}$$</p>
+<p>放在奖励函数里面，还是放在优势函数外面。不过是评分信念的不同，在token层级似然函数就是奖励，在优势函数外面就是优势函数。对贝叶斯更新的提供的信息不同、粒度与层次的不同。</p>
+<h6 id="3-2-1、什么才是最佳的KL蒙特卡洛采样"><a href="#3-2-1、什么才是最佳的KL蒙特卡洛采样" class="headerlink" title="3.2.1、什么才是最佳的KL蒙特卡洛采样"></a>3.2.1、什么才是最佳的KL蒙特卡洛采样</h6><p>实际上无论是那种RL：PPO、GRPO、RLOO、REINFORCE+++，KL散度都不是真KL散度，而只是KL蒙特卡洛采样估计而已。也是说去掉了概率部分，只有log比。那问题就来了，什么才低偏差、低方差的最优估计，J. Schulman[^29]提出了KL $\displaystyle  \mathbb{KL}\big[\pi_{\bm{\theta}} ||\pi_{\bm{\theta}_\textit{ref}}\big]$的三种蒙特卡洛估计</p>
+<p>$$\begin{align}<br>k1 &amp;= \log \frac{\pi_{\bm{\theta}}}{\pi_{\bm{\theta}_{\textit{ref}}}}\\\<br>k2 &amp; = \frac{1}{2}\log^2 \frac{\pi_{\bm{\theta}}}{\pi_{\bm{\theta}_{\textit{ref}}}}\\<br>k3 &amp;= \log \frac{\pi_{\bm{\theta}}}{\pi_{\bm{\theta}_{\textit{ref}}}}+\frac{\pi_{\bm{\theta}_\textit{ref}}}{\pi_{\bm{\theta}}}-1<br>\end{align}$$</p>
+<p>当 $\pi_{\bm{\theta}}\to +\infty$或者时， log比就会非常大，在做指数exp 就会数值溢出。不妨令 $r=\log \frac{\pi_{\bm{\theta}_{\textit{ref}}}}{\pi_{\bm{\theta}}}$,则有<br>$$\begin{align}<br>k1&amp;=-r\\<br>k2&amp;=\frac{1}{2}r^2\\<br>k3&amp;=-r+\mathrm{e}^{r}-1<br>\end{align}$$</p>
+<p>取如下分段函数</p>
+<p>$$\begin{align}<br>k_{stable}=\begin{cases}<br>k_3 &amp;\text{if } r&lt;0\\<br>\min[k_1,k_3]&amp;\text{if } r\geqslant 0<br>\end{cases}<br>\end{align}$$</p>
+<h5 id="3-3、优势函数与价值函数的估计"><a href="#3-3、优势函数与价值函数的估计" class="headerlink" title="3.3、优势函数与价值函数的估计"></a>3.3、优势函数与价值函数的估计</h5><p>优势函数提替换动作价值函数核心就是添加一个baseline来减少方差。理论依据就是带基线的策略梯度定理。</p>
+<p>$$\begin{align}<br>\nabla_{\bm{\theta}} \mathcal{J}(\bm{\theta})<br>= \mathbb{E}_{s_t\sim \rho,a_t\sim \pi}\left[\nabla_{\bm{\theta}}\log\pi_{\bm{\theta}}(a_t\mid s_t) \cdot \left(Q_{\pi}(s_t,a_t)-b\right)\right]<br>\end{align}$$<br>具体证明与说明可以参加笔者写的文章<a href="https://limoncc.com/post/c0a3be9c86b2b4cd/" target="_blank" rel="noopener">^13</a>，总的来说减去一个与状态没有关系量，或者一个变化方向相反的量。既然如此，在优势函数上再做归一化是不是还能减少方差。</p>
+<p>$$\begin{align}<br>\tilde{A}_i = \frac{A_i-mean(A_i)}{std(A_i)}<br>\end{align}$$<br>甚至不需要 $std(A)$ 直接这样 $\tilde{A}= A-mean(A)$。不仅在优势函数这一层做，在奖励这个层次也做归一化或者对奖励做裁剪，在理论都能降低方差稳定训练。</p>
+<p>$$\begin{align}<br>r_t = \mathrm{\text{clip}}[r,lower,upper]<br>\end{align}$$</p>
+<p>在PPO中优势函数在使用GAE来估计，这需要奖励模型和状态价值模型计算。想想都非常消耗资源。如果去掉状态价值模型。GRPO的处理方式是对奖励做组归一化</p>
+<p>$$\begin{align}<br>\hat{A}_{i,t}=\hat{A}_{\pi}(q,\bm{o}_{i}) = \frac{r(\bm{o}_{i})-\text{mean}(\bm{R})}{\text{std}(\bm{R})}<br>\end{align}$$<br>然后组内的所有token都共享这个优势估计。这个就有点不符合强化学习的马尔可夫链的逻辑了:</p>
+<p>$$\begin{align}<br>s_1\to a_1\searrow_{r_1}\to s_2\to a_2\searrow_{r_2}<br>\cdots \to S_t \to A_t\searrow_{R_t}\to S_{t+1} \to A_{t+1}\searrow_{R_{t+1}}\cdots S_T \to A_{T}\searrow_{R_{T}}<br>\end{align}$$</p>
+<p>对于结果奖励而言把token都共享这个优势估计，不太科学。初七大佬提出了REINFORCE+++[^23]则是按照REINFORCE的方法做价值函数的蒙特卡洛估计</p>
+<p>$$\begin{align}<br>\hat{Q}_t=r_t + \gamma \hat{Q}_{t+1}<br>\end{align}$$</p>
+<p>即每个轨迹的折扣累积奖励计算如下</p>
+<p>$$\begin{align}<br>\hat{Q}_t=\sum_{k=t}^T\gamma^{k-t}r_k<br>\end{align}$$</p>
+<p>通过递归我们可以把每个token的奖励传递到之前的每个token。</p>
+<p>例如，假设有一个序列长度为3， $\gamma=0.9$，奖励 $\bm{r}=[0,0,3]$</p>
+<p>$$\begin{align}<br>Q_2&amp;=3\\<br>Q_1&amp;=0 +0.9<em>3=2.7\\<br>Q_0&amp;=0+0.9</em>2.7=0+2.43=2.43\\<br>\end{align}$$</p>
+<p>这要比GRPO给每个token都给相同优势应该是要合理的，GRPO的优势估计已经脱离的强化学习关于(状态、动作、奖励)三元组的马尔科夫链假设。<br>$$\begin{align}<br>A_2=A_1=A_0=1.41421356<br>\end{align}$$</p>
+<h5 id="3-4、策略模型参数的指数移动平均EMA"><a href="#3-4、策略模型参数的指数移动平均EMA" class="headerlink" title="3.4、策略模型参数的指数移动平均EMA"></a>3.4、策略模型参数的指数移动平均EMA</h5><p>为了进一步稳定训练，还可以使用策略模型参数的指数移动平均</p>
+<p>$$\begin{align}<br>\bm{\theta}^{EMA}_{t+1} = \beta \bm{\theta}^{EMA}_t +(1-\beta) \bm{\theta}_{t+1}<br>\end{align}$$</p>
+<p>其中：<br>$\bm{\theta}^{EMA}_{t}$: 是时刻（第 t次更新）的策略模型参数。<br>$\bm{\theta}_t$是t+1次更新后的参数。<br>$\beta$：衰减率（通常接近 1，如 0.995），控制历史参数的权重。</p>
+<p>说白了就是平衡就策略和新策略的参数</p>
+<h5 id="3-5、Ring-Attention"><a href="#3-5、Ring-Attention" class="headerlink" title="3.5、Ring Attention"></a>3.5、Ring Attention</h5><p>Ring Attention(Liu, H.2023)[^30]是谷歌提出的用于处理超长序列的高效注意力机制。其核心思想是将输入序列分块分布在多个设备上，通过环形通信传递中间结果（如键值缓存），使每个设备逐步计算注意力而不需全局存储整个序列，从而突破单设备内存限制，支持极长上下文。</p>
+<p>在OpenRLFH中有两个关键参数</p>
+<ul>
+<li>ring_attn_size：环形组设备数，通常等于总设备数（全环）或其因数（多子环）。</li>
+<li>ring_head_stride：注意力头在环形中的分布间隔，用于负载均衡。例如步长2时，设备0处理头0,2,4…，设备1处理头1,3,5…</li>
+</ul>
+<h4 id="四、一个简单评述"><a href="#四、一个简单评述" class="headerlink" title="四、一个简单评述"></a>四、一个简单评述</h4><p>1、正如皓天文章<a href="https://zhuanlan.zhihu.com/p/22288441283" target="_blank" rel="noopener">^28</a>指出的那样在base模型变强以后，实现有的RL算法在规则奖励上应该都能work。探索如何基于强base模型来高效优化RL算法，应该是RLHF发展的下一个重要方向。</p>
+<p>2、也许base模型强到一定程度，上述很多trick其实就不太需要了。</p>
+<p>3、就目前复现的情况来看，好的奖励规则或者说一个名师的循循善诱的引导似乎那个正确的方向。如何构建这样一个奖励或循循善诱的引导是值得好好思考的一个重大问题。</p>
+<p>4、似乎可以参考教师的培养机制，在师范学习、教材和教案基础上构建一个通用的引导模型，可以实时出题那种;或者验证模型是有可能。</p>
+<p>5、学习不仅是一个重复的过程，也是先把书读厚，在把书读薄的过程。或者能在人类众多的学习经验中构建起一个更加强大高效的强化学习算法。</p>
+<p>6、选择base模型犹如找到好苗子，强化学习犹如是一个因材施教，循循善诱的过程。教废了，还是天才养成记这确实是个问题。</p>
+<p>7、解决RLFH代码实践的框架问题，和关键Trick技巧，接下来就是整数据实操了，敬请期待。</p>
+<p>最近笔者也弄了一个公众号: limoncc-ai 欢迎关注。</p>
+<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p>[^16]: Huang, S., Noukhovitch, M., Hosseini, A., Rasul, K., Wang, W., &amp; Tunstall, L. (2024, March 24). The N+ Implementation Details of RLHF with PPO: A Case Study on TL;DR Summarization. arXiv. <a href="https://doi.org/10.48550/arXiv.2403.17031" target="_blank" rel="noopener">https://doi.org/10.48550/arXiv.2403.17031</a></p>
+<p>[^23]: Hu, J. (2025, January 4). REINFORCE++: A Simple and Efficient Approach for Aligning Large Language Models. arXiv. <a href="https://doi.org/10.48550/arXiv.2501.03262" target="_blank" rel="noopener">https://doi.org/10.48550/arXiv.2501.03262</a></p>
+<p>[^24]: Hu, J., Wu, X., Zhu, Z., Xianyu, Wang, W., Zhang, D., &amp; Cao, Y. (2024, November 24). OpenRLHF: An Easy-to-use, Scalable and High-performance RLHF Framework. arXiv. <a href="https://doi.org/10.48550/arXiv.2405.11143" target="_blank" rel="noopener">https://doi.org/10.48550/arXiv.2405.11143</a></p>
+<p>[^25]: Schulman, J., Wolski, F., Dhariwal, P., Radford, A., &amp; Klimov, O. (2017, August 28). Proximal Policy Optimization Algorithms. arXiv. <a href="https://doi.org/10.48550/arXiv.1707.06347" target="_blank" rel="noopener">https://doi.org/10.48550/arXiv.1707.06347</a></p>
+<p>[^26]: Korbak, T., Perez, E., &amp; Buckley, C. L. (2022, October 21). RL with KL penalties is better viewed as Bayesian inference. arXiv. <a href="http://arxiv.org/abs/2205.11275" target="_blank" rel="noopener">http://arxiv.org/abs/2205.11275</a>. Accessed 7 December 2023</p>
+<p>[^29]: J. Schulman. Approximating kl divergence, 2020. URL <a href="http://joschu.net/blog/kl-approx.html" target="_blank" rel="noopener">http://joschu.net/blog/kl-approx.html</a>.</p>
+<p>[^30]: Liu, H., Zaharia, M., &amp; Abbeel, P. (2023, November 27). Ring Attention with Blockwise Transformers for Near-Infinite Context. arXiv. <a href="https://doi.org/10.48550/arXiv.2310.01889" target="_blank" rel="noopener">https://doi.org/10.48550/arXiv.2310.01889</a><hr></p>
+<p><table border="1" width="100%"><tr><td align="center" width="18%">版权声明</td><td align="left" width="82%"><img src="https://www.limoncc.com/images/cc.png" width="18%"></td></tr><tr><td align="center" width="18%"><img src="https://www.limoncc.com/images/avatar.png" width="100%"></td><td align="left" width="82%">由<a href="https://www.limoncc.com">引线小白</a>创作并维护的<a href="http://www.limoncc.com">柠檬CC</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="external">署名-非商业-禁止演绎4.0</a>国际许可证。<br>本文首发于柠檬CC <a href="https://www.limoncc.com">[ https://www.limoncc.com ]</a> , 版权所有、侵权必究。</td></tr><tr><td align="center" width="18%">本文永久链接</td><td align="left" width="82%">httpss://<a href="http://www.limoncc.com/post/47f9ae3708f426c0/">www.limoncc.com/post/47f9ae3708f426c0/</a></td></tr></table><table border="0" width="100%" style="display:inline !important;font-size:14px !important;color:#555555;"><tr><td align="left" width="100%" style="font-family:helvetica;font-size:14px !important;font-weight:bold;">如果您需要引用本文，请参考：</td></tr><tr><td align="left" width="100%">引线小白. (Feb. 11, 2025). 《大模型中的强化学习实战1——大语言模型研究06》[Blog post]. Retrieved from <a href="https://www.limoncc.com/post/47f9ae3708f426c0">https://www.limoncc.com/post/47f9ae3708f426c0</a></td></tr><tr><td align="left" width="100%">@online{limoncc-47f9ae3708f426c0,<br>title={大模型中的强化学习实战1——大语言模型研究06},<br>author={引线小白},<br>year={2025},<br>month={Feb},<br>date={11},<br>url={\url{<a href="https://www.limoncc.com/post/47f9ae3708f426c0}}">https://www.limoncc.com/post/47f9ae3708f426c0}}</a>,<br>}</td></tr></table><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div></p>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","douban","weixin","sqq","duitang","qzone","fbook","twi"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/大语言模型/" rel="tag">#大语言模型</a>
+          
+            <a href="/tags/生成模型/" rel="tag">#生成模型</a>
+          
+            <a href="/tags/强化学习/" rel="tag">#强化学习</a>
+          
+            <a href="/tags/LLM/" rel="tag">#LLM</a>
+          
+            <a href="/tags/RLFT/" rel="tag">#RLFT</a>
+          
+            <a href="/tags/OpenRLHF/" rel="tag">#OpenRLHF</a>
+          
+            <a href="/tags/REINFORCE/" rel="tag">#REINFORCE+++</a>
+          
+            <a href="/tags/GRPO/" rel="tag">#GRPO</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/c0a3be9c86b2b4cd/" rel="next" title="大模型中的强化学习——大语言模型研究05">
+                <i class="fa fa-chevron-left"></i> 大模型中的强化学习——大语言模型研究05
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+<!--           </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div> -->
+        <div id="vcomments"></div>
+        <script>new Valine({
+          el: "#vcomments",
+      appId: "BVjuNRCpkVSkz82jFmadIvY8-gzGzoHsz",
+    appKey: "bRjXPp55dop7RTC2xgunGdiP"})
+  </script>'
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="引线小白" />
+          <p class="site-author-name" itemprop="name">引线小白</p>
+          <p class="site-description motion-element" itemprop="description">小湖椰影廊桥,曾记否,谷围晓月,灯影朦胧。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">54</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">102</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="" target="_blank" title="Design">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Design
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.behance.net/limoncc" target="_blank" title="Behance">
+                  
+                    <i class="fa fa-fw fa-behance"></i>
+                  
+                  Behance
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://www.pinterest.com/aegeanfan/" target="_blank" title="Pinterest">
+                  
+                    <i class="fa fa-fw fa-pinterest"></i>
+                  
+                  Pinterest
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/limoncc" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://weibo.com/3483157951" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="http://www.zhihu.com/people/limoncc" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              设计不止，折腾不息。
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://chuangzaoshi.com" title="创造狮" target="_blank">创造狮</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、DeepSeek-R1推理模型的复现浪潮"><span class="nav-number">1.</span> <span class="nav-text">一、DeepSeek-R1推理模型的复现浪潮</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、RLHF实现的核心流程"><span class="nav-number">2.</span> <span class="nav-text">二、RLHF实现的核心流程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1、损失函数"><span class="nav-number">2.1.</span> <span class="nav-text">2.1、损失函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2、Trainer整体循环"><span class="nav-number">2.2.</span> <span class="nav-text">2.2、Trainer整体循环</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3、经验收集循环"><span class="nav-number">2.3.</span> <span class="nav-text">2.3、经验收集循环</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4、策略优化循环"><span class="nav-number">2.4.</span> <span class="nav-text">2.4、策略优化循环</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-5、简单总结"><span class="nav-number">2.5.</span> <span class="nav-text">2.5、简单总结</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、RLHF关键Trick"><span class="nav-number">3.</span> <span class="nav-text">三、RLHF关键Trick</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1、常见技巧"><span class="nav-number">3.1.</span> <span class="nav-text">3.1、常见技巧</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2、KL惩罚"><span class="nav-number">3.2.</span> <span class="nav-text">3.2、KL惩罚</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#3-2-1、对于KL是放在奖励函数里面，还是放在外面。"><span class="nav-number">3.2.1.</span> <span class="nav-text">3.2.1、对于KL是放在奖励函数里面，还是放在外面。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-2-1、什么才是最佳的KL蒙特卡洛采样"><span class="nav-number">3.2.2.</span> <span class="nav-text">3.2.1、什么才是最佳的KL蒙特卡洛采样</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3、优势函数与价值函数的估计"><span class="nav-number">3.3.</span> <span class="nav-text">3.3、优势函数与价值函数的估计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4、策略模型参数的指数移动平均EMA"><span class="nav-number">3.4.</span> <span class="nav-text">3.4、策略模型参数的指数移动平均EMA</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-5、Ring-Attention"><span class="nav-number">3.5.</span> <span class="nav-text">3.5、Ring Attention</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、一个简单评述"><span class="nav-number">4.</span> <span class="nav-text">四、一个简单评述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考文献"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">引线小白&nbsp &nbsp |&nbsp &nbsp  一个理想主义者，再造自我，以期未来。</span>
+</div>
+
+<div class="powered-by">
+  由 <a rel="external nofollow" class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a rel="external nofollow" class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>&nbsp &nbsp| &nbsp &nbsp Hosted by  <a href="https://github.com" style="font-weight: bold">Github Pages</a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+<!--   
+   
+  
+
+  
+
+ -->
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+<!--   <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+     showMathMenu: false,
+     showMathMenuMSIE: false,
+     tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+          processEscapes: true
+        },
+        TeX: {
+          equationNumbers: {autoNumber: 'AMS'},
+          Macros: {bm: "\\boldsymbol"}
+        },
+        'HTML-CSS': {
+          imageFont: null
+        }
+    });
+  </script> -->
+<!--     MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    }); -->
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+    processEscapes: true,
+    tags: 'ams',
+    macros: {
+                                            bm: "\\boldsymbol",
+					    T:"\\intercal",
+                                            oiint: "{\\iint\\kern{-20mu}{\\unicode{x2B2D}}}",
+                                            oiiint: "{\\iiint\\kern{-24.5mu}\\large{\\unicode{x2B2D}}}"
+                                },
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+  <script type="text/x-mathjax-config">
+MathJax.texReset();
+MathJax.typeset();
+  </script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_SVG-full"></script> -->
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Es7wAnqi0QiGhMLoyl7mkrQo-gzGzoHsz", "BxPXaoPFp3PzWqBTSe6VUuQS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</body>
+</html>
