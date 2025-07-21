@@ -94,7 +94,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2025-07-21T06:57:59.844Z">
+<meta property="og:updated_time" content="2025-07-21T12:12:33.165Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RNN的复兴01:向量和矩阵微分-大语言模型研究08">
 <meta name="twitter:description" content="本文主要总结了向量和矩阵微分的若干基本问题，和我自己的一些体会。主要为接下来的RNN的复兴系列文章，做一点前置知识介绍。">
@@ -425,7 +425,7 @@
 <p>实际上有</p>
 <p>$$\begin{align}<br>\forall \dim[\bm{\ell}]\leqslant dim[\bm{x}]\to\mathop{cal_cost}\bigg(\frac{d\ell}{d\bm{x}^\T}\bigg)<br>\leqslant<br>\mathop{cal_cost}\bigg(\frac{d\ell}{d\bm{x}}\bigg)\\<br>\forall \dim[\bm{\ell}]&gt; dim[\bm{x}]\to\mathop{cal_cost}\bigg(\frac{d\ell}{d\bm{x}^\T}\bigg)&gt;\mathop{cal_cost}\bigg(\frac{d\ell}{d\bm{x}}\bigg)<br>\end{align}$$</p>
 <h5 id="1-5、VJP和JVP"><a href="#1-5、VJP和JVP" class="headerlink" title="1.5、VJP和JVP"></a>1.5、VJP和JVP</h5><p>在讨论了反向传播的计算后，来总结一下前向模式 (JVP:Jacobian-Vector Product)和反向模式 (VJP:Vector-Jacobian Product),这里主要是为熟悉一下数学符号，没有概念和计算上的难度。首先熟悉一下符号：</p>
-<p>话接上节，特别的如果不将 $\displaystyle \ell$视为标量的损失函数，而是一个可以优化的向量目标 $\displaystyle \bm{\ell}$。同时我们特别的定义第 $i$层雅可比矩阵 $\displaystyle \bm{J}_i =\frac{d\bm{z}_i^\T}{d\bm{z}_{i-1}}$。</p>
+<p>话接上节，特别的如果不将 $\displaystyle \ell$视为标量的损失函数，而是一个可以优化的向量目标 $\displaystyle \bm{\ell}$。同时我们特别的定义第 $i$层雅可比矩阵 $\displaystyle \bm{J}_i =\frac{d\bm{z}_i}{d\bm{z}_{i-1}^\T}$。</p>
 <p>那么有前向计算公式</p>
 <p>$$\begin{align}<br>\frac{d\bm{\ell}^\T}{d\bm{x}} =\prod_{i=1}^{n} \bm{J}_i ^\T<br>=\bm{J}_1 ^\T\cdot\bm{J}_2 ^\T\cdots\bm{J}_{n-1} ^\T\cdot\bm{J}_n ^\T<br>\end{align}$$</p>
 <p>后向计算公式<br>$$\begin{align}<br>\frac{d\bm{\ell}}{d\bm{x}^\T} =\prod_{i=0}^{n-1} \bm{J}_{n-i}<br> =\bm{J}_{n}\cdot\bm{J}_{n-1}\cdots\bm{J}_{2}\cdot\bm{J}_{1}<br>\end{align}$$</p>
