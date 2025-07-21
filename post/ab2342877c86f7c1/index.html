@@ -94,7 +94,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.limoncc.com/images/cc.png">
 <meta property="og:image" content="https://www.limoncc.com/images/avatar.png">
-<meta property="og:updated_time" content="2025-07-21T06:45:16.174Z">
+<meta property="og:updated_time" content="2025-07-21T06:45:47.940Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RNN的复兴01:向量和矩阵微分-大语言模型研究08">
 <meta name="twitter:description" content="本文主要总结了向量和矩阵微分的若干基本问题，和我自己的一些体会。主要为接下来的RNN的复兴系列文章，做一点前置知识介绍。">
@@ -479,8 +479,8 @@
 <p>$$\begin{align}<br>\mathrm{d}f<br>&amp;= \lim_{\mathrm{d}\bm{A}\to \bm{0}}\ln\big(1+\det[\bm{A}^{-1}\mathrm{d}\bm{A}]\big)\\<br>&amp;=\det[\bm{A}^{-1}\mathrm{d}\bm{A}]\\<br>&amp;=\mathrm{tr}[\bm{A}^{-1}\mathrm{d}\bm{A}]\\<br>&amp;\to \frac{\partial f}{\partial \bm{A}} = \bm{A}^{-\T}<br>\end{align}$$</p>
 <p>6、若 $\displaystyle f(\bm{A})=\det[\bm{A}]$，则 $\displaystyle \frac{\partial f}{\partial \bm{A}}=\det[\bm{A}]\bm{A}^{-\T}$</p>
 <p>证明<br>有等价无穷小：$\displaystyle \det[\bm{A}] = \prod_{i}\lambda_{i} = \sum_{i}\lambda_{i} + o(\det[\bm{A}])\to \det[\bm{A}]\sim \mathrm{tr}[\bm{A}] $则有</p>
-<p>$$\begin{align}<br>\mathrm{d}f<br>&amp;=\lim_{\mathrm{d}\bm{A}\to \bm{0}}\bigg(\det[\bm{A}+\mathrm{d}\bm{A}]-\det[\bm{A}]\bigg)\\<br>&amp;=\lim_{\mathrm{d}\bm{A}\to \bm{0}}\bigg(\det[\bm{A}]\det[\bm{E}+\bm{A}^{-1}\mathrm{d}\bm{A}]-\det[\bm{A}]\bigg)\\<br>\end{align}$$</p>
-<p>&amp;=\det<a href="1+\mathrm{tr}[\bm{A}^{-1}\mathrm{d}\bm{A}">\bm{A}</a>-\det[\bm{A}]\\<br>&amp;=\det[\bm{A}]\mathrm{tr}[\bm{A}^{-1}\mathrm{d}\bm{A})\\<br>&amp;=\mathrm{tr}[(\det[\bm{A}]\bm{A}^{-\T})^\T\mathrm{d}\bm{A})\\<br>&amp;\to\frac{\partial f}{\partial \bm{A}} = \det[\bm{A}]\bm{A}^{-\T}<br>下面几个不加证明。</p>
+<p>$$\begin{align}<br>\mathrm{d}f<br>&amp;=\lim_{\mathrm{d}\bm{A}\to \bm{0}}\bigg(\det[\bm{A}+\mathrm{d}\bm{A}]-\det[\bm{A}]\bigg)\\<br>&amp;=\lim_{\mathrm{d}\bm{A}\to \bm{0}}\bigg(\det[\bm{A}]\det[\bm{E}+\bm{A}^{-1}\mathrm{d}\bm{A}]-\det[\bm{A}]\bigg)\\<br>&amp;=\det<a href="1+\mathrm{tr}[\bm{A}^{-1}\mathrm{d}\bm{A}">\bm{A}</a>-\det[\bm{A}]\\<br>\end{align}$$</p>
+<p>&amp;=\det[\bm{A}]\mathrm{tr}[\bm{A}^{-1}\mathrm{d}\bm{A})\\<br>&amp;=\mathrm{tr}[(\det[\bm{A}]\bm{A}^{-\T})^\T\mathrm{d}\bm{A})\\<br>&amp;\to\frac{\partial f}{\partial \bm{A}} = \det[\bm{A}]\bm{A}^{-\T}<br>下面几个不加证明。</p>
 <p>若 $\displaystyle \bm{F}(\bm{A})=\bm{A}^{-1}$，有 $\displaystyle  \frac{\partial \bm{F}}{\partial \bm{A}}=-\bm{A}^{-2}$</p>
 <p>若 $\displaystyle \bm{y}(\bm{A})=\bm{A}\bm{x}$，有 $\displaystyle  \frac{\partial \bm{y}}{\partial \bm{A}}=\frac{\partial \mathrm{vec}\big(\bm{y}\big)}{\partial \mathrm{vec}^\T\big(\bm{A}\big)}=\bm{x}^\T\otimes \bm{E}$ </p>
 <p>若 $\displaystyle \bm{Y}_{p\times q}=\bm{A}_{p\times n}\bm{X}_{n\times m}\bm{B}_{m\times q}$，有矩阵微分 $\displaystyle \frac{\partial \bm{Y}}{\partial  \bm{X}}<br>=\frac{\partial \mathrm{vec}\big(\bm{Y}\big)}{\partial  \mathrm{vec}^\T\big(\bm{X}\big)}=\bm{B}^\T\otimes \bm{A}$</p>
