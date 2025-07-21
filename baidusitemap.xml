@@ -5,7 +5,7 @@
     
   <url>
     <loc>https://www.limoncc.com/post/ab2342877c86f7c1/</loc>
-    <lastmod>2025-07-21T06:18:06.981Z</lastmod>
+    <lastmod>2025-07-21T06:24:52.147Z</lastmod>
     <data>
         <display>
         <title>RNN的复兴01:向量和矩阵微分-大语言模型研究08</title>
@@ -74,7 +74,7 @@
     
   <url>
     <loc>https://www.limoncc.com/post/47f9ae3708f426c0/</loc>
-    <lastmod>2025-02-13T02:19:14.339Z</lastmod>
+    <lastmod>2025-02-13T02:20:31.298Z</lastmod>
     <data>
         <display>
         <title>大模型中的强化学习实战1——大语言模型研究06</title>
@@ -492,9 +492,9 @@
         
         <tag>概率论</tag>
          
-        <tag>大数定律</tag>
-         
         <tag>弱大数定律</tag>
+         
+        <tag>大数定律</tag>
          
          
            
@@ -540,9 +540,9 @@
         
         <tag>概率论</tag>
          
-        <tag>弱收敛</tag>
-         
         <tag>大数定律</tag>
+         
+        <tag>弱收敛</tag>
          
         <tag>连续定理</tag>
          
